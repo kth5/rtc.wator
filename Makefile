@@ -3,7 +3,7 @@ NAME := $(basename $(notdir $(shell pwd)))
 setup:
 	docker build -t wator/$(NAME)  ./docker
 
-APP := account
+APP := rtc
 laravel:
 	cd $(APP)/ && composer update
 	mkdir -p $(APP)/storage/app
