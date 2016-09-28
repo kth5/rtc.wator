@@ -16,6 +16,7 @@ class CatchController extends Controller
     public function index()
     {
         //
+        return view('catch');
     }
 
     /**
