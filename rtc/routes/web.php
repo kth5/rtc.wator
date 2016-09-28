@@ -17,6 +17,9 @@ Route::get('/', function () {
 });
 */
 
+Route::get('/rtc', function () {
+    return view('welcome');
+});
 Route::group(['prefix' => 'rtc'], function () {
     Route::get('/welcome', function () {
         return view('welcome');
