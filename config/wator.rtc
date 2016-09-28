@@ -1,6 +1,6 @@
 server {
-  listen 10081 default_server;
-  listen [::]:10081 default_server ipv6only=on;
+  listen 10083 default_server;
+  listen [::]:10083 default_server ipv6only=on;
   root /opt/watorvapor/account.wator/account/public;
   index index.php index.html index.htm;
 
