@@ -172,11 +172,11 @@ return [
         /*
          * Application Service Providers...
          */
-        App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
+        WatorRTC\Providers\AppServiceProvider::class,
+        WatorRTC\Providers\AuthServiceProvider::class,
+        // WatorRTC\Providers\BroadcastServiceProvider::class,
+        WatorRTC\Providers\EventServiceProvider::class,
+        WatorRTC\Providers\RouteServiceProvider::class,
 
     ],
 

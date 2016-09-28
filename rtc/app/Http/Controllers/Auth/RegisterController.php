@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace WatorRTC\Http\Controllers\Auth;
 
-use App\User;
+use WatorRTC\User;
 use Validator;
-use App\Http\Controllers\Controller;
+use WatorRTC\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace WatorRTC\Providers;
 
 use Illuminate\Support\ServiceProvider;
 

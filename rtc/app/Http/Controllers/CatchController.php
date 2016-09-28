@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace WatorRTC\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
+use WatorRTC\Http\Requests;
 
 class CatchController extends Controller
 {
