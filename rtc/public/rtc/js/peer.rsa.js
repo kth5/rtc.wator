@@ -59,7 +59,7 @@ PeerRSA.A.prototype.createKey = function () {
 PeerRSA.A.prototype.connect = function (config) {
   console.log(this);
   var msg = {cmd:'start',body:config};
-  this->sendSignal_(msg).bind(this);
+  this.sendSignal_(msg).bind(this);
   if(config.A) {
     navigator.getUserMedia(config.A,this.gotMediaSuccess,this.gotMediaFailure);
   }
