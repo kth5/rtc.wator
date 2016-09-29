@@ -20,3 +20,14 @@ PeerRSA.A.createKey = function createKey() {
   localStorage.setItem('rtc.PeerRSA.A.token',token);
 }
 
+/*
+  PeerRSA.B is Peer import RSA key.
+*/
+PeerRSA.B = PeerRSA.B || {};
+PeerRSA.B.importKey = function (pubKey) {
+  //
+  var token = KJUR.crypto.Util.sha512(pubKey);
+  var storageKey = 'rtc.PeerRSA.B.token.' + token;
+  localStorage.setItem(storageKey,pubKey);
+}
+
