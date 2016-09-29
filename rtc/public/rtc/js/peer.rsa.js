@@ -99,3 +99,18 @@ PeerRSA.signature_ = function(orig) {
     return nul;
   }
 }
+PeerRSA.verify_ = function(token,orig,signature) {
+  try {
+    var publicKeyStr = localStorage.getItem('rtc.PeerRSA.B.publicKey');
+    var rsaKey = KEYUTIL.getKey(publicKeyStr);
+    var result = rsaKey.verifyString(orig,signature);
+    if(result == 0) {
+      return true;
+    }
+  } catch(e) {
+    console.error(e);
+    return false;
+  }
+  return false;
+}
+
