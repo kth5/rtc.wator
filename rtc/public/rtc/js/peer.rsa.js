@@ -56,9 +56,9 @@ PeerRSA.A.prototype.connect = function (config) {
   PeerRSA.B is Peer import RSA key.
 */
 PeerRSA.B = function () {
-  PeerRSA.B.wss = PeerRSA.B.wss || new WebSocket(PeerRSA.uri,'wator.rtc.b');
+  this.wss = this.wss || new WebSocket(PeerRSA.uri,'wator.rtc.b');
 }
-PeerRSA.B.importKey = function (newPubKey) {
+PeerRSA.B.prototype.importKey = function (newPubKey) {
   //
   try {
     var pubKeysStr = localStorage.getItem('rtc.PeerRSA.B.publicKey');
@@ -70,6 +70,13 @@ PeerRSA.B.importKey = function (newPubKey) {
     console.error(e);
   }
 }
+
+
+
+
+
+
+
 
 
 /*
