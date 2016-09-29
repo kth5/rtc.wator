@@ -1,4 +1,5 @@
 var PeerRSA = PeerRSA || {};
+PeerRSA.duplex = false;
 PeerRSA.uri = PeerRSA.uri || 'wss://' + location.host + '/rtc/wss';
 /*
   PeerRSA.A is Peer create RSA key.
