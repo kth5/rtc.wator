@@ -45,6 +45,12 @@ PeerRSA.A.prototype.createKey = function () {
 }
 
 
+navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia ||
+								  navigator.mozGetUserMedia || navigator.msGetUserMedia;
+var URL = window.URL || window.webkitURL;
+var RTCPeerConnection = window.RTCPeerConnection || window.webkitRTCPeerConnection || window.mozRTCPeerConnection;
+var RTCSessionDescription = window.RTCSessionDescription || window.webkitRTCSessionDescription || window.mozRTCSessionDescription;
+var RTCIceCandidate = window.RTCIceCandidate || window.webkitRTCIceCandidate || window.mozRTCIceCandidate;
 /*
  config : {A:{video:{},audio:{}},B:{video:{},audio:{}}}
 */
@@ -52,8 +58,14 @@ PeerRSA.A.prototype.connect = function (config) {
   console.log(this);
   var msg = {cmd:'start',body:config};
   this->sendSignal_(msg).bind(this);
+  if(config.A) {
+    navigator.getUserMedia(config.A,this.gotMediaSuccess,this.gotMediaFailure);
+  }
 }
-
+PeerRSA.A.prototype.gotMediaSuccess = function (stream) {
+  console.log(this);
+}
+                           
 /*
   PeerRSA.B is Peer import RSA key.
 */
