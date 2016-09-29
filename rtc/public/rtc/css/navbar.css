@@ -1,0 +1,16 @@
+.navbar
+{
+	min-height:120px !important;
+}
+.navbar-brand img
+{
+	height:90px;
+}
+.navbar-header
+{
+    text-align:center;
+}
+.container
+{
+	margin:auto 0;
+}
