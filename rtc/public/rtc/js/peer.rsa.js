@@ -58,11 +58,17 @@ PeerRSA.A.prototype.connect = function (config) {
 PeerRSA.B = function () {
   PeerRSA.B.wss = PeerRSA.B.wss || new WebSocket(PeerRSA.uri,'wator.rtc.b');
 }
-PeerRSA.B.importKey = function (pubKey) {
+PeerRSA.B.importKey = function (newPubKey) {
   //
-  var token = KJUR.crypto.Util.sha1(pubKey);
-  var storageKey = 'rtc.PeerRSA.B.token.' + token;
-  localStorage.setItem(storageKey,pubKey);
+  try {
+    var pubKeysStr = localStorage.getItem('rtc.PeerRSA.B.publicKey');
+    var pubKeys = JSON.parse(pubKeysStr);
+    var token = KJUR.crypto.Util.sha1(newPubKey);
+    pubKeys[token] = newPubKey;
+    localStorage.setItem('rtc.PeerRSA.B.publicKey',JSON.stringify(pubKeys));
+  } catch(e) {
+    console.error(e);
+  }
 }
 
 
@@ -101,16 +107,18 @@ PeerRSA.signature_ = function(orig) {
 }
 PeerRSA.verify_ = function(token,orig,signature) {
   try {
-    var publicKeyStr = localStorage.getItem('rtc.PeerRSA.B.publicKey');
-    var rsaKey = KEYUTIL.getKey(publicKeyStr);
+    var pubKeysStr = localStorage.getItem('rtc.PeerRSA.B.publicKey');
+    var pubKeys = JSON.parse(pubKeysStr);
+    var rsaKey = KEYUTIL.getKey(pubKeys[token]);
     var result = rsaKey.verifyString(orig,signature);
     if(result == 0) {
       return true;
+    } else {
+      return false;
     }
   } catch(e) {
     console.error(e);
     return false;
   }
-  return false;
 }
 
