@@ -49,7 +49,7 @@ PeerRSA.A.prototype.createKey = function () {
 PeerRSA.A.prototype.connect = function (config) {
   console.log(this);
   var msg = {cmd:'start',body:config};
-  this->signal_(msg);
+  this->sendSignal_(msg).bind(this);
 }
 
 /*
@@ -76,11 +76,21 @@ PeerRSA.A.prototype.onSignalMsg_ = function (event) {
 PeerRSA.A.prototype.sendSignal_ = function (msg) {
   console.log(event);
   console.log(this);
-  var tokenA = localStorage.getItem('rtc.PeerRSA.A.token');
-  var sigMsg = {token:tokenA,rtc:msg};
-  this.wss.send(JSON.string(sigMsg));
+  this.token = this.token || localStorage.getItem('rtc.PeerRSA.A.token');
+  var date = new Date();
+  this.orig = this.orig || date.toUTCString();
+  this.signature = this.signature || PeerRSA.signature_(orig);
+  var wsMsg = {
+    token:this.token,
+    orig:this.orig,
+    sign:this.signature,
+    rtc:msg
+  };
+  this.wss.send(JSON.stringify(wsMsg));
 }
-
+PeerRSA.signature_ = function(token,) {
+  var keyStr = localStorage.getItem('rtc.PeerRSA.A.privateKey')
+}
 
 
 
