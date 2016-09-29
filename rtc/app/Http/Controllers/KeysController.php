@@ -16,7 +16,8 @@ class KeysController extends Controller
     public function index()
     {
         //
-    }
+         return view('keys');
+   }
 
     /**
      * Show the form for creating a new resource.
