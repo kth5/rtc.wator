@@ -2,6 +2,8 @@
 var WebSocketServer = require('websocket').server;
 var http = require('http');
 
+var PeerRSA = PeerRSA || {};
+
 var server = http.createServer(function(request, response) {
     console.log((new Date()) + ' Received request for ' + request.url);
     response.writeHead(404);
@@ -26,6 +28,10 @@ function originIsAllowed(origin) {
   return true;
 }
 
+
+PeerRSA.castConn = PeerRSA.castConn || {};
+PeerRSA.catchConn = PeerRSA.catchConn || {};
+
 wsServer.on('request', function(request) {
     if (!originIsAllowed(request.origin)) {
       // Make sure we only accept requests from an allowed origin
@@ -33,20 +39,41 @@ wsServer.on('request', function(request) {
       console.log((new Date()) + ' Connection from origin ' + request.origin + ' rejected.');
       return;
     }
-
-    var connection = request.accept('echo-protocol', request.origin);
-    console.log((new Date()) + ' Connection accepted.');
-    connection.on('message', function(message) {
+    /*
+      cast signal.
+    */
+    var connCast = request.accept('wator.rtc.cast', request.origin);
+    console.log((new Date()) + 'Cast Connection accepted.');
+    var key = 'cast.' + request.key;
+    PeerRSA.castConn[key] = connCast;
+    connCast.on('message', function(message) {
         if (message.type === 'utf8') {
             console.log('Received Message: ' + message.utf8Data);
-            connection.sendUTF(message.utf8Data);
         }
         else if (message.type === 'binary') {
             console.log('Received Binary Message of ' + message.binaryData.length + ' bytes');
-            connection.sendBytes(message.binaryData);
         }
     });
-    connection.on('close', function(reasonCode, description) {
-        console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
+    connCast.on('close', function(reasonCode, description) {
+        console.log((new Date()) + ' Peer ' + connCast.remoteAddress + ' disconnected.');
+    });
+
+    /*
+      catch signal.
+    */
+    var connCatch = request.accept('wator.rtc.catch', request.origin);
+    console.log((new Date()) + 'Catch Connection accepted.');
+    var key = 'catch.' + request.key;
+    PeerRSA.catchConn[key] = connCatch;
+    connCatch.on('message', function(message) {
+        if (message.type === 'utf8') {
+            console.log('Received Message: ' + message.utf8Data);
+        }
+        else if (message.type === 'binary') {
+            console.log('Received Binary Message of ' + message.binaryData.length + ' bytes');
+        }
+    });
+    connCatch.on('close', function(reasonCode, description) {
+        console.log((new Date()) + ' Peer ' + connCatch.remoteAddress + ' disconnected.');
     });
 });
