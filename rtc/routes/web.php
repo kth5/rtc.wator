@@ -10,17 +10,9 @@
 | to using a Closure or controller method. Build something great!
 |
 */
-
-/*
-Route::get('/', function () {
-    return view('welcome');
-});
-*/
-
-Route::get('/rtc', function () {
-    return view('welcome');
-});
 Route::group(['prefix' => 'rtc'], function () {
+    Route::get('/top', 'TopController@index');
     Route::get('/cast', 'CastController@index');
     Route::get('/catch', 'CatchController@index');
 });
+
