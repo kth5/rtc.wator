@@ -88,9 +88,14 @@ PeerRSA.A.prototype.sendSignal_ = function (msg) {
   };
   this.wss.send(JSON.stringify(wsMsg));
 }
-PeerRSA.signature_ = function(token,) {
-  var keyStr = localStorage.getItem('rtc.PeerRSA.A.privateKey')
+PeerRSA.signature_ = function(orig) {
+  try {
+    var privateKey = localStorage.getItem('rtc.PeerRSA.A.privateKey');
+    var rsaKey = KEYUTIL.getKeyFromPlainPrivatePKCS8PEM(privateKey);
+    var signature = rsaKey.signString(orig,"sha256");
+    return signature;
+  } catch(e) {
+    console.error(e);
+    return nul;
+  }
 }
-
-
-
