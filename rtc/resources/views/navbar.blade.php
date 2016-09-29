@@ -1,6 +1,6 @@
 <nav class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
   <div class="container">
-    <div class="navbar-header">
+    <div class="nav navbar-nav">
       <a class="navbar-brand" href="//www.watorvapor.com/rtc/keys">
         <img alt="Rsa Key" src="//www.watorvapor.com/rtc/img/keys.jpg">
       </a>

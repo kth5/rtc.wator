@@ -1,6 +1,8 @@
 var PeerRSA = PeerRSA || {};
 PeerRSA.duplex = false;
-PeerRSA.uri = PeerRSA.uri || 'wss://' + location.host + '/rtc/wss';
+PeerRSA.uri = PeerRSA.uri || {};
+PeerRSA.uri.a = PeerRSA.uri.a || 'wss://' + location.host + '/rtc/wss/a';
+PeerRSA.uri.b = PeerRSA.uri.b || 'wss://' + location.host + '/rtc/wss/b';
 
 navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 var URL = window.URL || window.webkitURL;
@@ -13,7 +15,7 @@ var RTCIceCandidate = window.RTCIceCandidate || window.webkitRTCIceCandidate || 
   PeerRSA.A is Peer create RSA key.
 */
 PeerRSA.A = function () {
-  this.wss = PeerRSA.A.wss || new WebSocket(PeerRSA.uri,'wator.rtc.a');
+  this.wss = PeerRSA.A.wss || new WebSocket(PeerRSA.uri.a,'wator.rtc.a');
   var self = this;
   this.wss.onopen = function (event) {
     self.signalOpened(event);
@@ -51,6 +53,10 @@ PeerRSA.A.prototype.createKey = function () {
   //console.log(token);
   localStorage.setItem('rtc.PeerRSA.A.token',token);
 }
+PeerRSA.A.prototype.readKeyStr = function () {
+  return localStorage.getItem('rtc.PeerRSA.A.publicKey');
+}
+
 
 
 /*
@@ -71,7 +77,7 @@ PeerRSA.A.prototype.gotMediaSuccess = function (stream) {
   PeerRSA.B is Peer import RSA key.
 */
 PeerRSA.B = function () {
-  this.wss = this.wss || new WebSocket(PeerRSA.uri,'wator.rtc.b');
+  this.wss = this.wss || new WebSocket(PeerRSA.uri.b,'wator.rtc.b');
   var self = this;
   this.wss.onopen = function (event) {
     self.signalOpened(event);
