@@ -114,7 +114,7 @@ PeerRSA.A.prototype.onSignalMsg_ = function (event) {
     good = PeerRSA.verify_(dataJson[token],dataJson[orig],dataJson[sign]);
   }
   if(good) {
-    PeerRSA.onSignalRTC_(dataJson[rtc],this->pcL,this->pcR);
+    PeerRSA.onSignalRTC_(dataJson[rtc]).bind(this);
   }
 }
 PeerRSA.A.prototype.sendSignal_ = function (msg) {
@@ -139,7 +139,7 @@ PeerRSA.B.prototype.onSignalMsg_ = function (event) {
   var dataJson = JSON.parse(event.data);
   var good = PeerRSA.verify_(dataJson[token],dataJson[orig],dataJson[sign]);
   if(good) {
-    PeerRSA.onSignalRTC_(dataJson[rtc],this->pcL,this->pcR);
+    PeerRSA.onSignalRTC_(dataJson[rtc]).bind(this);
   }
 }
 PeerRSA.B.prototype.sendSignal_ = function (msg,token) {
@@ -189,9 +189,6 @@ PeerRSA.verify_ = function(token,orig,signature) {
   }
 }
 
-PeerRSA.onSignalRTC_ = function(msg,pcL,pcR) {
-  var result;
-  result.pcL = pcL;
-  result.pcR = pcR;
-  return result;
+PeerRSA.onSignalRTC_ = function(msg) {
+  console.log(this);
 }
