@@ -25,18 +25,6 @@ PeerRSA.A.prototype.signalOpened = function (event) {
 PeerRSA.A.prototype.signalClosed = function (event) {
   console.log(event);
 }
-PeerRSA.A.prototype.onMsg_ = function (event) {
-  console.log(event);
-  console.log(this);
-}
-PeerRSA.A.prototype.signal_ = function (msg) {
-  console.log(event);
-  console.log(this);
-  var tokenA = localStorage.getItem('rtc.PeerRSA.A.token');
-  var sigMsg = {token:tokenA,rtc:msg};
-  this.wss.send(JSON.string(sigMsg));
-}
-
 PeerRSA.A.prototype.createKey = function () {
   //console.log(KEYUTIL.version);
   var rsaKeypair = KEYUTIL.generateKeypair("RSA", 4096);
@@ -64,7 +52,6 @@ PeerRSA.A.prototype.connect = function (config) {
   this->signal_(msg);
 }
 
-
 /*
   PeerRSA.B is Peer import RSA key.
 */
@@ -77,5 +64,23 @@ PeerRSA.B.importKey = function (pubKey) {
   var storageKey = 'rtc.PeerRSA.B.token.' + token;
   localStorage.setItem(storageKey,pubKey);
 }
+
+
+/*
+ inner functions.
+*/
+PeerRSA.A.prototype.onSignalMsg_ = function (event) {
+  console.log(event);
+  console.log(this);
+}
+PeerRSA.A.prototype.sendSignal_ = function (msg) {
+  console.log(event);
+  console.log(this);
+  var tokenA = localStorage.getItem('rtc.PeerRSA.A.token');
+  var sigMsg = {token:tokenA,rtc:msg};
+  this.wss.send(JSON.string(sigMsg));
+}
+
+
 
 
