@@ -108,6 +108,14 @@ PeerRSA.B.prototype.importKey = function (newPubKey) {
 PeerRSA.A.prototype.onSignalMsg_ = function (event) {
   console.log(event);
   console.log(this);
+  var dataJson = JSON.parse(event.data);
+  var good = true
+  if(PeerRSA.duplex) {
+    good = PeerRSA.verify_(dataJson[token],dataJson[orig],dataJson[sign]);
+  }
+  if(good) {
+    PeerRSA.onSignalRTC_(dataJson[rtc],this->pcL,this->pcR);
+  }
 }
 PeerRSA.A.prototype.sendSignal_ = function (msg) {
   console.log(event);
@@ -128,15 +136,28 @@ PeerRSA.A.prototype.sendSignal_ = function (msg) {
 PeerRSA.B.prototype.onSignalMsg_ = function (event) {
   console.log(event);
   console.log(this);
+  var dataJson = JSON.parse(event.data);
+  var good = PeerRSA.verify_(dataJson[token],dataJson[orig],dataJson[sign]);
+  if(good) {
+    PeerRSA.onSignalRTC_(dataJson[rtc],this->pcL,this->pcR);
+  }
 }
 PeerRSA.B.prototype.sendSignal_ = function (msg,token) {
   console.log(event);
   console.log(this);
-  var wsMsg = {
-    token:token,
-    rtc:msg
-  };
-  this.wss.send(JSON.stringify(wsMsg));
+  if(PeerRSA.duplex) {
+    var wsMsg = {
+      token:token,
+      rtc:msg
+    };
+    this.wss.send(JSON.stringify(wsMsg));
+  } else {
+    var wsMsg = {
+      token:token,
+      rtc:msg
+    };
+    this.wss.send(JSON.stringify(wsMsg));
+  }
 }
 
 
@@ -168,3 +189,9 @@ PeerRSA.verify_ = function(token,orig,signature) {
   }
 }
 
+PeerRSA.onSignalRTC_ = function(msg,pcL,pcR) {
+  var result;
+  result.pcL = pcL;
+  result.pcR = pcR;
+  return result;
+}
