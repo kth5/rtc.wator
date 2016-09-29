@@ -29,8 +29,8 @@ function originIsAllowed(origin) {
 }
 
 
-PeerRSA.castConn = PeerRSA.castConn || {};
-PeerRSA.catchConn = PeerRSA.catchConn || {};
+PeerRSA.A = PeerRSA.A || {};
+PeerRSA.B = PeerRSA.B || {};
 
 wsServer.on('request', function(request) {
     if (!originIsAllowed(request.origin)) {
@@ -40,13 +40,13 @@ wsServer.on('request', function(request) {
       return;
     }
     /*
-      cast signal.
+      A signal.
     */
-    var connCast = request.accept('wator.rtc.cast', request.origin);
-    console.log((new Date()) + 'Cast Connection accepted.');
-    var key = 'cast.' + request.key;
-    PeerRSA.castConn[key] = connCast;
-    connCast.on('message', function(message) {
+    var connA = request.accept('wator.rtc.a', request.origin);
+    console.log((new Date()) + 'A Connection accepted.');
+    var key = 'a.' + request.key;
+    PeerRSA.A[key] = connA;
+    connA.on('message', function(message) {
         if (message.type === 'utf8') {
             console.log('Received Message: ' + message.utf8Data);
         }
@@ -54,18 +54,18 @@ wsServer.on('request', function(request) {
             console.log('Received Binary Message of ' + message.binaryData.length + ' bytes');
         }
     });
-    connCast.on('close', function(reasonCode, description) {
-        console.log((new Date()) + ' Peer ' + connCast.remoteAddress + ' disconnected.');
+    connA.on('close', function(reasonCode, description) {
+        console.log((new Date()) + ' Peer ' + connA.remoteAddress + ' disconnected.');
     });
 
     /*
-      catch signal.
+      B signal.
     */
-    var connCatch = request.accept('wator.rtc.catch', request.origin);
-    console.log((new Date()) + 'Catch Connection accepted.');
-    var key = 'catch.' + request.key;
-    PeerRSA.catchConn[key] = connCatch;
-    connCatch.on('message', function(message) {
+    var connB = request.accept('wator.rtc.b', request.origin);
+    console.log((new Date()) + 'B Connection accepted.');
+    var key = 'b.' + request.key;
+    PeerRSA.B[key] = connB;
+    connB.on('message', function(message) {
         if (message.type === 'utf8') {
             console.log('Received Message: ' + message.utf8Data);
         }
@@ -73,7 +73,7 @@ wsServer.on('request', function(request) {
             console.log('Received Binary Message of ' + message.binaryData.length + ' bytes');
         }
     });
-    connCatch.on('close', function(reasonCode, description) {
-        console.log((new Date()) + ' Peer ' + connCatch.remoteAddress + ' disconnected.');
+    connB.on('close', function(reasonCode, description) {
+        console.log((new Date()) + ' Peer ' + connB.remoteAddress + ' disconnected.');
     });
 });
