@@ -6,6 +6,7 @@
         <link href="//fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
         <link href="//www.watorvapor.com/rtc/css/app.css" rel="stylesheet" type="text/css">
         <link href="//www.watorvapor.com/rtc/css/navbar.css" rel="stylesheet" type="text/css">
+        <link href="//www.watorvapor.com/rtc/css/content.css" rel="stylesheet" type="text/css">
         <!-- jquery -->
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.js"></script>
 

@@ -23,21 +23,52 @@ PeerRSA.Key.A.readKeyStr = function () {
 
 PeerRSA.Key.B = PeerRSA.Key.B || {};
 
-PeerRSA.Key.B.importKey = function (newPubKey) {
+PeerRSA.Key.B.addKey = function (pubKey) {
   //
   try {
-    var pubKeysStr = localStorage.getItem('rtc.PeerRSA.B.key');
-    var pubKeyStrA = PeerRSA.Key.A.readKeyStr();
-    var pubKeys = JSON.parse(pubKeysStr);
-    // token @watch sha(B.pub + A.pub)
-    var token = KJUR.crypto.Util.sha256(newPubKey + pubKeyStrA);
-    pubKeys[token] = newPubKey;
-    localStorage.setItem('rtc.PeerRSA.B.publicKey',JSON.stringify(pubKeys));
+    var aKeyStr = PeerRSA.Key.A.readKeyStr();
+	//console.log(aKeyStr);
+	
+   // token@a throw signal sha(A.pub + B.pub)
+    var token_a = KJUR.crypto.Util.sha256(aKeyStr + pubKey);
+	//console.log(token_a);
+
+	var aOldTokens = JSON.parse(localStorage.getItem('rtc.PeerRSA.A.token'));
+	//console.log(aOldTokens);
+	aOldTokens = aOldTokens || {};
+ 	//console.log(aOldTokens);
+	aOldTokens['t_' + token_a] = pubKey;
+    localStorage.setItem('rtc.PeerRSA.A.token',JSON.stringify(aOldTokens));
+
+    // token@b wait signal sha(B.pub + A.pub)
+    var token_b = KJUR.crypto.Util.sha256(pubKey + aKeyStr);
+	//console.log(token_b);
+	
+	var bOldTokens = JSON.parse(localStorage.getItem('rtc.PeerRSA.B.token'));
+ 	//console.log(bOldTokens);
+	bOldTokens = bOldTokens || {};
+	//console.log(bOldTokens);
+	bOldTokens['t_' + token_b] = pubKey;
+    localStorage.setItem('rtc.PeerRSA.B.token',JSON.stringify(bOldTokens));
   } catch(e) {
     console.error(e);
   }
 }
 
+PeerRSA.Key.B.getRemoteDevices = function (cb) {
+  //
+  try {
+	var bOldTokens = JSON.parse(localStorage.getItem('rtc.PeerRSA.B.token'));
+ 	//console.log(bOldTokens);
+	bOldTokens = bOldTokens || {};
+	if (typeof cb == 'function') {
+	  cb(bOldTokens);
+	}
+	//console.log(bOldTokens);
+  } catch(e) {
+    console.error(e);
+  }
+}
 
 
 
