@@ -10,11 +10,42 @@ var RTCPeerConnection = window.RTCPeerConnection || window.webkitRTCPeerConnecti
 var RTCSessionDescription = window.RTCSessionDescription || window.webkitRTCSessionDescription || window.mozRTCSessionDescription;
 var RTCIceCandidate = window.RTCIceCandidate || window.webkitRTCIceCandidate || window.mozRTCIceCandidate;
 
+PeerRSA.Key = PeerRSA.Key ||{};
+PeerRSA.Key.A = PeerRSA.Key.A || {};
+
+PeerRSA.Key.A.createKey = function (cb) {
+	console.log(cb);
+	PeerRSA.createKeyPair_(cb);
+}
+PeerRSA.Key.A.readKeyStr = function () {
+  return localStorage.getItem('rtc.PeerRSA.A.key.public');
+}
+
+PeerRSA.Key.B = PeerRSA.Key.B || {};
+
+PeerRSA.Key.B.importKey = function (newPubKey) {
+  //
+  try {
+    var pubKeysStr = localStorage.getItem('rtc.PeerRSA.B.key');
+    var pubKeyStrA = PeerRSA.Key.A.readKeyStr();
+    var pubKeys = JSON.parse(pubKeysStr);
+    // token @watch sha(B.pub + A.pub)
+    var token = KJUR.crypto.Util.sha256(newPubKey + pubKeyStrA);
+    pubKeys[token] = newPubKey;
+    localStorage.setItem('rtc.PeerRSA.B.publicKey',JSON.stringify(pubKeys));
+  } catch(e) {
+    console.error(e);
+  }
+}
+
+
+
+
 
 /*
   PeerRSA.A is Peer create RSA key.
 */
-PeerRSA.A = function () {
+PeerRSA.A = function (token) {
   this.wss = PeerRSA.A.wss || new WebSocket(PeerRSA.uri.a,'wator.rtc.a');
   var self = this;
   this.wss.onopen = function (event) {
@@ -29,6 +60,26 @@ PeerRSA.A = function () {
   this.wss.onmessage = function (event) {
     self.onSignalMsg_(event).bind(this);
   }
+  var tokenSave = JSON.parse(localStorage.getItem('rtc.PeerRSA.tokens'));
+  if(tokenSave == null ) {
+	  return;
+  }
+  if(tokenSave['AB'] == null ) {
+	  console.error('Can not find a contact of ' + token + '');
+	  return;
+  }
+  console.log(tokenSave);
+  if(token && tokenSave && tokenSave['AB']) {
+	for (var i=0;i<tokenSave['AB'].length;i++) {
+		if(token === tokenSave['AB'][i]) {
+			this.token = token;
+		}
+	}
+  } else {
+	if (tokenSave['AB'].length > 0) {
+		this.token = tokenSave['AB'][0];
+	}
+  }
 }
 
 PeerRSA.A.prototype.signalOpened = function (event) {
@@ -37,25 +88,7 @@ PeerRSA.A.prototype.signalOpened = function (event) {
 PeerRSA.A.prototype.signalClosed = function (event) {
   console.log(event);
 }
-PeerRSA.A.prototype.createKey = function () {
-  //console.log(KEYUTIL.version);
-  var rsaKeypair = KEYUTIL.generateKeypair("RSA", 4096);
-  //console.log(rsaKeypair);
-  var priKey =rsaKeypair.prvKeyObj;
-  var priKeyStr = KEYUTIL.getPEM(priKey,"PKCS8PRV");
-  //console.log(priKeyStr);
-  localStorage.setItem('rtc.PeerRSA.A.privateKey',priKeyStr);
-  var pubKey =rsaKeypair.pubKeyObj;
-  //console.log(pubKey);
-  var pubKeyStr = KEYUTIL.getPEM(pubKey);
-  localStorage.setItem('rtc.PeerRSA.A.publicKey',pubKeyStr);
-  var token = KJUR.crypto.Util.sha1(pubKeyStr);
-  //console.log(token);
-  localStorage.setItem('rtc.PeerRSA.A.token',token);
-}
-PeerRSA.A.prototype.readKeyStr = function () {
-  return localStorage.getItem('rtc.PeerRSA.A.publicKey');
-}
+
 
 
 
@@ -99,23 +132,6 @@ PeerRSA.B.prototype.signalOpened = function (event) {
 PeerRSA.B.prototype.signalClosed = function (event) {
   console.log(event);
 }
-
-PeerRSA.B.prototype.importKey = function (newPubKey) {
-  //
-  try {
-    var pubKeysStr = localStorage.getItem('rtc.PeerRSA.B.publicKey');
-    var pubKeys = JSON.parse(pubKeysStr);
-    var token = KJUR.crypto.Util.sha1(newPubKey);
-    pubKeys[token] = newPubKey;
-    localStorage.setItem('rtc.PeerRSA.B.publicKey',JSON.stringify(pubKeys));
-  } catch(e) {
-    console.error(e);
-  }
-}
-
-
-
-
 
 
 
@@ -180,9 +196,10 @@ PeerRSA.B.prototype.sendSignal_ = function (msg,token) {
 }
 
 
+
 PeerRSA.signature_ = function(orig) {
   try {
-    var privateKey = localStorage.getItem('rtc.PeerRSA.A.privateKey');
+    var privateKey = localStorage.getItem('rtc.PeerRSA.A.key.private');
     var rsaKey = KEYUTIL.getKeyFromPlainPrivatePKCS8PEM(privateKey);
     var signature = rsaKey.signString(orig,"sha256");
     return signature;
@@ -193,7 +210,7 @@ PeerRSA.signature_ = function(orig) {
 }
 PeerRSA.verify_ = function(token,orig,signature) {
   try {
-    var pubKeysStr = localStorage.getItem('rtc.PeerRSA.B.publicKey');
+    var pubKeysStr = localStorage.getItem('rtc.PeerRSA.B.key.public');
     var pubKeys = JSON.parse(pubKeysStr);
     var rsaKey = KEYUTIL.getKey(pubKeys[token]);
     var result = rsaKey.verifyString(orig,signature);
@@ -211,3 +228,81 @@ PeerRSA.verify_ = function(token,orig,signature) {
 PeerRSA.onSignalRTC_ = function(msg) {
   console.log(this);
 }
+
+
+PeerRSA.createKeyPair_ = function(cb) {
+	console.log(cb);
+	window.crypto.subtle.generateKey(
+		{
+			name: "RSASSA-PKCS1-v1_5",
+			modulusLength: 4096, //can be 1024, 2048, or 4096
+			publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
+			hash: {name: "SHA-256"}, //can be "SHA-1", "SHA-256", "SHA-384", or "SHA-512"
+		},
+		true, //whether the key is extractable (i.e. can be used in exportKey)
+		["sign", "verify"] //can be any combination of "sign" and "verify"
+	)
+	.then(function(key){
+		//returns a keypair object
+		console.log(key);
+		console.log(key.publicKey);
+		console.log(key.privateKey);
+		window.crypto.subtle.exportKey(
+			"jwk", //can be "jwk" (public or private), "spki" (public only), or "pkcs8" (private only)
+			key.publicKey //can be a publicKey or privateKey, as long as extractable was true
+		)
+		.then(function(keydata){
+			//returns the exported key data
+			console.log(keydata);
+			var keyObj = KEYUTIL.getKey(keydata);
+			console.log(keyObj);
+			var pem = KEYUTIL.getPEM(keyObj);
+			console.log(pem);
+            localStorage.setItem('rtc.PeerRSA.A.key.public',pem);
+			console.log( typeof cb);
+		    if (typeof cb == 'function') {
+			  cb('success');
+		    }
+		})
+		.catch(function(err){
+			console.error(err);
+		});
+		window.crypto.subtle.exportKey(
+			"jwk", //can be "jwk" (public or private), "spki" (public only), or "pkcs8" (private only)
+			key.privateKey //can be a publicKey or privateKey, as long as extractable was true
+		)
+		.then(function(keydata){
+			//returns the exported key data
+			console.log(keydata);
+			var keyObj = KEYUTIL.getKey(keydata);
+			console.log(keyObj);
+			var pem = KEYUTIL.getPEM(keyObj,"PKCS8PRV");
+			console.log(pem);
+            localStorage.setItem('rtc.PeerRSA.A.key.private',pem);
+		})
+		.catch(function(err){
+			console.error(err);
+		});
+	})
+	.catch(function(err){
+		console.error(err);
+	});
+}
+
+/*
+ run only one time.
+*/
+PeerRSA.Key.A.createKey_flag = true;
+PeerRSA.Key.A.checkKeyOnload_ = function () {
+  var priKey = localStorage.getItem('rtc.PeerRSA.A.key.private');
+  var pubKey = localStorage.getItem('rtc.PeerRSA.A.key.public');
+  if( typeof priKey === 'string' && typeof pubKey === 'string') {
+	  //console.log('Key is saved already');
+	  return 
+  }
+  if(PeerRSA.Key.A.createKey_flag) {
+    PeerRSA.createKeyPair_();
+  }
+  PeerRSA.Key.A.createKey_flag = false;
+}
+PeerRSA.Key.A.checkKeyOnload_();

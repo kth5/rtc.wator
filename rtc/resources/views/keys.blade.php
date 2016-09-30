@@ -1,14 +1,12 @@
 @extends('app')
 @section('content')
-<div class="container-fluid">
+<div class="container">
 <div class="row">
   <p>Key of my self</p>
   <div class="col-sm-9">
-	<p>
-		<button type="button" class="btn btn-danger btn-lg" id="btn-create-key">Create Key</button>
-	</p>
     <div class="row">
-		<button type="button" class="btn btn-info btn-xs">Copy</button>
+		<button type="button" class="btn btn-danger btn-xs pull-right'">recreate</button>
+		<button type="button" class="btn btn-info btn-xs btn-clipboard" data-clipboard-target="#text-public-key">Copy</button>
         <pre id="text-public-key"></pre>
     </div>
   </div>
@@ -18,14 +16,17 @@
 </div>
 </div>
 <script type="text/javascript">
+	new Clipboard('.btn-clipboard');
 	var peerA = new PeerRSA.A();
 	$(document).ready(function(){
 		$('#btn-create-key').click(function(){
-			peerA.createKey();
-			var pubKeyStr = peerA.readKeyStr();
-			$('#text-public-key').text(pubKeyStr);
+			PeerRSA.Key.A.createKey( function(msg) {
+				console.log(msg);
+				var pubKeyStr = PeerRSA.Key.A.readKeyStr();
+				$('#text-public-key').text(pubKeyStr);
+			});
 		});
-		var pubKeyStr = peerA.readKeyStr();
+		var pubKeyStr = PeerRSA.Key.A.readKeyStr();
 		$('#text-public-key').text(pubKeyStr);
 	});
 </script>
