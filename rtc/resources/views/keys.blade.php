@@ -19,10 +19,11 @@
 <div class="row">
 <h2>Add Key of remote device</h2>
 <div class="form-group">
-	<label for="inputlg">Paste public key of remote device.</label>
 	<button type="button" class="btn btn-success btn-xs" id="btn-add-key">+</button>
+	<label for="inputlg">Paste public key of remote device.</label>
 	<textarea class="form-control" id="text-remote-device-key" rows="6"></textarea>
 </div>
+
 <table class="table table-striped">
 <tr></tr>
 </table>

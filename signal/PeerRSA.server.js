@@ -30,7 +30,7 @@ function originIsAllowed(origin) {
   return true;
 }
 
-
+PeerRSA.A.wait = PeerRSA.A.wait || {};
 wsServerA.on('request', function(request) {
     if (!originIsAllowed(request.origin)) {
       // Make sure we only accept requests from an allowed origin
@@ -48,6 +48,24 @@ wsServerA.on('request', function(request) {
     connA.on('message', function(message) {
         if (message.type === 'utf8') {
             console.log('Received Message: ' + message.utf8Data);
+			var msgJson = JSON.parse(message.utf8Data);
+			// token waiting.
+			if(msgJson && msgJson.signal && msgJson.signal.wait) {
+				//console.log(msgJson);
+				var wait = msgJson.signal.wait;
+				for(var i = 0;i < wait.length;i++) {
+					var token = wait[0];
+					PeerRSA.A.wait[token] = connA;
+				}
+			}
+			// check token
+			if(msgJson && msgJson.token) {
+				var dist = msgJson.token;
+				var conDist = PeerRSA.A.wait[dist];
+				if(conDist) {
+					conDist.sendUTF8(message);
+				}
+			}
         }
         else if (message.type === 'binary') {
             console.log('Received Binary Message of ' + message.binaryData.length + ' bytes');

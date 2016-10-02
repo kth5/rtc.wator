@@ -58,15 +58,17 @@ PeerRSA.Key.B.addKey = function (pubKey) {
 PeerRSA.Key.B.getRemoteDevices = function (cb) {
   //
   try {
-	var bOldTokens = JSON.parse(localStorage.getItem('rtc.PeerRSA.B.token'));
- 	//console.log(bOldTokens);
-	bOldTokens = bOldTokens || {};
+	var bTokens = JSON.parse(localStorage.getItem('rtc.PeerRSA.B.token'));
+ 	//console.log(bTokens);
+	bTokens = bTokens || {};
 	if (typeof cb == 'function') {
-	  cb(bOldTokens);
+	  cb(bTokens);
 	}
-	//console.log(bOldTokens);
+	//console.log(bTokens);
+	return bTokens;
   } catch(e) {
     console.error(e);
+	return {};
   }
 }
 
@@ -80,6 +82,7 @@ PeerRSA.A = function (token) {
   this.wss = PeerRSA.A.wss || new WebSocket(PeerRSA.uri.a,'wator.rtc.a');
   var self = this;
   this.wss.onopen = function (event) {
+	setTimeout(self.onOpenInternal_.bind(self),1);
     self.signalOpened(event);
   }
   this.wss.onclose = function (event) {
@@ -91,26 +94,24 @@ PeerRSA.A = function (token) {
   this.wss.onmessage = function (event) {
     self.onSignalMsg_(event).bind(this);
   }
-  var tokenSave = JSON.parse(localStorage.getItem('rtc.PeerRSA.tokens'));
-  if(tokenSave == null ) {
+  var tokenSaved = JSON.parse(localStorage.getItem('rtc.PeerRSA.A.token'));
+  //console.log(tokenSaved);
+  if(tokenSaved == null ) {
 	  return;
   }
-  if(tokenSave['AB'] == null ) {
-	  console.error('Can not find a contact of ' + token + '');
-	  return;
-  }
-  console.log(tokenSave);
-  if(token && tokenSave && tokenSave['AB']) {
-	for (var i=0;i<tokenSave['AB'].length;i++) {
-		if(token === tokenSave['AB'][i]) {
-			this.token = token;
-		}
+  if(token) {
+	var indexToken = 't_' + token;
+	if(tokenSaved[indexToken]) {
+		this.token = indexToken;
 	}
   } else {
-	if (tokenSave['AB'].length > 0) {
-		this.token = tokenSave['AB'][0];
+	var tokensIndex = Object.keys(tokenSaved);
+	//console.log(tokensIndex);
+	if (tokensIndex.length > 0) {
+		this.token = tokensIndex[0];
 	}
   }
+  console.log(this.token);
 }
 
 PeerRSA.A.prototype.signalOpened = function (event) {
@@ -120,6 +121,15 @@ PeerRSA.A.prototype.signalClosed = function (event) {
   console.log(event);
 }
 
+/*
+inner function.
+*/
+PeerRSA.A.prototype.onOpenInternal_ = function () {
+  console.log(this.token);
+  var remote = PeerRSA.Key.B.getRemoteDevices();
+  var msg = {signal:{wait:Object.keys(remote)}};
+  this.wss.send(JSON.stringify(msg));
+}
 
 
 
@@ -129,7 +139,7 @@ PeerRSA.A.prototype.signalClosed = function (event) {
 PeerRSA.A.prototype.connect = function (config) {
   console.log(this);
   var msg = {cmd:'start',body:config};
-  this.sendSignal_(msg).bind(this);
+  this.sendSignal_(msg);
   if(config.A) {
     navigator.getUserMedia(config.A,this.gotMediaSuccess,this.gotMediaFailure);
   }
@@ -184,12 +194,10 @@ PeerRSA.A.prototype.onSignalMsg_ = function (event) {
   }
 }
 PeerRSA.A.prototype.sendSignal_ = function (msg) {
-  console.log(event);
   console.log(this);
-  this.token = this.token || localStorage.getItem('rtc.PeerRSA.A.token');
   var date = new Date();
   this.orig = this.orig || date.toUTCString();
-  this.signature = this.signature || PeerRSA.signature_(orig);
+  this.signature = this.signature || PeerRSA.signature_(this.orig);
   var wsMsg = {
     token:this.token,
     orig:this.orig,
