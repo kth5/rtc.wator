@@ -21,13 +21,24 @@ PeerRSA.Key.A.readKeyStr = function () {
   return localStorage.getItem('rtc.PeerRSA.A.key.public');
 }
 
+PeerRSA.Key.A.onLoadCheckSuccess = function() {
+	
+}
+
 PeerRSA.Key.B = PeerRSA.Key.B || {};
 
-PeerRSA.Key.B.addKey = function (pubKey) {
+PeerRSA.Key.B.addKey = function (rawPubKey) {
   //
   try {
+	//console.log(rawPubKey);
+	var pubKey = rawPubKey.replace(/(?:\n)+/g, '\r\n') + '\r\n';
     var aKeyStr = PeerRSA.Key.A.readKeyStr();
+	//console.log(pubKey);
+	//console.log(pubKey.length);
 	//console.log(aKeyStr);
+	//console.log(aKeyStr.length);
+	//console.log(aKeyStr + pubKey);
+	//console.log(pubKey + aKeyStr);
 	
    // token@a throw signal sha(A.pub + B.pub)
     var token_a = KJUR.crypto.Util.sha256(aKeyStr + pubKey);
@@ -92,7 +103,7 @@ PeerRSA.A = function (token) {
     console.error(err);
   }
   this.wss.onmessage = function (event) {
-    self.onSignalMsg_(event).bind(this);
+    self.onSignalMsg_(event);
   }
   var tokenSaved = JSON.parse(localStorage.getItem('rtc.PeerRSA.A.token'));
   //console.log(tokenSaved);
@@ -190,7 +201,7 @@ PeerRSA.A.prototype.onSignalMsg_ = function (event) {
     good = PeerRSA.verify_(dataJson[token],dataJson[orig],dataJson[sign]);
   }
   if(good) {
-    PeerRSA.onSignalRTC_(dataJson[rtc]).bind(this);
+    PeerRSA.onSignalRTC_(dataJson.rtc);
   }
 }
 PeerRSA.A.prototype.sendSignal_ = function (msg) {
@@ -266,6 +277,7 @@ PeerRSA.verify_ = function(token,orig,signature) {
 
 PeerRSA.onSignalRTC_ = function(msg) {
   console.log(this);
+  console.log(msg);
 }
 
 
@@ -340,7 +352,7 @@ PeerRSA.Key.A.checkKeyOnload_ = function () {
 	  return 
   }
   if(PeerRSA.Key.A.createKey_flag) {
-    PeerRSA.createKeyPair_();
+    PeerRSA.createKeyPair_(PeerRSA.Key.A.onLoadCheckSuccess);
   }
   PeerRSA.Key.A.createKey_flag = false;
 }

@@ -63,7 +63,7 @@ wsServerA.on('request', function(request) {
 				var dist = msgJson.token;
 				var conDist = PeerRSA.A.wait[dist];
 				if(conDist) {
-					conDist.sendUTF8(message);
+					conDist.sendUTF(message.utf8Data);
 				}
 			}
         }

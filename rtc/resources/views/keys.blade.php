@@ -35,16 +35,21 @@
 </script>
 <script type="text/javascript">
 	$(document).ready(function(){
+		function updatePublicKey() {
+			var pubKeyStr = PeerRSA.Key.A.readKeyStr();
+			$('#text-this-device-key').text(pubKeyStr);
+		}
 		$('#btn-create-key').click(function(){
 			$('#text-this-device-key').text('...');
 			PeerRSA.Key.A.createKey( function(msg) {
 				//console.log(msg);
-				var pubKeyStr = PeerRSA.Key.A.readKeyStr();
-				$('#text-this-device-key').text(pubKeyStr);
+				updatePublicKey();
 			});
 		});
-		var pubKeyStr = PeerRSA.Key.A.readKeyStr();
-		$('#text-this-device-key').text(pubKeyStr);
+		PeerRSA.Key.A.onLoadCheckSuccess = function() {
+			updatePublicKey();
+		}
+		updatePublicKey();
 	});
 </script>
 <script type="text/javascript">
