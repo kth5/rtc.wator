@@ -149,7 +149,7 @@ PeerRSA.A.prototype.onOpenInternal_ = function () {
 */
 PeerRSA.A.prototype.connect = function (config) {
   console.log(this);
-  var msg = {cmd:'start',body:config};
+  var msg = {cmd:'start',config:config};
   this.sendSignal_(msg);
   if(config.A) {
     navigator.getUserMedia(config.A,this.gotMediaSuccess,this.gotMediaFailure);
@@ -157,6 +157,9 @@ PeerRSA.A.prototype.connect = function (config) {
 }
 PeerRSA.A.prototype.gotMediaSuccess = function (stream) {
   console.log(this);
+}
+PeerRSA.A.prototype.gotMediaFailure = function (e) {
+  console.error(e);
 }
 /*
   PeerRSA.B is Peer import RSA key.
@@ -201,7 +204,7 @@ PeerRSA.A.prototype.onSignalMsg_ = function (event) {
     good = PeerRSA.verify_(dataJson[token],dataJson[orig],dataJson[sign]);
   }
   if(good) {
-    PeerRSA.onSignalRTC_(dataJson.rtc);
+    this.onSignalRTC_(dataJson.rtc);
   }
 }
 PeerRSA.A.prototype.sendSignal_ = function (msg) {
@@ -216,6 +219,20 @@ PeerRSA.A.prototype.sendSignal_ = function (msg) {
     rtc:msg
   };
   this.wss.send(JSON.stringify(wsMsg));
+}
+PeerRSA.A.prototype.onSignalRTC_ = function(rtc) {
+  console.log(this);
+//  console.log(rtc);
+  if(rtc.cmd == 'start') {
+	//console.log(rtc.body.B);
+	//this.A.pc2 = new RTCPeerConnection();
+	if(rtc.config.B) {
+	  navigator.getUserMedia(rtc.config.B,this.gotMediaSuccess,this.gotMediaFailure);
+	  this.B = this.B || {};
+	  var servers = null;
+	  this.B.pc = new RTCPeerConnection(servers);
+	}
+  }
 }
 
 PeerRSA.B.prototype.onSignalMsg_ = function (event) {
@@ -275,10 +292,7 @@ PeerRSA.verify_ = function(token,orig,signature) {
   }
 }
 
-PeerRSA.onSignalRTC_ = function(msg) {
-  console.log(this);
-  console.log(msg);
-}
+
 
 
 PeerRSA.createKeyPair_ = function(cb) {
