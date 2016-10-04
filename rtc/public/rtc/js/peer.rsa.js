@@ -240,7 +240,7 @@ PeerRSA.B.prototype.onSignalMsg_ = function (event) {
   var good = PeerRSA.verify_(dataJson.orig,dataJson.sign);
   console.log(good);
   if(good) {
-    this.onSignalRTC_(dataJson[rtc]).bind(this);
+    this.onSignalRTC_(dataJson.rtc);
   }
 }
 PeerRSA.B.prototype.sendSignal_ = function (msg,token) {
