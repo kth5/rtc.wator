@@ -176,7 +176,7 @@ PeerRSA.B = function (token) {
     console.error(err);
   }
   this.wss.onmessage = function (event) {
-    self.onSignalMsg_(event).bind(this);
+    self.onSignalMsg_(event);
   }
 }
 
