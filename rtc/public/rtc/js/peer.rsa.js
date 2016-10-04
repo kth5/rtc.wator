@@ -14,15 +14,15 @@ PeerRSA.Key = PeerRSA.Key ||{};
 PeerRSA.Key.A = PeerRSA.Key.A || {};
 
 PeerRSA.Key.A.createKey = function (cb) {
-	console.log(cb);
-	PeerRSA.createKeyPair_(cb);
+  console.log(cb);
+  PeerRSA.createKeyPair_(cb);
 }
 PeerRSA.Key.A.readKeyStr = function () {
   return localStorage.getItem('rtc.PeerRSA.A.key.public');
 }
 
 PeerRSA.Key.A.onLoadCheckSuccess = function() {
-	
+  
 }
 
 PeerRSA.Key.B = PeerRSA.Key.B || {};
