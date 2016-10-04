@@ -1,5 +1,4 @@
 var PeerRSA = PeerRSA || {};
-PeerRSA.duplex = false;
 PeerRSA.uri = PeerRSA.uri || {};
 PeerRSA.uri.a = PeerRSA.uri.a || 'wss://' + location.host + '/rtc/wss/a';
 PeerRSA.uri.b = PeerRSA.uri.b || 'wss://' + location.host + '/rtc/wss/b';
@@ -210,10 +209,7 @@ PeerRSA.A.prototype.onSignalMsg_ = function (event) {
   console.log(event);
   console.log(this);
   var dataJson = JSON.parse(event.data);
-  var good = true
-  if(PeerRSA.duplex) {
-    good = PeerRSA.verify_(dataJson[token],dataJson[orig],dataJson[sign]);
-  }
+  var good = PeerRSA.verify_(dataJson[orig],dataJson[sign]);
   if(good) {
     this.onSignalRTC_(dataJson.rtc);
   }
@@ -233,26 +229,16 @@ PeerRSA.A.prototype.sendSignal_ = function (msg) {
 }
 PeerRSA.A.prototype.onSignalRTC_ = function(rtc) {
   console.log(this);
-  //  console.log(rtc);
-  if(rtc.cmd == 'start') {
-    //console.log(rtc.body.B);
-    //this.A.pc2 = new RTCPeerConnection();
-    if(rtc.config.B) {
-      navigator.getUserMedia(rtc.config.B,this.gotMediaSuccess,this.gotMediaFailure);
-      this.B = this.B || {};
-      var servers = null;
-      this.B.pc = new RTCPeerConnection(servers);
-    }
-  }
+  console.log(rtc);
 }
 
 PeerRSA.B.prototype.onSignalMsg_ = function (event) {
   console.log(event);
   console.log(this);
   var dataJson = JSON.parse(event.data);
-  var good = PeerRSA.verify_(dataJson[token],dataJson[orig],dataJson[sign]);
+  var good = PeerRSA.verify_(dataJson[orig],dataJson[sign]);
   if(good) {
-    PeerRSA.onSignalRTC_(dataJson[rtc]).bind(this);
+    this.onSignalRTC_(dataJson[rtc]).bind(this);
   }
 }
 PeerRSA.B.prototype.sendSignal_ = function (msg,token) {
@@ -273,6 +259,20 @@ PeerRSA.B.prototype.sendSignal_ = function (msg,token) {
   }
 }
 
+PeerRSA.B.prototype.onSignalRTC_ = function(rtc) {
+  console.log(this);
+  console.log(rtc);
+  if(rtc.cmd == 'start') {
+    //console.log(rtc.body.B);
+    //this.A.pc2 = new RTCPeerConnection();
+    if(rtc.config.B) {
+      navigator.getUserMedia(rtc.config.B,this.gotMediaSuccess,this.gotMediaFailure);
+      this.B = this.B || {};
+      var servers = null;
+      this.B.pc = new RTCPeerConnection(servers);
+    }
+  }
+}
 
 
 PeerRSA.signature_ = function(orig) {
@@ -286,17 +286,20 @@ PeerRSA.signature_ = function(orig) {
     return nul;
   }
 }
-PeerRSA.verify_ = function(token,orig,signature) {
+PeerRSA.verify_ = function(orig,signature) {
   try {
     var pubKeysStr = localStorage.getItem('rtc.PeerRSA.B.key.public');
     var pubKeys = JSON.parse(pubKeysStr);
-    var rsaKey = KEYUTIL.getKey(pubKeys[token]);
-    var result = rsaKey.verifyString(orig,signature);
-    if(result == 0) {
-      return true;
-    } else {
-      return false;
+    var tokens =  Object.keys(pubKeys);
+    for(var int i = 0 ; i < tokens.length;i++) {
+      var token = tokens[i];
+      var rsaKey = KEYUTIL.getKey(pubKeys[token]);
+      var result = rsaKey.verifyString(orig,signature);
+      if(result == 0) {
+        return true;
+      }
     }
+    return false;
   } catch(e) {
     console.error(e);
     return false;
