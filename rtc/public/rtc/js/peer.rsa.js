@@ -233,9 +233,10 @@ PeerRSA.A.prototype.onSignalRTC_ = function(rtc) {
 }
 
 PeerRSA.B.prototype.onSignalMsg_ = function (event) {
-  console.log(event);
-  console.log(this);
+  //console.log(event);
+  //console.log(this);
   var dataJson = JSON.parse(event.data);
+  console.log(dataJson);
   var good = PeerRSA.verify_(dataJson[orig],dataJson[sign]);
   if(good) {
     this.onSignalRTC_(dataJson[rtc]).bind(this);
