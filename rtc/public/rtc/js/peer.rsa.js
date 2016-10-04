@@ -211,7 +211,7 @@ PeerRSA.A.prototype.onSignalMsg_ = function (event) {
   var dataJson = JSON.parse(event.data);
   var good = PeerRSA.verify_(dataJson.orig,dataJson.sign);
   if(good) {
-    this.onSignalRTC_(dataJson.rtc);
+    this.onRTCSignal_(dataJson.rtc);
   }
 }
 PeerRSA.A.prototype.sendSignal_ = function (msg) {
@@ -227,7 +227,7 @@ PeerRSA.A.prototype.sendSignal_ = function (msg) {
   };
   this.wss.send(JSON.stringify(wsMsg));
 }
-PeerRSA.A.prototype.onSignalRTC_ = function(rtc) {
+PeerRSA.A.prototype.onRTCSignal_ = function(rtc) {
   console.log(this);
   console.log(rtc);
 }
@@ -240,7 +240,7 @@ PeerRSA.B.prototype.onSignalMsg_ = function (event) {
   var good = PeerRSA.verify_(dataJson.orig,dataJson.sign);
   console.log(good);
   if(good) {
-    this.onSignalRTC_(dataJson.rtc);
+    this.onRTCSignal_(dataJson.rtc);
   }
 }
 PeerRSA.B.prototype.sendSignal_ = function (msg,token) {
@@ -257,7 +257,7 @@ PeerRSA.B.prototype.sendSignal_ = function (msg,token) {
   this.wss.send(JSON.stringify(wsMsg));
 }
 
-PeerRSA.B.prototype.onSignalRTC_ = function(rtc) {
+PeerRSA.B.prototype.onRTCSignal_ = function(rtc) {
   console.log(this);
   console.log(rtc);
   if(rtc.cmd == 'start') {
