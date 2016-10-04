@@ -150,7 +150,7 @@ PeerRSA.A.prototype.connect = function (config) {
   var msg = {cmd:'start',config:config};
   this.sendSignal_(msg);
   if(config.A) {
-    navigator.getUserMedia(config.A,this.gotMediaSuccess_,this.gotMediaFailure_);
+    navigator.getUserMedia(config.A,this.gotMediaSuccess_.bind(this),this.gotMediaFailure_.bind(this));
   }
 }
 PeerRSA.A.prototype.gotMediaSuccess_ = function (stream) {
@@ -264,7 +264,7 @@ PeerRSA.B.prototype.onSignalRTC_ = function(rtc) {
     //console.log(rtc.body.B);
     //this.A.pc2 = new RTCPeerConnection();
     if(rtc.config.B) {
-      navigator.getUserMedia(rtc.config.B,this.gotMediaSuccess_,this.gotMediaFailure_);
+      navigator.getUserMedia(rtc.config.B,this.gotMediaSuccess_.bind(this),this.gotMediaFailure_.bind(this));
       this.B = this.B || {};
       var servers = null;
       this.B.pc = new RTCPeerConnection(servers);
