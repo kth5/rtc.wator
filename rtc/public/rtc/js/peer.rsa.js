@@ -294,7 +294,7 @@ PeerRSA.verify_ = function(orig,signature) {
       var rsaKey = KEYUTIL.getKey(pubKeys[token]);
       var result = rsaKey.verifyString(orig,signature);
       console.log(result);
-      if(result == 0) {
+      if(result) {
         return true;
       }
     }
