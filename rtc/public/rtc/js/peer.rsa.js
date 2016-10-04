@@ -238,6 +238,7 @@ PeerRSA.B.prototype.onSignalMsg_ = function (event) {
   var dataJson = JSON.parse(event.data);
   console.log(dataJson);
   var good = PeerRSA.verify_(dataJson.orig,dataJson.sign);
+  console.log(good);
   if(good) {
     this.onSignalRTC_(dataJson[rtc]).bind(this);
   }
@@ -292,6 +293,7 @@ PeerRSA.verify_ = function(orig,signature) {
       var token = tokens[i];
       var rsaKey = KEYUTIL.getKey(pubKeys[token]);
       var result = rsaKey.verifyString(orig,signature);
+      console.log(result);
       if(result == 0) {
         return true;
       }
