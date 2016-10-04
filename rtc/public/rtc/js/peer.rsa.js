@@ -285,7 +285,7 @@ PeerRSA.signature_ = function(orig) {
 }
 PeerRSA.verify_ = function(orig,signature) {
   try {
-    var pubKeysStr = localStorage.getItem('rtc.PeerRSA.B.key.public');
+    var pubKeysStr = localStorage.getItem('rtc.PeerRSA.B.token');
     var pubKeys = JSON.parse(pubKeysStr);
     var tokens =  Object.keys(pubKeys);
     for(var i = 0 ; i < tokens.length;i++) {
