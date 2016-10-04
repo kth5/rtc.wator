@@ -265,20 +265,40 @@ PeerRSA.B.prototype.onSignalRTC_ = function(rtc) {
     //this.A.pc2 = new RTCPeerConnection();
     if(rtc.config.B) {
       navigator.getUserMedia(rtc.config.B,this.gotMediaSuccess_.bind(this),this.gotMediaFailure_.bind(this));
-      this.B = this.B || {};
+      this.cast = this.cast || {};
       var servers = null;
-      this.B.pc = new RTCPeerConnection(servers);
+      this.cast.pc = new RTCPeerConnection(servers);
     }
   }
 }
 
 PeerRSA.B.prototype.gotMediaSuccess_ = function (stream) {
   console.log(this);
+  console.log(stream);
+  this.cast.pc.addStream(stream);
+  this.cast.pc.createOffer(this.offerSuccess_.bind(this),this.offerFailure_.bind(this));
 }
+
 PeerRSA.B.prototype.gotMediaFailure_ = function (e) {
   console.error(e);
 }
 
+PeerRSA.B.prototype.offerSuccess_ = function (offer) {
+  var sd = new RTCSessionDescription(offer);
+  this.cast.pc.setLocalDescription(sd,this.localSDSuccess_.bind(this),this.olocalSDFailure_.bind(this));
+}
+
+PeerRSA.B.prototype.offerFailure_ = function (e) {
+  console.error(e);
+}
+
+PeerRSA.B.prototype.localSDSuccess_ = function () {
+  var rtc = {cmd:"offer",offer:this.offer};
+  this.sendSignal_(rtc);
+}
+PeerRSA.B.prototype.olocalSDFailure_ = function (e) {
+  console.error(e);
+}
 
 
 PeerRSA.signature_ = function(orig) {
