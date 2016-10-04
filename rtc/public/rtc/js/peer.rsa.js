@@ -164,10 +164,11 @@ PeerRSA.A.prototype.gotMediaFailure = function (e) {
 /*
   PeerRSA.B is Peer import RSA key.
 */
-PeerRSA.B = function () {
+PeerRSA.B = function (token) {
   this.wss = this.wss || new WebSocket(PeerRSA.uri.b,'wator.rtc.b');
   var self = this;
   this.wss.onopen = function (event) {
+    setTimeout(self.onOpenInternal_.bind(self),1);
     self.signalOpened(event);
   }
   this.wss.onclose = function (event) {
@@ -188,7 +189,18 @@ PeerRSA.B.prototype.signalClosed = function (event) {
   console.log(event);
 }
 
+PeerRSA.B.prototype.wait = function () {
+}
 
+
+/*
+ inner function.
+ */
+PeerRSA.B.prototype.onOpenInternal_ = function () {
+    var remote = PeerRSA.Key.B.getRemoteDevices();
+    var msg = {signal:{wait:Object.keys(remote)}};
+    this.wss.send(JSON.stringify(msg));
+}
 
 
 

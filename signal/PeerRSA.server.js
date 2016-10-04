@@ -5,6 +5,8 @@ var http = require('http');
 var PeerRSA = PeerRSA || {};
 PeerRSA.A = PeerRSA.A || {};
 PeerRSA.B = PeerRSA.B || {};
+PeerRSA.A.wait = PeerRSA.A.wait || {};
+PeerRSA.B.wait = PeerRSA.B.wait || {};
 
 var serverA = http.createServer(function(request, response) {
     console.log((new Date()) + ' Received request for ' + request.url);
@@ -30,7 +32,6 @@ function originIsAllowed(origin) {
   return true;
 }
 
-PeerRSA.A.wait = PeerRSA.A.wait || {};
 wsServerA.on('request', function(request) {
     if (!originIsAllowed(request.origin)) {
       // Make sure we only accept requests from an allowed origin
@@ -61,7 +62,7 @@ wsServerA.on('request', function(request) {
 			// check token
 			if(msgJson && msgJson.token) {
 				var dist = msgJson.token;
-				var conDist = PeerRSA.A.wait[dist];
+				var conDist = PeerRSA.B.wait[dist];
 				if(conDist) {
 					conDist.sendUTF(message.utf8Data);
 				}
@@ -111,7 +112,25 @@ wsServerB.on('request', function(request) {
     PeerRSA.B[key] = connB;
     connB.on('message', function(message) {
         if (message.type === 'utf8') {
-            console.log('Received Message: ' + message.utf8Data);
+          console.log('Received Message: ' + message.utf8Data);
+          var msgJson = JSON.parse(message.utf8Data);
+          // token waiting.
+             if(msgJson && msgJson.signal && msgJson.signal.wait) {
+               //console.log(msgJson);
+               var wait = msgJson.signal.wait;
+               for(var i = 0;i < wait.length;i++) {
+                var token = wait[0];
+                PeerRSA.B.wait[token] = connB;
+               }
+             }
+             // check token
+             if(msgJson && msgJson.token) {
+             var dist = msgJson.token;
+             var conDist = PeerRSA.A.wait[dist];
+             if(conDist) {
+                conDist.sendUTF(message.utf8Data);
+             }
+             }
         }
         else if (message.type === 'binary') {
             console.log('Received Binary Message of ' + message.binaryData.length + ' bytes');

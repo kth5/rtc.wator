@@ -6,11 +6,11 @@
 </div>
 </div>
 <script type="text/javascript">
-	$(document).ready(function() {
-		var peerA = new PeerRSA.A();
-		$('#btn-connect').click(function(){
-			peerA.connect({B:{video:true,audio:true}});
-		});
-	});
+$(document).ready(function() {
+  var peerA = new PeerRSA.A();
+    $('#btn-connect').click(function(){
+      peerA.connect({B:{video:true,audio:true}});
+    });
+});
 </script>
 @endsection
