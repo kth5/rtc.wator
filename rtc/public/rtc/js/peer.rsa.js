@@ -150,13 +150,13 @@ PeerRSA.A.prototype.connect = function (config) {
   var msg = {cmd:'start',config:config};
   this.sendSignal_(msg);
   if(config.A) {
-    navigator.getUserMedia(config.A,this.gotMediaSuccess,this.gotMediaFailure);
+    navigator.getUserMedia(config.A,this.gotMediaSuccess_,this.gotMediaFailure_);
   }
 }
-PeerRSA.A.prototype.gotMediaSuccess = function (stream) {
+PeerRSA.A.prototype.gotMediaSuccess_ = function (stream) {
   console.log(this);
 }
-PeerRSA.A.prototype.gotMediaFailure = function (e) {
+PeerRSA.A.prototype.gotMediaFailure_ = function (e) {
   console.error(e);
 }
 /*
@@ -264,13 +264,21 @@ PeerRSA.B.prototype.onSignalRTC_ = function(rtc) {
     //console.log(rtc.body.B);
     //this.A.pc2 = new RTCPeerConnection();
     if(rtc.config.B) {
-      navigator.getUserMedia(rtc.config.B,this.gotMediaSuccess,this.gotMediaFailure);
+      navigator.getUserMedia(rtc.config.B,this.gotMediaSuccess_,this.gotMediaFailure_);
       this.B = this.B || {};
       var servers = null;
       this.B.pc = new RTCPeerConnection(servers);
     }
   }
 }
+
+PeerRSA.B.prototype.gotMediaSuccess_ = function (stream) {
+  console.log(this);
+}
+PeerRSA.B.prototype.gotMediaFailure_ = function (e) {
+  console.error(e);
+}
+
 
 
 PeerRSA.signature_ = function(orig) {
