@@ -1,9 +1,11 @@
-.container-mime-key
-{
-	margin-top:120px;
+.container-mime-key {
+  margin-top:120px;
 }
 
-.container-your-key
-{
-	margin-top:10px;
+.container-your-key {
+  margin-top:10px;
+}
+
+.container-connection {
+  margin-top:160px;
 }
