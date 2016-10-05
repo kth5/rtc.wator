@@ -11,7 +11,7 @@
         <img alt="Catch" src="//www.watorvapor.com/rtc/img/catch.jpg">
       </a>
       <a class="navbar-brand" href="//www.watorvapor.com/rtc/about">
-        <img alt="Catch" src="//www.watorvapor.com/rtc/img/about.jpg">
+        <img alt="About" src="//www.watorvapor.com/rtc/img/about.jpg">
       </a>
     </div>
   </div>
