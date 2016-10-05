@@ -294,13 +294,15 @@ PeerRSA.A.prototype.onRTCSignal_ = function(rtc) {
 }
 
 PeerRSA.A.prototype.onSetRemoteDescriptionSuccess_ = function() {
+  console.log(this);
   this.catch_.pc.createAnswer(this.onCreateAnswerSuccess_.bind(this)); 
 }
 PeerRSA.A.prototype.onCreateAnswerSuccess_ = function(answer) {
-  var self = this;
+  console.log(this);
   this.catch_.pc.setLocalDescription(answer,function(){
-      var rtc = {cmd:"answer",answer:answer};
-      this.sendSignal_(rtc);
+    console.log(this);
+    var rtc = {cmd:"answer",answer:answer};
+    this.sendSignal_(rtc);
   }.bind(this));
 }
 
