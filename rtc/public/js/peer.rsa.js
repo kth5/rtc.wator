@@ -211,6 +211,7 @@ PeerRSA.A.prototype.onSignalMsg_ = function (event) {
   var dataJson = JSON.parse(event.data);
   var good = PeerRSA.verify_(dataJson.orig,dataJson.sign);
   if(good) {
+    console.log(dataJson.dst);
     this.onRTCSignal_(dataJson.rtc);
   }
 }
@@ -241,6 +242,10 @@ PeerRSA.B.prototype.onSignalMsg_ = function (event) {
   var good = PeerRSA.verify_(dataJson.orig,dataJson.sign);
   console.log(good);
   if(good) {
+    console.log(dataJson.dst);
+    if (dataJson.dst) {
+      this.src = dataJson.dst;
+    }
     this.onRTCSignal_(dataJson.rtc);
   }
 }
