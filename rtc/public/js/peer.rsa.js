@@ -238,7 +238,6 @@ PeerRSA.A.prototype.sendSignal_ = function (msg) {
   this.signature = this.signature || PeerRSA.signature_(this.orig);
   var wsMsg = {
     dst:this.dst,
-    src:this.src,
     orig:this.orig,
     sign:this.signature,
     rtc:msg
@@ -260,18 +259,21 @@ PeerRSA.B.prototype.onSignalMsg_ = function (event) {
   if(good) {
     console.log(dataJson.dst);
     if (dataJson.dst) {
-      this.src = dataJson.dst;
+      var bPairs = JSON.parse(localStorage.getItem('rtc.PeerRSA.B.pair'));
+      if (bPairs) {
+        this.dst = bPairs[dataJson.dst];
+      }
     }
     this.onRTCSignal_(dataJson.rtc);
   }
 }
-PeerRSA.B.prototype.sendSignal_ = function (msg,token) {
+PeerRSA.B.prototype.sendSignal_ = function (msg) {
   console.log(this);
   var date = new Date();
   this.orig = this.orig || date.toUTCString();
   this.signature = this.signature || PeerRSA.signature_(this.orig);
   var wsMsg = {
-    token:token,
+    dst:this.dst,
     orig:this.orig,
     sign:this.signature,
     rtc:msg
