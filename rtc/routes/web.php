@@ -11,18 +11,8 @@
 |
 */
 
-
-/*
-Route::group(['prefix' => 'rtc'], function () {
-  Route::get('/top', 'TopController@index');
-  Route::get('/keys', 'KeysController@index');
-  Route::get('/cast', 'CastController@index');
-  Route::get('/catch', 'CatchController@index');
-});
-*/
-
-Route::get('/', 'TopController@index');
-Route::get('/top', 'TopController@index');
+Route::get('/', 'AboutController@index');
+Route::get('/about', 'AboutController@index');
 Route::get('/keys', 'KeysController@index');
 Route::get('/cast', 'CastController@index');
 Route::get('/catch', 'CatchController@index');
