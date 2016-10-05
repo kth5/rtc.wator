@@ -16,4 +16,5 @@ Route::group(['prefix' => 'rtc'], function () {
     Route::get('/cast', 'CastController@index');
     Route::get('/catch', 'CatchController@index');
 });
+Route::get('/', 'TopController@index');
 
