@@ -1,6 +1,6 @@
 @extends('app')
 @section('content')
-<div class="container bg-warning container-mime-key">
+<div class="container bg-warning container-connection">
 <div class="row">
 <button type="button" class="btn btn-info btn-lg btn-block" id="btn-wait">Wait</button>
 </div>
