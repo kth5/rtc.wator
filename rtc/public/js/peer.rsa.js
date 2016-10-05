@@ -296,7 +296,7 @@ PeerRSA.A.prototype.onRTCSignal_ = function(rtc) {
 }
 
 PeerRSA.A.prototype.onSetRemoteDescriptionSuccess_ = function() {
-  this.catch_.pc.createAnswer(this.onCreateAnswerSuccess_().bind(this)}); 
+  this.catch_.pc.createAnswer(this.onCreateAnswerSuccess_.bind(this)}); 
 }
 PeerRSA.A.prototype.onCreateAnswerSuccess_ = function(answer) {
   var self = this;
