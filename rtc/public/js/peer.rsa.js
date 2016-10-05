@@ -2,6 +2,7 @@ var PeerRSA = PeerRSA || {};
 PeerRSA.uri = PeerRSA.uri || {};
 PeerRSA.uri.a = PeerRSA.uri.a || 'wss://' + location.host + '/rtc/wss/a';
 PeerRSA.uri.b = PeerRSA.uri.b || 'wss://' + location.host + '/rtc/wss/b';
+PeerRSA.config =PeerRSA.config || {};
 
 navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 var URL = window.URL || window.webkitURL;
@@ -171,14 +172,41 @@ PeerRSA.A.prototype.connect = function (config) {
   this.sendSignal_(msg);
   if(config.A) {
     navigator.getUserMedia(config.A,this.gotMediaSuccess_.bind(this),this.gotMediaFailure_.bind(this));
+    this.cast_ = this.cast_ || {};
+    this.cast_.pc = new RTCPeerConnection(PeerRSA.config);
+  }
+  if(config.B) {
+    this.catch_ = this.catch_ || {};
+    this.catch_.pc = new RTCPeerConnection(PeerRSA.config);
   }
 }
+
 PeerRSA.A.prototype.gotMediaSuccess_ = function (stream) {
   console.log(this);
+  console.log(stream);
+  this.cast_.pc.addStream(stream);
+  this.cast_.pc.createOffer(this.offerSuccess_.bind(this),this.offerFailure_.bind(this));
 }
+
 PeerRSA.A.prototype.gotMediaFailure_ = function (e) {
   console.error(e);
 }
+
+PeerRSA.A.prototype.offerSuccess_ = function (offer) {
+  this.cast_.pc.setLocalDescription(offer,
+    function () {
+      var rtc = {cmd:"offer",offer:offer};
+      this.sendSignal_(rtc);
+    }.bind(this),
+    function (e) {
+      console.error(e);
+    });
+}
+
+PeerRSA.A.prototype.gotMediaFailure_ = function (e) {
+  console.error(e);
+}
+
 /*
   PeerRSA.B is Peer import RSA key.
 */
@@ -256,10 +284,26 @@ PeerRSA.A.prototype.sendSignal_ = function (msg) {
   this.wss.send(JSON.stringify(wsMsg));
 }
 PeerRSA.A.prototype.onRTCSignal_ = function(rtc) {
-  console.log(this);
-  console.log(rtc);
+  //console.log(this);
+  //console.log(rtc);
   if(rtc.cmd == 'offer') {
+    console.log(rtc.offer);
+    var offerJson = JSON.parse(rtc.offer);
+    var sdp = new RTCSessionDescription(offerJson.sdp); 
+    var self = this;
+    this.catch_.pc.setRemoteDescription(sdp,this.onSetRemoteDescriptionSuccess_.bind(this));
   }
+}
+
+PeerRSA.A.prototype.onSetRemoteDescriptionSuccess_ = function() {
+  this.catch_.pc.createAnswer(this.onCreateAnswerSuccess_().bind(this)}); 
+}
+PeerRSA.A.prototype.onCreateAnswerSuccess_ = function(answer) {
+  var self = this;
+  this.catch_.pc.setLocalDescription(answer,function(){
+      var rtc = {cmd:"answer",answer:answer};
+      this.sendSignal_(rtc);
+  }.bind(this));
 }
 
 PeerRSA.B.prototype.onSignalMsg_ = function (event) {
@@ -299,13 +343,14 @@ PeerRSA.B.prototype.onRTCSignal_ = function(rtc) {
   console.log(this);
   console.log(rtc);
   if(rtc.cmd == 'start') {
-    //console.log(rtc.body.B);
-    //this.A.pc2 = new RTCPeerConnection();
+    if(config.A) {
+      this.catch_ = this.catch_ || {};
+      this.catch_.pc = new RTCPeerConnection(PeerRSA.config);
+    }
     if(rtc.config.B) {
       navigator.getUserMedia(rtc.config.B,this.gotMediaSuccess_.bind(this),this.gotMediaFailure_.bind(this));
-      this.cast = this.cast || {};
-      var servers = null;
-      this.cast.pc = new RTCPeerConnection(servers);
+      this.cast_ = this.cast_ || {};
+      this.cast_.pc = new RTCPeerConnection(PeerRSA.config);
     }
   }
 }
@@ -313,8 +358,8 @@ PeerRSA.B.prototype.onRTCSignal_ = function(rtc) {
 PeerRSA.B.prototype.gotMediaSuccess_ = function (stream) {
   console.log(this);
   console.log(stream);
-  this.cast.pc.addStream(stream);
-  this.cast.pc.createOffer(this.offerSuccess_.bind(this),this.offerFailure_.bind(this));
+  this.cast_.pc.addStream(stream);
+  this.cast_.pc.createOffer(this.offerSuccess_.bind(this),this.offerFailure_.bind(this));
 }
 
 PeerRSA.B.prototype.gotMediaFailure_ = function (e) {
@@ -322,7 +367,7 @@ PeerRSA.B.prototype.gotMediaFailure_ = function (e) {
 }
 
 PeerRSA.B.prototype.offerSuccess_ = function (offer) {
-  this.cast.pc.setLocalDescription(offer,
+  this.cast_.pc.setLocalDescription(offer,
     function () {
       var rtc = {cmd:"offer",offer:offer};
       this.sendSignal_(rtc);
