@@ -343,7 +343,7 @@ PeerRSA.B.prototype.onRTCSignal_ = function(rtc) {
   console.log(this);
   console.log(rtc);
   if(rtc.cmd == 'start') {
-    if(config.A) {
+    if(rtc.config.A) {
       this.catch_ = this.catch_ || {};
       this.catch_.pc = new RTCPeerConnection(PeerRSA.config);
     }
