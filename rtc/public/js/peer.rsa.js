@@ -2,7 +2,7 @@ var PeerRSA = PeerRSA || {};
 PeerRSA.uri = PeerRSA.uri || {};
 PeerRSA.uri.a = PeerRSA.uri.a || 'wss://' + location.host + '/rtc/wss/a';
 PeerRSA.uri.b = PeerRSA.uri.b || 'wss://' + location.host + '/rtc/wss/b';
-PeerRSA.config =PeerRSA.config || {};
+PeerRSA.config = PeerRSA.config || {iceServers: [{url: "stun:stun.1.google.com:19302"}]};
 
 navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 var URL = window.URL || window.webkitURL;
