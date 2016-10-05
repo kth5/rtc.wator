@@ -111,16 +111,16 @@ PeerRSA.A = function (token) {
   if(token) {
     var indexToken = 't_' + token;
     if(tokenSaved[indexToken]) {
-      this.token = indexToken;
+      this.dst = indexToken;
     }
   } else {
     var tokensIndex = Object.keys(tokenSaved);
     //console.log(tokensIndex);
     if (tokensIndex.length > 0) {
-      this.token = tokensIndex[0];
+      this.dst = tokensIndex[0];
     }
   }
-  console.log(this.token);
+  console.log(this.dst);
 }
 
 PeerRSA.A.prototype.signalOpened = function (event) {
@@ -220,7 +220,8 @@ PeerRSA.A.prototype.sendSignal_ = function (msg) {
   this.orig = this.orig || date.toUTCString();
   this.signature = this.signature || PeerRSA.signature_(this.orig);
   var wsMsg = {
-    token:this.token,
+    dst:this.dst,
+    src:this.src,
     orig:this.orig,
     sign:this.signature,
     rtc:msg
