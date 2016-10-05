@@ -69,9 +69,9 @@ PeerRSA.Key.B.addKey = function (rawPubKey) {
     localStorage.setItem('rtc.PeerRSA.A.pair',JSON.stringify(aOldPairs));
 
     var bOldPairs = JSON.parse(localStorage.getItem('rtc.PeerRSA.B.pair'));
-    //console.log(aOldPairs);
-    aOldPairs = bOldPairs || {};
-    //console.log(aOldPairs);
+    //console.log(bOldPairs);
+    bOldPairs = bOldPairs || {};
+    //console.log(bOldPairs);
     bOldPairs['t_' + token_b] = 't_' + token_a;
     localStorage.setItem('rtc.PeerRSA.B.pair',JSON.stringify(bOldPairs));
     
