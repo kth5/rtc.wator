@@ -187,7 +187,7 @@ PeerRSA.B.prototype.signalClosed = function (event) {
   console.log(event);
 }
 
-PeerRSA.B.prototype.wait = function () {
+PeerRSA.B.prototype.standby = function () {
 }
 
 
