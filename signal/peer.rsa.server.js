@@ -125,8 +125,8 @@ wsServerB.on('request', function(request) {
       }
       // check token webrtc msg.
       if(msgJson && msgJson.dst) {
-        var dist = msgJson.dst;
-        var dst = PeerRSA.A.wait[dst];
+        var dst = msgJson.dst;
+        var conDist = PeerRSA.A.wait[dst];
         if(conDist) {
           conDist.sendUTF(message.utf8Data);
         }
