@@ -59,10 +59,10 @@ wsServerA.on('request', function(request) {
           PeerRSA.A.wait[token] = connA;
         }
       }
-      // check token
-      if(msgJson && msgJson.token) {
-        var dist = msgJson.token;
-        var conDist = PeerRSA.B.wait[dist];
+      // check token webrtc msg.
+      if(msgJson && msgJson.dst) {
+        var dst = msgJson.dst;
+        var conDist = PeerRSA.B.wait[dst];
         if(conDist) {
           conDist.sendUTF(message.utf8Data);
         }
@@ -123,10 +123,10 @@ wsServerB.on('request', function(request) {
           PeerRSA.B.wait[token] = connB;
         }
       }
-      // check token
-      if(msgJson && msgJson.token) {
-        var dist = msgJson.token;
-        var conDist = PeerRSA.A.wait[dist];
+      // check token webrtc msg.
+      if(msgJson && msgJson.dst) {
+        var dist = msgJson.dst;
+        var dst = PeerRSA.A.wait[dst];
         if(conDist) {
           conDist.sendUTF(message.utf8Data);
         }
