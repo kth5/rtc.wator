@@ -2,14 +2,14 @@
 @section('content')
 <div class="container bg-warning container-connection">
 <div class="row">
-<button type="button" class="btn btn-info btn-lg btn-block" id="btn-wait">Start standby for remote devices.</button>
+<button type="button" class="btn btn-info btn-lg btn-block" id="btn-standby">Standby for remote devices.</button>
 </div>
 </div>
 <script type="text/javascript">
 $(document).ready(function() {
-  var peerB = new PeerRSA.B();
-  $('#btn-wait').click(function(){
-    peerB.wait();
+  var peer = new PeerRSA.B();
+  $('#btn-standby').click(function(){
+    peer.standby();
   });
 });
 </script>
