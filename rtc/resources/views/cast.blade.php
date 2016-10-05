@@ -2,7 +2,7 @@
 @section('content')
 <div class="container bg-warning container-mime-key">
 <div class="row">
-<button type="button" class="btn btn-info btn-xs btn-block" id="btn-wait">Wait</button>
+<button type="button" class="btn btn-info btn-lg btn-block" id="btn-wait">Wait</button>
 </div>
 </div>
 <script type="text/javascript">
