@@ -288,7 +288,7 @@ PeerRSA.A.prototype.onRTCSignal_ = function(rtc) {
   //console.log(rtc);
   if(rtc.cmd == 'offer') {
     console.log(rtc.offer);
-    var sdp = new RTCSessionDescription(rtc.offer.sdp); 
+    var sdp = new RTCSessionDescription(rtc.offer); 
     this.catch_.pc.setRemoteDescription(sdp,this.onSetRemoteDescriptionSuccess_.bind(this));
   }
 }
