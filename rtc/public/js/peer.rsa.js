@@ -252,6 +252,8 @@ PeerRSA.A.prototype.sendSignal_ = function (msg) {
 PeerRSA.A.prototype.onRTCSignal_ = function(rtc) {
   console.log(this);
   console.log(rtc);
+  if(rtc.cmd == 'offer') {
+  }
 }
 
 PeerRSA.B.prototype.onSignalMsg_ = function (event) {
