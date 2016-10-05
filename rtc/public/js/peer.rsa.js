@@ -232,6 +232,12 @@ PeerRSA.A.prototype.onSignalMsg_ = function (event) {
   var good = PeerRSA.verify_(dataJson.orig,dataJson.sign);
   if(good) {
     console.log(dataJson.dst);
+    if (dataJson.src) {
+      this.dst = dataJson.src;
+    }
+    if (dataJson.dst) {
+      this.src = dataJson.dst;
+    }
     this.onRTCSignal_(dataJson.rtc);
   }
 }
@@ -316,21 +322,21 @@ PeerRSA.B.prototype.gotMediaFailure_ = function (e) {
 }
 
 PeerRSA.B.prototype.offerSuccess_ = function (offer) {
-  var sd = new RTCSessionDescription(offer);
-  this.cast.pc.setLocalDescription(sd,this.localSDSuccess_.bind(this),this.olocalSDFailure_.bind(this));
+  this.cast.pc.setLocalDescription(offer,
+    function () {
+      var rtc = {cmd:"offer",offer:offer};
+      this.sendSignal_(rtc);
+    }.bind(this),
+    function (e) {
+      console.error(e);
+    });
 }
 
 PeerRSA.B.prototype.offerFailure_ = function (e) {
   console.error(e);
 }
 
-PeerRSA.B.prototype.localSDSuccess_ = function () {
-  var rtc = {cmd:"offer",offer:this.offer};
-  this.sendSignal_(rtc);
-}
-PeerRSA.B.prototype.olocalSDFailure_ = function (e) {
-  console.error(e);
-}
+
 
 
 PeerRSA.signature_ = function(orig) {
