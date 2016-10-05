@@ -7,8 +7,9 @@
 </div>
 <script type="text/javascript">
 $(document).ready(function() {
-  var peer = new PeerRSA.B();
-  $('#btn-standby').click(function(){
+  var peer;
+  $('#btn-standby').click(function() {
+    peer = new PeerRSA.B();
     peer.standby();
   });
 });
