@@ -7,7 +7,9 @@
 </div>
 <div class="container bg-info container-video">
 <div class="row">
-   <video id="remoteVideo" width="640" height="480" autoplay></video>
+  <div class="center-block">
+    <video id="remoteVideo" width="640" height="480" autoplay></video>
+  </div>
 </div>
 </div>
 
