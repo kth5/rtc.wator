@@ -155,7 +155,6 @@ PeerRSA.A.prototype.signalClosed = function (event) {
 inner function.
 */
 PeerRSA.A.prototype.onOpenInternal_ = function () {
-  console.log(this.token);
   var remote = PeerRSA.Key.B.getRemoteDevices();
   var msg = {signal:{wait:Object.keys(remote)}};
   this.wss.send(JSON.stringify(msg));
@@ -178,6 +177,13 @@ PeerRSA.A.prototype.connect = function (config) {
   if(config.B) {
     this.catch_ = this.catch_ || {};
     this.catch_.pc = new RTCPeerConnection(PeerRSA.config);
+    this.mediaConst = {OfferToReceiveVideo:false,OfferToReceiveAudio:false};
+    if(config.B.video) {
+      this.mediaConst.OfferToReceiveVideo = true;
+    }
+    if(config.B.audio) {
+      this.mediaConst.OfferToReceiveAudio = true;
+    }
   }
 }
 
@@ -295,7 +301,7 @@ PeerRSA.A.prototype.onRTCSignal_ = function(rtc) {
 
 PeerRSA.A.prototype.onSetRemoteDescriptionSuccess_ = function() {
   console.log(this);
-  this.catch_.pc.createAnswer(this.onCreateAnswerSuccess_.bind(this)); 
+  this.catch_.pc.createAnswer(this.onCreateAnswerSuccess_.bind(this),this.onCreateAnswerError_.bind(this),this.mediaCons); 
 }
 PeerRSA.A.prototype.onCreateAnswerSuccess_ = function(answer) {
   console.log(this);
@@ -304,6 +310,9 @@ PeerRSA.A.prototype.onCreateAnswerSuccess_ = function(answer) {
     var rtc = {cmd:"answer",answer:answer};
     this.sendSignal_(rtc);
   }.bind(this));
+}
+PeerRSA.A.prototype.onCreateAnswerError_ = function(error) {
+  console.error(error);
 }
 
 PeerRSA.B.prototype.onSignalMsg_ = function (event) {
