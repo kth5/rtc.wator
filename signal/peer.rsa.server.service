@@ -3,7 +3,7 @@ Description= Wator WebRTC peerRSA  server daemon
 After=syslog.target network.target auditd.service
 
 [Service]
-ExecStart=cd /opt/watorvapor/rtc.wator/signal && ./peer.rsa.server.js
+ExecStart=/opt/watorvapor/rtc.wator/signal/peer.rsa.server
 
 [Install]
 WantedBy=multi-user.target
