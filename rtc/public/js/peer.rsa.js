@@ -3,6 +3,7 @@ PeerRSA.uri = PeerRSA.uri || {};
 PeerRSA.uri.a = PeerRSA.uri.a || 'wss://' + location.host + '/rtc/wss/a';
 PeerRSA.uri.b = PeerRSA.uri.b || 'wss://' + location.host + '/rtc/wss/b';
 PeerRSA.config = PeerRSA.config || {iceServers: [{url: "stun:stun.1.google.com:19302"}]};
+PeerRSA.pcOptions = { optional: [{DtlsSrtpKeyAgreement: true} ] };
 
 navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 var URL = window.URL || window.webkitURL;
@@ -175,18 +176,18 @@ PeerRSA.A.prototype.connect = function (config) {
   if(config.A) {
     navigator.getUserMedia(config.A,this.gotMediaSuccess_.bind(this),this.gotMediaFailure_.bind(this));
     this.cast_ = this.cast_ || {};
-    this.cast_.pc = new RTCPeerConnection(PeerRSA.config);
+    this.cast_.pc = new RTCPeerConnection(PeerRSA.config,PeerRSA.pcOptions);
   }
   if(config.B) {
     this.catch_ = this.catch_ || {};
-    this.catch_.pc = new RTCPeerConnection(PeerRSA.config);
+    this.catch_.pc = new RTCPeerConnection(PeerRSA.config,PeerRSA.pcOptions);
     var self = this;
-    this.catch_.onaddstream = function (evt) {
+    this.catch_.pc.onaddstream = function (evt) {
       console.log(evt);
       var src = URL.createObjectURL(evt.stream);
       self.onaddstream(src);
     };
-    this.catch_.onicecandidate = function(evt){
+    this.catch_.pc.onicecandidate = function(evt){
       console.log(evt);
     };
     
@@ -367,13 +368,13 @@ PeerRSA.B.prototype.onRTCSignal_ = function(rtc) {
   if(rtc.cmd == 'start') {
     if(rtc.config.A) {
       this.catch_ = this.catch_ || {};
-      this.catch_.pc = new RTCPeerConnection(PeerRSA.config);
+      this.catch_.pc = new RTCPeerConnection(PeerRSA.config,PeerRSA.pcOptions);
     }
     if(rtc.config.B) {
       navigator.getUserMedia(rtc.config.B,this.gotMediaSuccess_.bind(this),this.gotMediaFailure_.bind(this));
       this.cast_ = this.cast_ || {};
-      this.cast_.pc = new RTCPeerConnection(PeerRSA.config);
-      this.cast_.onicecandidate = function(evt){
+      this.cast_.pc = new RTCPeerConnection(PeerRSA.config,PeerRSA.pcOptions);
+      this.cast_.pc.onicecandidate = function(evt){
         console.log(evt);
       };
     }
