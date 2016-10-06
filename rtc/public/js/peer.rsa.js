@@ -180,14 +180,15 @@ PeerRSA.A.prototype.connect = function (config) {
   if(config.B) {
     this.catch_ = this.catch_ || {};
     this.catch_.pc = new RTCPeerConnection(PeerRSA.config);
+    var self = this;
     this.catch_.onaddstream = function (evt) {
       console.log(evt);
       var src = URL.createObjectURL(evt.stream);
-      this.onaddstream(src);
-    }.bind(this);
+      self.onaddstream(src);
+    };
     this.catch_.onicecandidate = function(evt){
       console.log(evt);
-    }.bind(this);
+    };
     
     this.mediaConst = {OfferToReceiveVideo:false,OfferToReceiveAudio:false};
     if(config.B.video) {
@@ -374,7 +375,7 @@ PeerRSA.B.prototype.onRTCSignal_ = function(rtc) {
       this.cast_.pc = new RTCPeerConnection(PeerRSA.config);
       this.cast_.onicecandidate = function(evt){
         console.log(evt);
-      }.bind(this);
+      };
     }
   }
   if(rtc.cmd == 'answer') {
