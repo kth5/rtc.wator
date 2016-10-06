@@ -5,6 +5,10 @@
 <button type="button" class="btn btn-info btn-lg btn-block" id="btn-standby">Standby for remote devices.</button>
 </div>
 </div>
+<div class="container bg-warning container-info">
+<div class="row">
+</div>
+</div>
 <script type="text/javascript">
 $(document).ready(function() {
   var peer;
