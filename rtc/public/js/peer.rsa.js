@@ -190,7 +190,7 @@ PeerRSA.A.prototype.connect = function (config) {
     this.catch_.pc.onicecandidate = function(evt){
       console.log(evt);
       if(evt.candidate) {
-        var rtc = {cmd:"ice",candidate:event.candidate};
+        var rtc = {cmd:"catch.a.ice",candidate:event.candidate};
         this.sendSignal_(rtc);
       } else {
         console.log("end of onicecandidate");
@@ -317,6 +317,11 @@ PeerRSA.A.prototype.onRTCSignal_ = function(rtc) {
     var sdp = new RTCSessionDescription(rtc.offer); 
     this.catch_.pc.setRemoteDescription(sdp,this.onSetRemoteDescriptionSuccess_.bind(this));
   }
+  if(rtc.cmd == 'cast.b.ice') {
+    console.log(rtc.candidate);
+    var rtcICE = new RTCIceCandidate(rtc.candidate);
+    this.catch_.pc.addIceCandidate(rtcICE);
+  }
 }
 
 PeerRSA.A.prototype.onSetRemoteDescriptionSuccess_ = function() {
@@ -383,7 +388,7 @@ PeerRSA.B.prototype.onRTCSignal_ = function(rtc) {
       this.cast_.pc.onicecandidate = function(evt){
         console.log(evt);
         if(evt.candidate) {
-          var rtc = {cmd:"ice",candidate:event.candidate};
+          var rtc = {cmd:"cast.b.ice",candidate:event.candidate};
           this.sendSignal_(rtc);
         } else {
           console.log("end of onicecandidate");
@@ -395,6 +400,11 @@ PeerRSA.B.prototype.onRTCSignal_ = function(rtc) {
     console.log(rtc.answer);
     var sdp = new RTCSessionDescription(rtc.answer); 
     this.cast_.pc.setRemoteDescription(sdp,this.onSetRemoteDescriptionSuccess_.bind(this),this.onSetRemoteDescriptionFailure_.bind(this));
+  }
+  if(rtc.cmd == 'catch.a.ice') {
+    console.log(rtc.candidate);
+    var rtcICE = new RTCIceCandidate(rtc.candidate);
+    this.cast_.pc.addIceCandidate(rtcICE);
   }
 }
 
