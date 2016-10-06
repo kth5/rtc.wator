@@ -1,5 +1,5 @@
 [Unit]
-Description= Wator WebRTC peerRSA  server daemon
+Description=Wator WebRTC peerRSA  server daemon
 After=syslog.target network.target auditd.service
 
 [Service]
