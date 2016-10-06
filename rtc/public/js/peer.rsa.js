@@ -183,7 +183,7 @@ PeerRSA.A.prototype.connect = function (config) {
     this.catch_.onaddstream = function (evt) {
       console.log(this);
       var src = URL.createObjectURL(evt.stream);
-      this->onaddstream(src);
+      this.onaddstream(src);
     }.bind(this);
     this.mediaConst = {OfferToReceiveVideo:false,OfferToReceiveAudio:false};
     if(config.B.video) {
