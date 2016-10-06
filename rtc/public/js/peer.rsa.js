@@ -370,6 +370,11 @@ PeerRSA.B.prototype.onRTCSignal_ = function(rtc) {
       this.cast_.pc = new RTCPeerConnection(PeerRSA.config);
     }
   }
+  if(rtc.cmd == 'answer') {
+    console.log(rtc.answer);
+    var sdp = new RTCSessionDescription(rtc.answer); 
+    this.cast_.pc.setRemoteDescription(sdp,this.onSetRemoteDescriptionSuccess_.bind(this),this.onSetRemoteDescriptionFailure_.bind(this));
+  }
 }
 
 PeerRSA.B.prototype.gotMediaSuccess_ = function (stream) {
@@ -397,7 +402,12 @@ PeerRSA.B.prototype.offerSuccess_ = function (offer) {
 PeerRSA.B.prototype.offerFailure_ = function (e) {
   console.error(e);
 }
-
+PeerRSA.B.prototype.onSetRemoteDescriptionSuccess_ = function () {
+  console.log(this);
+}
+PeerRSA.B.prototype.onSetRemoteDescriptionFailure_ = function (e) {
+  console.error(e);
+}
 
 
 
