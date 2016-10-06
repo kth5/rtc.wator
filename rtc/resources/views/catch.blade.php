@@ -18,6 +18,7 @@ $(document).ready(function() {
       peerA.connect({B:{video:true,audio:true}});
     });
     peerA.onaddstream = function(src) {
+      console.log(src);
       $('#remoteVideo').attr('src', src);
     };
 });
