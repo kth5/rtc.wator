@@ -186,10 +186,16 @@ PeerRSA.A.prototype.connect = function (config) {
       console.log(evt);
       var src = URL.createObjectURL(evt.stream);
       self.onaddstream(src);
-    };
+    }.bind(this);
     this.catch_.pc.onicecandidate = function(evt){
       console.log(evt);
-    };
+      if(evt.candidate) {
+        var rtc = {cmd:"ice",candidate:event.candidate};
+        this.sendSignal_(rtc);
+      } else {
+        console.log("end of onicecandidate");
+      }
+    }.bind(this);
     
     this.mediaConst = { mandatory: { OfferToReceiveAudio: false, OfferToReceiveVideo: false } };
     if(config.B.video) {
@@ -376,7 +382,13 @@ PeerRSA.B.prototype.onRTCSignal_ = function(rtc) {
       this.cast_.pc = new RTCPeerConnection(PeerRSA.config,PeerRSA.pcOptions);
       this.cast_.pc.onicecandidate = function(evt){
         console.log(evt);
-      };
+        if(evt.candidate) {
+          var rtc = {cmd:"ice",candidate:event.candidate};
+          this.sendSignal_(rtc);
+        } else {
+          console.log("end of onicecandidate");
+        }
+      }.bind(this);
     }
   }
   if(rtc.cmd == 'answer') {
