@@ -190,12 +190,12 @@ PeerRSA.A.prototype.connect = function (config) {
       console.log(evt);
     };
     
-    this.mediaConst = {offerToReceiveVideo:false,offerToReceiveAudio:false};
+    this.mediaConst = { mandatory: { OfferToReceiveAudio: false, OfferToReceiveVideo: false } };
     if(config.B.video) {
-      this.mediaConst.offerToReceiveVideo = true;
+      this.mediaConst.mandatory.OfferToReceiveVideo = true;
     }
     if(config.B.audio) {
-      this.mediaConst.offerToReceiveAudio = true;
+      this.mediaConst.mandatory.OfferToReceiveAudio = true;
     }
   }
 }
