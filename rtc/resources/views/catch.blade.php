@@ -1,16 +1,14 @@
 @extends('app')
 @section('content')
 <div class="container bg-warning container-connection">
-<div class="row">
-  <button type="button" class="btn btn-info btn-lg btn-block" id="btn-connect">Connect</button>
-</div>
+  <div class="row">
+    <button type="button" class="btn btn-info btn-lg btn-block" id="btn-connect">Connect</button>
+  </div>
 </div>
 <div class="container bg-info container-video">
-<div class="row">
   <div class="center-block">
     <video id="remoteVideo" width="640" height="480" autoplay></video>
   </div>
-</div>
 </div>
 
 <script type="text/javascript">
