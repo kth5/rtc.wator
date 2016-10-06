@@ -4,7 +4,7 @@ After=syslog.target network.target auditd.service
 
 [Service]
 Type=simple
-ExecStart=/opt/watorvapor/rtc.wator/signal/peer.rsa.server
+ExecStart=/opt/wator.auto.run/peer.rsa.server
 Restart=always
 RestartSec=10
 
