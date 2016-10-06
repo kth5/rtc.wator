@@ -150,6 +150,9 @@ PeerRSA.A.prototype.signalOpened = function (event) {
 PeerRSA.A.prototype.signalClosed = function (event) {
   console.log(event);
 }
+PeerRSA.A.prototype.onaddstream = function (src) {
+  console.log(src);
+}
 
 /*
 inner function.
@@ -177,6 +180,11 @@ PeerRSA.A.prototype.connect = function (config) {
   if(config.B) {
     this.catch_ = this.catch_ || {};
     this.catch_.pc = new RTCPeerConnection(PeerRSA.config);
+    this.catch_.onaddstream = function (evt) {
+      console.log(this);
+      var src = URL.createObjectURL(evt.stream);
+      this->onaddstream(src);
+    }.bind(this);
     this.mediaConst = {OfferToReceiveVideo:false,OfferToReceiveAudio:false};
     if(config.B.video) {
       this.mediaConst.OfferToReceiveVideo = true;
