@@ -207,14 +207,6 @@ PeerRSA.A.prototype.connect = function (config) {
     console.log(PeerRSA.config);
     console.log(PeerRSA.pcOptions);
     this.catch_.pc = new RTCPeerConnection(PeerRSA.config,PeerRSA.pcOptions);
-    var self = this;
-    this.catch_.pc.onaddstream = function (evt) {
-      if (PeerRSA.debug) {
-        console.log(evt);
-      }
-      var src = URL.createObjectURL(evt.stream);
-      self.onaddstream(src);
-    }.bind(this);
     this.catch_.pc.onicecandidate = function(evt){
       if (PeerRSA.debug) {
         console.log(evt);
@@ -225,6 +217,13 @@ PeerRSA.A.prototype.connect = function (config) {
       } else {
         console.log("end of onicecandidate");
       }
+    }.bind(this);
+    this.catch_.pc.onaddstream = function (evt) {
+      if (PeerRSA.debug) {
+        console.log(evt);
+      }
+      var src = URL.createObjectURL(evt.stream);
+      this.onaddstream(src);
     }.bind(this);
     
     this.mediaConst = { mandatory: { OfferToReceiveAudio: false, OfferToReceiveVideo: false } };
