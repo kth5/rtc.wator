@@ -34,11 +34,34 @@ PeerRSA.Key.B.getRemoteDevices = function (cb) {
 */
 PeerRSA.A = function (token) {
 }
+/*
+ PeerRSA.A.connect : {A:{video:{},audio:{}},B:{video:{},audio:{}}}
+*/
+PeerRSA.A.prototype.connect = function (config) {
+}
+
 PeerRSA.A.prototype.signalOpened = function (evt) {
 }
 PeerRSA.A.prototype.signalClosed = function (evt) {
 }
 PeerRSA.A.prototype.onaddstream = function (src) {
+}
+
+/*
+  PeerRSA.B is Peer import RSA key.
+*/
+PeerRSA.B = function (token) {
+}
+/*
+ PeerRSA.B.standby
+*/
+PeerRSA.B.prototype.standby = function () {
+}
+PeerRSA.B.prototype.signalOpened = function (evt) {
+}
+PeerRSA.B.prototype.signalClosed = function (evt) {
+}
+PeerRSA.B.prototype.onaddstream = function (src) {
 }
 
 
@@ -110,14 +133,7 @@ PeerRSA.A.prototype.onaddstream = function (src) {
   }
 }
 
-/*
-inner function.
-*/
-PeerRSA.A.prototype.onOpenInternal_ = function () {
-  var remote = PeerRSA.Key.B.getRemoteDevices();
-  var msg = {signal:{wait:Object.keys(remote)}};
-  this.wss.send(JSON.stringify(msg));
-}
+
 
 
 
@@ -232,6 +248,15 @@ PeerRSA.B.prototype.standby = function () {
 }
 
 
+
+/*
+inner function.
+*/
+PeerRSA.A.prototype.onOpenInternal_ = function () {
+  var remote = PeerRSA.Key.B.getRemoteDevices();
+  var msg = {signal:{wait:Object.keys(remote)}};
+  this.wss.send(JSON.stringify(msg));
+}
 /*
  inner function.
  */
