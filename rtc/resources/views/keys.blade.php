@@ -30,38 +30,35 @@
 </div>
 
 <script type="text/javascript">
-	new Clipboard('.btn-clipboard');
+  new Clipboard('.btn-clipboard');
 </script>
 <script type="text/javascript">
-	$(document).ready(function(){
-		function updatePublicKey() {
-			var pubKeyStr = PeerRSA.Key.A.readKeyStr();
-			$('#text-this-device-key').text(pubKeyStr);
-		}
-		$('#btn-create-key').click(function(){
-			$('#text-this-device-key').text('...');
-			PeerRSA.Key.A.createKey( function(msg) {
-				//console.log(msg);
-				updatePublicKey();
-			});
-		});
-		PeerRSA.Key.A.onLoadCheckSuccess = function() {
-			updatePublicKey();
-		}
-		updatePublicKey();
-    $(window).bind('storage', function (e) {
+  $(document).ready(function(){
+    PeerRSA.Key.A.onLoadCheckSuccess = function() {
       updatePublicKey();
+    }
+    function updatePublicKey() {
+      var pubKeyStr = PeerRSA.Key.A.readKeyStr();
+      $('#text-this-device-key').text(pubKeyStr);
+    }
+    $('#btn-create-key').click(function(){
+      $('#text-this-device-key').text('...');
+      PeerRSA.Key.A.createKey( function(msg) {
+        //console.log(msg);
+        updatePublicKey();
+      });
     });
-	});
+    updatePublicKey();
+  });
 </script>
 <script type="text/javascript">
-	$(document).ready(function(){
-		$('#btn-add-key').click(function(){
-			var key = $('#text-remote-device-key').val();
-			//console.log(key);
-			PeerRSA.Key.B.addKey(key);
-		});
-	});
+  $(document).ready(function(){
+  $('#btn-add-key').click(function(){
+    var key = $('#text-remote-device-key').val();
+    //console.log(key);
+    PeerRSA.Key.B.addKey(key);
+  });
+});
 </script>
 
 
