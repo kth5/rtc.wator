@@ -1,5 +1,5 @@
 var PeerRSA = PeerRSA || {};
-PeerRSA.debug = PeerRSA.debug || false;
+PeerRSA.debug = PeerRSA.debug || true;
 PeerRSA.uri = PeerRSA.uri || {};
 PeerRSA.uri.a = PeerRSA.uri.a || 'wss://' + location.host + '/rtc/wss/a';
 PeerRSA.uri.b = PeerRSA.uri.b || 'wss://' + location.host + '/rtc/wss/b';
