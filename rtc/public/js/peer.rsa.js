@@ -41,7 +41,9 @@ PeerRSA.Key.B.addKey = function (rawPubKey) {
     //console.log(aKeyStr + pubKey);
     //console.log(pubKey + aKeyStr);
     // token@a throw signal sha(A.pub + B.pub)
-    var token_a = KJUR.crypto.Util.sha256(aKeyStr + pubKey);
+    var hashStrARaw = aKeyStr + pubKey;
+    var hashStrA = hashStrARaw.replace(/(?:\n)+/g, '');
+    var token_a = KJUR.crypto.Util.sha256(hashStrA);
     //console.log(token_a);
 
     var aOldTokens = JSON.parse(localStorage.getItem('rtc.PeerRSA.A.token'));
@@ -52,7 +54,9 @@ PeerRSA.Key.B.addKey = function (rawPubKey) {
     localStorage.setItem('rtc.PeerRSA.A.token',JSON.stringify(aOldTokens));
 
     // token@b wait signal sha(B.pub + A.pub)
-    var token_b = KJUR.crypto.Util.sha256(pubKey + aKeyStr);
+    var hashStrBRaw = pubKey + aKeyStr;
+    var hashStrB = hashStrBRaw.replace(/(?:\n)+/g, '');
+    var token_b = KJUR.crypto.Util.sha256(hashStrB);
     //console.log(token_b);
 
     var bOldTokens = JSON.parse(localStorage.getItem('rtc.PeerRSA.B.token'));
