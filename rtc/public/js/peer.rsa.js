@@ -357,8 +357,14 @@ PeerRSA.A.prototype.onRTCSignal_ = function(rtc) {
   if(rtc.cmd == 'cast.b.ice') {
     console.log(rtc.candidate);
     var rtcICE = new RTCIceCandidate(rtc.candidate);
-    this.catch_.pc.addIceCandidate(rtcICE);
+    this.catch_.pc.addIceCandidate(rtcICE,this.onAddIceCandidateSuccess_.bind(this),this.onAddIceCandidateFailure_.bind(this));
   }
+}
+PeerRSA.A.prototype.onAddIceCandidateSuccess_ = function() {
+  console.log('onAddIceCandidateSuccess_ success');
+}
+PeerRSA.A.prototype.onAddIceCandidateFailure_ = function(e) {
+  console.error('onAddIceCandidateSuccess_',e);
 }
 
 PeerRSA.A.prototype.onSetRemoteDescriptionSuccess_ = function() {
@@ -436,8 +442,14 @@ PeerRSA.B.prototype.onRTCSignal_ = function(rtc) {
   if(rtc.cmd == 'catch.a.ice') {
     console.log(rtc.candidate);
     var rtcICE = new RTCIceCandidate(rtc.candidate);
-    this.cast_.pc.addIceCandidate(rtcICE);
+    this.cast_.pc.addIceCandidate(rtcICE,this.onAddIceCandidateSuccess_.bind(this),this.onAddIceCandidateFailure_.bind(this));
   }
+}
+PeerRSA.B.prototype.onAddIceCandidateSuccess_ = function() {
+  console.log('onAddIceCandidateSuccess_ success');
+}
+PeerRSA.B.prototype.onAddIceCandidateFailure_ = function(e) {
+  console.error('onAddIceCandidateSuccess_',e);
 }
 
 PeerRSA.B.prototype.gotMediaSuccess_ = function (stream) {
