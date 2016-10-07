@@ -73,21 +73,19 @@ PeerRSA.A.prototype.onaddstream = function (src) {
 
 
 /*
- PeerRSA.A.connect config {video:{},audio:{}}
+ PeerRSA.A.connect config {A:{video:{},audio:{}},B:{video:{},audio:{}}}
 */
 PeerRSA.A.prototype.connect = function (config) {
   var msg = {cmd:'start',config:config};
   this.sendSignal_(msg);
-  if(config) {
+  if(config.A) {
     this.cast_ = this.cast_ || {};
     console.log(PeerRSA.config);
     console.log(PeerRSA.pcOptions);
     this.cast_.pc = new RTCPeerConnection(PeerRSA.config,PeerRSA.pcOptions);
-    navigator.getUserMedia(config,this.gotMediaSuccess_.bind(this),this.gotMediaFailure_.bind(this));
+    navigator.getUserMedia(config.A,this.gotMediaSuccess_.bind(this),this.gotMediaFailure_.bind(this));
   }
-}
-PeerRSA.A.prototype.onMediaType_ = function (configB) {
-  if(configB) {
+  if(config.B) {  
     this.catch_ = this.catch_ || {};
     console.log(PeerRSA.config);
     console.log(PeerRSA.pcOptions);
@@ -110,7 +108,10 @@ PeerRSA.A.prototype.onMediaType_ = function (configB) {
       var src = URL.createObjectURL(evt.stream);
       this.onaddstream(src);
     }.bind(this);
-    
+  }
+}
+PeerRSA.A.prototype.onMediaType_ = function (configB) {
+  if(configB) {  
     this.mediaConst = { mandatory: { OfferToReceiveAudio: false, OfferToReceiveVideo: false } };
     if(configB.video) {
       this.mediaConst.mandatory.OfferToReceiveVideo = true;
@@ -261,10 +262,21 @@ PeerRSA.B.prototype.signalClosed = function (event) {
     console.log(event);
   }
 }
-
-PeerRSA.B.prototype.standby = function () {
+/*
+ PeerRSA.B.standby media {video:{},audio:{}}
+*/
+PeerRSA.B.prototype.standby = function (media) {
+  this.allow = {};
+  if(media) {
+    this.allow.media = media;
+    navigator.getUserMedia(media,this.success_,this.error_);
+  }
 }
 
+PeerRSA.B.prototype.success_ = function (e) {
+}
+PeerRSA.B.prototype.error_ = function (e) {
+}
 
 
 /*
@@ -330,7 +342,16 @@ PeerRSA.B.prototype.onRTCSignal_ = function(rtc) {
       this.catch_.pc = new RTCPeerConnection(PeerRSA.config,PeerRSA.pcOptions);
     }
     if(rtc.config.B) {
-      navigator.getUserMedia(rtc.config.B,this.gotMediaSuccess_.bind(this),this.gotMediaFailure_.bind(this));
+      var media = rtc.config.B;
+      if(rtc.config.B.video) {
+        media.video = this.allow.media.video;
+      }
+      if(rtc.config.B.audio) {
+        media.audio = this.allow.media.audio;
+      }
+      var rtc = {cmd:"mediaType",config:media};
+      this.sendSignal_(rtc);
+      navigator.getUserMedia(media,this.gotMediaSuccess_.bind(this),this.gotMediaFailure_.bind(this));
     }
   }
   if(rtc.cmd == 'answer') {
