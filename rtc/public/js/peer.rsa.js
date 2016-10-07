@@ -220,7 +220,7 @@ PeerRSA.A.prototype.connect = function (config) {
         console.log(evt);
       }
       if(evt.candidate) {
-        var rtc = {cmd:"catch.a.ice",candidate:event.candidate};
+        var rtc = {cmd:"catch.a.ice",candidate:evt.candidate};
         this.sendSignal_(rtc);
       } else {
         console.log("end of onicecandidate");
