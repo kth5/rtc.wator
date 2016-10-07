@@ -1,4 +1,8 @@
 var PeerRSA = PeerRSA || {};
+
+/*
+* configs
+*/
 PeerRSA.debug = PeerRSA.debug || true;
 PeerRSA.uri = PeerRSA.uri || {};
 PeerRSA.uri.a = PeerRSA.uri.a || 'wss://' + location.host + '/rtc/wss/a';
@@ -6,14 +10,104 @@ PeerRSA.uri.b = PeerRSA.uri.b || 'wss://' + location.host + '/rtc/wss/b';
 PeerRSA.config = PeerRSA.config || {iceServers: [{url: "stun:stun.1.google.com:19302"}]};
 PeerRSA.pcOptions = { optional: [{DtlsSrtpKeyAgreement: true} ] };
 
+/*
+* prototype
+*/
+
+PeerRSA.Key = PeerRSA.Key ||{};
+PeerRSA.Key.A = PeerRSA.Key.A || {};
+PeerRSA.Key.A.createKey = function (cb) {
+}
+PeerRSA.Key.A.readKeyStr = function () {
+}
+PeerRSA.Key.A.onLoadCheckSuccess = function() {
+}
+PeerRSA.Key.B = PeerRSA.Key.B || {};
+PeerRSA.Key.B.addKey = function (rawPubKey) {
+}
+PeerRSA.Key.B.getRemoteDevices = function (cb) {
+}
+
+
+
 navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 var URL = window.URL || window.webkitURL;
 var RTCPeerConnection = window.RTCPeerConnection || window.webkitRTCPeerConnection || window.mozRTCPeerConnection;
 var RTCSessionDescription = window.RTCSessionDescription || window.webkitRTCSessionDescription || window.mozRTCSessionDescription;
 var RTCIceCandidate = window.RTCIceCandidate || window.webkitRTCIceCandidate || window.mozRTCIceCandidate;
 
-PeerRSA.Key = PeerRSA.Key ||{};
-PeerRSA.Key.A = PeerRSA.Key.A || {};
+
+/*
+  PeerRSA.A is Peer create RSA key.
+*/
+PeerRSA.A = function (token) {
+  this.wss = PeerRSA.A.wss || new WebSocket(PeerRSA.uri.a,'wator.rtc.a');
+  var self = this;
+  this.wss.onopen = function (event) {
+    setTimeout(self.onOpenInternal_.bind(self),1);
+    self.signalOpened(event);
+  }
+  this.wss.onclose = function (event) {
+    self.signalClosed(event);
+  }
+  this.wss.onerror = function (err) {
+    console.error(err);
+  }
+  this.wss.onmessage = function (event) {
+    self.onSignalMsg_(event);
+  }
+  var tokenSaved = JSON.parse(localStorage.getItem('rtc.PeerRSA.A.token'));
+  //console.log(tokenSaved);
+  if(tokenSaved == null ) {
+    return;
+  }
+  if(token) {
+    var indexToken = 't_' + token;
+    if(tokenSaved[indexToken]) {
+      this.dst = indexToken;
+    }
+  } else {
+    var tokensIndex = Object.keys(tokenSaved);
+    //console.log(tokensIndex);
+    if (tokensIndex.length > 0) {
+      this.dst = tokensIndex[0];
+    }
+  }
+  if (PeerRSA.debug) {
+    console.log(this.dst);
+  }
+  var aPairs = JSON.parse(localStorage.getItem('rtc.PeerRSA.A.pair'));
+  if (aPairs) {
+    this.src = aPairs[this.dst];
+  }
+}
+
+PeerRSA.A.prototype.signalOpened = function (event) {
+  if (PeerRSA.debug) {
+    console.log(event);
+  }
+}
+PeerRSA.A.prototype.signalClosed = function (event) {
+  if (PeerRSA.debug) {
+    console.log(event);
+  }
+}
+PeerRSA.A.prototype.onaddstream = function (src) {
+  if (PeerRSA.debug) {
+    console.log(src);
+  }
+}
+
+/*
+inner function.
+*/
+PeerRSA.A.prototype.onOpenInternal_ = function () {
+  var remote = PeerRSA.Key.B.getRemoteDevices();
+  var msg = {signal:{wait:Object.keys(remote)}};
+  this.wss.send(JSON.stringify(msg));
+}
+
+
 
 PeerRSA.Key.A.createKey = function (cb) {
   if (PeerRSA.debug) {
@@ -113,80 +207,6 @@ PeerRSA.Key.B.getRemoteDevices = function (cb) {
     return {};
   }
 }
-
-
-
-
-/*
-  PeerRSA.A is Peer create RSA key.
-*/
-PeerRSA.A = function (token) {
-  this.wss = PeerRSA.A.wss || new WebSocket(PeerRSA.uri.a,'wator.rtc.a');
-  var self = this;
-  this.wss.onopen = function (event) {
-    setTimeout(self.onOpenInternal_.bind(self),1);
-    self.signalOpened(event);
-  }
-  this.wss.onclose = function (event) {
-    self.signalClosed(event);
-  }
-  this.wss.onerror = function (err) {
-    console.error(err);
-  }
-  this.wss.onmessage = function (event) {
-    self.onSignalMsg_(event);
-  }
-  var tokenSaved = JSON.parse(localStorage.getItem('rtc.PeerRSA.A.token'));
-  //console.log(tokenSaved);
-  if(tokenSaved == null ) {
-    return;
-  }
-  if(token) {
-    var indexToken = 't_' + token;
-    if(tokenSaved[indexToken]) {
-      this.dst = indexToken;
-    }
-  } else {
-    var tokensIndex = Object.keys(tokenSaved);
-    //console.log(tokensIndex);
-    if (tokensIndex.length > 0) {
-      this.dst = tokensIndex[0];
-    }
-  }
-  if (PeerRSA.debug) {
-    console.log(this.dst);
-  }
-  var aPairs = JSON.parse(localStorage.getItem('rtc.PeerRSA.A.pair'));
-  if (aPairs) {
-    this.src = aPairs[this.dst];
-  }
-}
-
-PeerRSA.A.prototype.signalOpened = function (event) {
-  if (PeerRSA.debug) {
-    console.log(event);
-  }
-}
-PeerRSA.A.prototype.signalClosed = function (event) {
-  if (PeerRSA.debug) {
-    console.log(event);
-  }
-}
-PeerRSA.A.prototype.onaddstream = function (src) {
-  if (PeerRSA.debug) {
-    console.log(src);
-  }
-}
-
-/*
-inner function.
-*/
-PeerRSA.A.prototype.onOpenInternal_ = function () {
-  var remote = PeerRSA.Key.B.getRemoteDevices();
-  var msg = {signal:{wait:Object.keys(remote)}};
-  this.wss.send(JSON.stringify(msg));
-}
-
 
 
 /*
