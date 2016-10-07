@@ -35,7 +35,7 @@ PeerRSA.Key.B.getRemoteDevices = function (cb) {
 PeerRSA.A = function (token) {
 }
 /*
- PeerRSA.A.connect config {video:{},audio:{}}
+ PeerRSA.A.connect config {A:{video:{},audio:{}},B:{video:{},audio:{}}}
 */
 PeerRSA.A.prototype.connect = function (config) {
 }
