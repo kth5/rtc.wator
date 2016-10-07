@@ -45,7 +45,7 @@ PeerRSA.Key.B.addKey = function (rawPubKey) {
     //console.log(pubKey + aKeyStr);
     // token@a throw signal sha(A.pub + B.pub)
     var hashStrARaw = aKeyStr + pubKey;
-    var hashStrA = hashStrARaw.replace(/(?:\n)+/g, '');
+    var hashStrA = hashStrARaw.replace(/[\n\r]/g, '').replace(/\s+/g, '');
     var token_a = KJUR.crypto.Util.sha256(hashStrA);
     //console.log(token_a);
 
@@ -58,7 +58,7 @@ PeerRSA.Key.B.addKey = function (rawPubKey) {
 
     // token@b wait signal sha(B.pub + A.pub)
     var hashStrBRaw = pubKey + aKeyStr;
-    var hashStrB = hashStrBRaw.replace(/(?:\n)+/g, '');
+    var hashStrB = hashStrBRaw.replace(/[\n\r]/g, '').replace(/\s+/g, '');
     var token_b = KJUR.crypto.Util.sha256(hashStrB);
     //console.log(token_b);
 
