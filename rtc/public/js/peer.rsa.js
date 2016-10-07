@@ -73,19 +73,21 @@ PeerRSA.A.prototype.onaddstream = function (src) {
 
 
 /*
- config : {A:{video:{},audio:{}},B:{video:{},audio:{}}}
+ PeerRSA.A.connect config {video:{},audio:{}}
 */
 PeerRSA.A.prototype.connect = function (config) {
   var msg = {cmd:'start',config:config};
   this.sendSignal_(msg);
-  if(config.A) {
+  if(config) {
     this.cast_ = this.cast_ || {};
     console.log(PeerRSA.config);
     console.log(PeerRSA.pcOptions);
     this.cast_.pc = new RTCPeerConnection(PeerRSA.config,PeerRSA.pcOptions);
-    navigator.getUserMedia(config.A,this.gotMediaSuccess_.bind(this),this.gotMediaFailure_.bind(this));
+    navigator.getUserMedia(config,this.gotMediaSuccess_.bind(this),this.gotMediaFailure_.bind(this));
   }
-  if(config.B) {
+}
+PeerRSA.A.prototype.onMediaType_ = function (configB) {
+  if(configB) {
     this.catch_ = this.catch_ || {};
     console.log(PeerRSA.config);
     console.log(PeerRSA.pcOptions);
@@ -110,14 +112,15 @@ PeerRSA.A.prototype.connect = function (config) {
     }.bind(this);
     
     this.mediaConst = { mandatory: { OfferToReceiveAudio: false, OfferToReceiveVideo: false } };
-    if(config.B.video) {
+    if(configB.video) {
       this.mediaConst.mandatory.OfferToReceiveVideo = true;
     }
-    if(config.B.audio) {
+    if(configB.audio) {
       this.mediaConst.mandatory.OfferToReceiveAudio = true;
     }
   }
 }
+
 
 PeerRSA.A.prototype.gotMediaSuccess_ = function (stream) {
   if (PeerRSA.debug) {
@@ -147,43 +150,6 @@ PeerRSA.A.prototype.gotMediaFailure_ = function (e) {
 }
 
 /*
-  PeerRSA.B is Peer import RSA key.
-*/
-PeerRSA.B = function (token) {
-  this.wss = this.wss || new WebSocket(PeerRSA.uri.b,'wator.rtc.b');
-  var self = this;
-  this.wss.onopen = function (event) {
-    setTimeout(self.onOpenInternal_.bind(self),1);
-    self.signalOpened(event);
-  }
-  this.wss.onclose = function (event) {
-    self.signalClosed(event);
-  }
-  this.wss.onerror = function (err) {
-    console.error(err);
-  }
-  this.wss.onmessage = function (event) {
-    self.onSignalMsg_(event);
-  }
-}
-
-PeerRSA.B.prototype.signalOpened = function (event) {
-  if (PeerRSA.debug) {
-    console.log(event);
-  }
-}
-PeerRSA.B.prototype.signalClosed = function (event) {
-  if (PeerRSA.debug) {
-    console.log(event);
-  }
-}
-
-PeerRSA.B.prototype.standby = function () {
-}
-
-
-
-/*
 inner function.
 */
 PeerRSA.A.prototype.onOpenInternal_ = function () {
@@ -191,16 +157,6 @@ PeerRSA.A.prototype.onOpenInternal_ = function () {
   var msg = {signal:{wait:Object.keys(remote)}};
   this.wss.send(JSON.stringify(msg));
 }
-/*
- inner function.
- */
-PeerRSA.B.prototype.onOpenInternal_ = function () {
-  var remote = PeerRSA.Key.B.getRemoteDevices();
-  var msg = {signal:{wait:Object.keys(remote)}};
-  this.wss.send(JSON.stringify(msg));
-}
-
-
 
 /*
  inner functions.
@@ -271,6 +227,58 @@ PeerRSA.A.prototype.onCreateAnswerSuccess_ = function(answer) {
 PeerRSA.A.prototype.onCreateAnswerError_ = function(error) {
   console.error(error);
 }
+
+
+
+/*
+  PeerRSA.B is Peer import RSA key.
+*/
+PeerRSA.B = function (token) {
+  this.wss = this.wss || new WebSocket(PeerRSA.uri.b,'wator.rtc.b');
+  var self = this;
+  this.wss.onopen = function (event) {
+    setTimeout(self.onOpenInternal_.bind(self),1);
+    self.signalOpened(event);
+  }
+  this.wss.onclose = function (event) {
+    self.signalClosed(event);
+  }
+  this.wss.onerror = function (err) {
+    console.error(err);
+  }
+  this.wss.onmessage = function (event) {
+    self.onSignalMsg_(event);
+  }
+}
+
+PeerRSA.B.prototype.signalOpened = function (event) {
+  if (PeerRSA.debug) {
+    console.log(event);
+  }
+}
+PeerRSA.B.prototype.signalClosed = function (event) {
+  if (PeerRSA.debug) {
+    console.log(event);
+  }
+}
+
+PeerRSA.B.prototype.standby = function () {
+}
+
+
+
+/*
+ inner function.
+ */
+PeerRSA.B.prototype.onOpenInternal_ = function () {
+  var remote = PeerRSA.Key.B.getRemoteDevices();
+  var msg = {signal:{wait:Object.keys(remote)}};
+  this.wss.send(JSON.stringify(msg));
+}
+
+
+
+
 
 PeerRSA.B.prototype.onSignalMsg_ = function (event) {
   //console.log(event);
