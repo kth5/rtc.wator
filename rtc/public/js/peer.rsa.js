@@ -35,7 +35,7 @@ PeerRSA.Key.B.getRemoteDevices = function (cb) {
 PeerRSA.A = function (token) {
 }
 /*
- PeerRSA.A.connect : {A:{video:{},audio:{}},B:{video:{},audio:{}}}
+ PeerRSA.A.connect config {video:{},audio:{},data:false}
 */
 PeerRSA.A.prototype.connect = function (config) {
 }
@@ -53,9 +53,9 @@ PeerRSA.A.prototype.onaddstream = function (src) {
 PeerRSA.B = function (token) {
 }
 /*
- PeerRSA.B.standby
+ PeerRSA.B.standby config {video:{},audio:{},data:false}
 */
-PeerRSA.B.prototype.standby = function () {
+PeerRSA.B.prototype.standby = function (config) {
 }
 PeerRSA.B.prototype.signalOpened = function (evt) {
 }
