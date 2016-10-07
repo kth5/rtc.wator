@@ -556,6 +556,9 @@ PeerRSA.createKeyPair_ = function(cb) {
       if (typeof cb == 'function') {
         cb('success');
       }
+      if (typeof PeerRSA.Key.A.onLoadCheckSuccess == 'function') {
+        PeerRSA.Key.A.onLoadCheckSuccess('success');
+      }
     })
     .catch(function(err){
       console.error(err);
@@ -600,7 +603,7 @@ PeerRSA.Key.A.checkKeyOnload_ = function () {
     return 
   }
   if(PeerRSA.Key.A.createKey_flag) {
-    PeerRSA.createKeyPair_(PeerRSA.Key.A.onLoadCheckSuccess);
+    PeerRSA.createKeyPair_();
   }
   PeerRSA.Key.A.createKey_flag = false;
 }
