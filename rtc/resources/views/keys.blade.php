@@ -33,7 +33,7 @@
   new Clipboard('.btn-clipboard');
 </script>
 <script type="text/javascript">
-  $(document).ready(function(){
+  $(document).ready(function() {
     PeerRSA.Key.A.onLoadCheckSuccess = function() {
       updatePublicKey();
     }
@@ -41,6 +41,8 @@
       var pubKeyStr = PeerRSA.Key.A.readKeyStr();
       $('#text-this-device-key').text(pubKeyStr);
     }
+    updatePublicKey();
+    
     $('#btn-create-key').click(function(){
       $('#text-this-device-key').text('...');
       PeerRSA.Key.A.createKey( function(msg) {
@@ -48,7 +50,6 @@
         updatePublicKey();
       });
     });
-    updatePublicKey();
   });
 </script>
 <script type="text/javascript">
