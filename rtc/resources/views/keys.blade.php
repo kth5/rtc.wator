@@ -2,32 +2,31 @@
 @section('content')
 
 <div class="container bg-warning container-mime-key">
-<div class="row">
-  <h1>Key of this device</h1>
-  <div class="col-sm-9">
-    <div class="row">
-		<button type="button" class="btn btn-danger btn-sm" id="btn-create-key">recreate</button>
-		<button type="button" class="btn btn-info btn-sm  pull-right btn-clipboard" data-clipboard-target="#text-this-device-key">Copy</button>
+  <div class="row">
+    <h1>Key of this device</h1>
+    <div class="col-sm-9">
+      <div class="row">
+        <button type="button" class="btn btn-danger btn-sm" id="btn-create-key">recreate</button>
+        <button type="button" class="btn btn-info btn-sm  pull-right btn-clipboard" data-clipboard-target="#text-this-device-key">Copy</button>
         <pre id="text-this-device-key" class="text-danger" rows="20"></pre>
-		<h5 class="text-info">Please send this public key to your another device,by e-mail,sns or etc.</h5>
+        <h5 class="text-info">Please send this public key to your another device,by e-mail,sns or etc.</h5>
+      </div>
     </div>
- </div>
-</div>
+  </div>
 </div>
 
 <div class="container bg-info container-your-key">
-<div class="row">
-<h2>Add Key of remote device</h2>
-<div class="form-group">
-	<button type="button" class="btn btn-success btn-sm" id="btn-add-key">+</button>
-	<label for="inputlg">Paste public key of remote device.</label>
-	<textarea class="form-control" id="text-remote-device-key" rows="6"></textarea>
-</div>
-
-<table class="table table-striped">
-<tr></tr>
-</table>
-</div>
+  <div class="row">
+    <h2>Add Key of remote device</h2>
+      <div class="form-group">
+      <button type="button" class="btn btn-success btn-sm" id="btn-add-key">+</button>
+      <label for="inputlg">Paste public key of remote device.</label>
+      <textarea class="form-control" id="text-remote-device-key" rows="6"></textarea>
+    </div>
+    <table class="table table-striped">
+      <tr></tr>
+    </table>
+  </div>
 </div>
 
 <script type="text/javascript">
@@ -50,6 +49,9 @@
 			updatePublicKey();
 		}
 		updatePublicKey();
+    $(window).bind('storage', function (e) {
+      updatePublicKey();
+    });
 	});
 </script>
 <script type="text/javascript">
