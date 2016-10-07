@@ -1,4 +1,5 @@
 var PeerRSA = PeerRSA || {};
+PeerRSA.debug = PeerRSA.uri || false;
 PeerRSA.uri = PeerRSA.uri || {};
 PeerRSA.uri.a = PeerRSA.uri.a || 'wss://' + location.host + '/rtc/wss/a';
 PeerRSA.uri.b = PeerRSA.uri.b || 'wss://' + location.host + '/rtc/wss/b';
@@ -15,7 +16,9 @@ PeerRSA.Key = PeerRSA.Key ||{};
 PeerRSA.Key.A = PeerRSA.Key.A || {};
 
 PeerRSA.Key.A.createKey = function (cb) {
-  console.log(cb);
+  if (PeerRSA.debug) {
+    console.log(cb);
+  }
   PeerRSA.createKeyPair_(cb);
 }
 PeerRSA.Key.A.readKeyStr = function () {
@@ -142,7 +145,9 @@ PeerRSA.A = function (token) {
       this.dst = tokensIndex[0];
     }
   }
-  console.log(this.dst);
+  if (PeerRSA.debug) {
+    console.log(this.dst);
+  }
   var aPairs = JSON.parse(localStorage.getItem('rtc.PeerRSA.A.pair'));
   if (aPairs) {
     this.src = aPairs[this.dst];
@@ -150,13 +155,19 @@ PeerRSA.A = function (token) {
 }
 
 PeerRSA.A.prototype.signalOpened = function (event) {
-  console.log(event);
+  if (PeerRSA.debug) {
+    console.log(event);
+  }
 }
 PeerRSA.A.prototype.signalClosed = function (event) {
-  console.log(event);
+  if (PeerRSA.debug) {
+    console.log(event);
+  }
 }
 PeerRSA.A.prototype.onaddstream = function (src) {
-  console.log(src);
+  if (PeerRSA.debug) {
+    console.log(src);
+  }
 }
 
 /*
@@ -174,25 +185,28 @@ PeerRSA.A.prototype.onOpenInternal_ = function () {
  config : {A:{video:{},audio:{}},B:{video:{},audio:{}}}
 */
 PeerRSA.A.prototype.connect = function (config) {
-  console.log(this);
   var msg = {cmd:'start',config:config};
   this.sendSignal_(msg);
   if(config.A) {
-    navigator.getUserMedia(config.A,this.gotMediaSuccess_.bind(this),this.gotMediaFailure_.bind(this));
     this.cast_ = this.cast_ || {};
     this.cast_.pc = new RTCPeerConnection(PeerRSA.config,PeerRSA.pcOptions);
+    navigator.getUserMedia(config.A,this.gotMediaSuccess_.bind(this),this.gotMediaFailure_.bind(this));
   }
   if(config.B) {
     this.catch_ = this.catch_ || {};
     this.catch_.pc = new RTCPeerConnection(PeerRSA.config,PeerRSA.pcOptions);
     var self = this;
     this.catch_.pc.onaddstream = function (evt) {
-      console.log(evt);
+      if (PeerRSA.debug) {
+        console.log(evt);
+      }
       var src = URL.createObjectURL(evt.stream);
       self.onaddstream(src);
     }.bind(this);
     this.catch_.pc.onicecandidate = function(evt){
-      console.log(evt);
+      if (PeerRSA.debug) {
+        console.log(evt);
+      }
       if(evt.candidate) {
         var rtc = {cmd:"catch.a.ice",candidate:event.candidate};
         this.sendSignal_(rtc);
@@ -212,8 +226,9 @@ PeerRSA.A.prototype.connect = function (config) {
 }
 
 PeerRSA.A.prototype.gotMediaSuccess_ = function (stream) {
-  console.log(this);
-  console.log(stream);
+  if (PeerRSA.debug) {
+    console.log(stream);
+  }
   this.cast_.pc.addStream(stream);
   this.cast_.pc.createOffer(this.offerSuccess_.bind(this),this.offerFailure_.bind(this));
 }
@@ -259,10 +274,14 @@ PeerRSA.B = function (token) {
 }
 
 PeerRSA.B.prototype.signalOpened = function (event) {
-  console.log(event);
+  if (PeerRSA.debug) {
+    console.log(event);
+  }
 }
 PeerRSA.B.prototype.signalClosed = function (event) {
-  console.log(event);
+  if (PeerRSA.debug) {
+    console.log(event);
+  }
 }
 
 PeerRSA.B.prototype.standby = function () {
@@ -284,12 +303,15 @@ PeerRSA.B.prototype.onOpenInternal_ = function () {
  inner functions.
 */
 PeerRSA.A.prototype.onSignalMsg_ = function (event) {
-  console.log(event);
-  console.log(this);
+  if (PeerRSA.debug) {
+    console.log(event);
+  }
   var dataJson = JSON.parse(event.data);
   var good = PeerRSA.verify_(dataJson.orig,dataJson.sign);
   if(good) {
-    console.log(dataJson.dst);
+    if (PeerRSA.debug) {
+      console.log(dataJson.dst);
+    }
     if (dataJson.src) {
       this.dst = dataJson.src;
     }
@@ -300,7 +322,6 @@ PeerRSA.A.prototype.onSignalMsg_ = function (event) {
   }
 }
 PeerRSA.A.prototype.sendSignal_ = function (msg) {
-  console.log(this);
   var date = new Date();
   this.orig = this.orig || date.toUTCString();
   this.signature = this.signature || PeerRSA.signature_(this.orig);
@@ -333,9 +354,7 @@ PeerRSA.A.prototype.onSetRemoteDescriptionSuccess_ = function() {
   this.catch_.pc.createAnswer(this.onCreateAnswerSuccess_.bind(this),this.onCreateAnswerError_.bind(this),this.mediaConst); 
 }
 PeerRSA.A.prototype.onCreateAnswerSuccess_ = function(answer) {
-  console.log(this);
   this.catch_.pc.setLocalDescription(answer,function(){
-    console.log(this);
     var rtc = {cmd:"answer",answer:answer};
     this.sendSignal_(rtc);
   }.bind(this));
@@ -348,11 +367,17 @@ PeerRSA.B.prototype.onSignalMsg_ = function (event) {
   //console.log(event);
   //console.log(this);
   var dataJson = JSON.parse(event.data);
-  console.log(dataJson);
+  if (PeerRSA.debug) {
+    console.log(dataJson);
+  }
   var good = PeerRSA.verify_(dataJson.orig,dataJson.sign);
-  console.log(good);
+  if (PeerRSA.debug) {
+    console.log(good);
+  }
   if(good) {
-    console.log(dataJson.dst);
+    if (PeerRSA.debug) {
+      console.log(dataJson.dst);
+    }
     if (dataJson.src) {
       this.dst = dataJson.src;
     }
@@ -363,7 +388,6 @@ PeerRSA.B.prototype.onSignalMsg_ = function (event) {
   }
 }
 PeerRSA.B.prototype.sendSignal_ = function (msg) {
-  console.log(this);
   var date = new Date();
   this.orig = this.orig || date.toUTCString();
   this.signature = this.signature || PeerRSA.signature_(this.orig);
@@ -378,8 +402,9 @@ PeerRSA.B.prototype.sendSignal_ = function (msg) {
 }
 
 PeerRSA.B.prototype.onRTCSignal_ = function(rtc) {
-  console.log(this);
-  console.log(rtc);
+  if (PeerRSA.debug) {
+    console.log(rtc);
+  }
   if(rtc.cmd == 'start') {
     if(rtc.config.A) {
       this.catch_ = this.catch_ || {};
@@ -413,8 +438,9 @@ PeerRSA.B.prototype.onRTCSignal_ = function(rtc) {
 }
 
 PeerRSA.B.prototype.gotMediaSuccess_ = function (stream) {
-  console.log(this);
-  console.log(stream);
+  if (PeerRSA.debug) {
+    console.log(stream);
+  }
   this.cast_.pc.addStream(stream);
   this.cast_.pc.createOffer(this.offerSuccess_.bind(this),this.offerFailure_.bind(this));
 }
@@ -438,7 +464,9 @@ PeerRSA.B.prototype.offerFailure_ = function (e) {
   console.error(e);
 }
 PeerRSA.B.prototype.onSetRemoteDescriptionSuccess_ = function () {
-  console.log(this);
+  if (PeerRSA.debug) {
+    console.log(this);
+  }
 }
 PeerRSA.B.prototype.onSetRemoteDescriptionFailure_ = function (e) {
   console.error(e);
@@ -466,7 +494,9 @@ PeerRSA.verify_ = function(orig,signature) {
       var token = tokens[i];
       var rsaKey = KEYUTIL.getKey(pubKeys[token]);
       var result = rsaKey.verifyString(orig,signature);
-      console.log(result);
+      if (PeerRSA.debug) {
+        console.log(result);
+      }
       if(result) {
         return true;
       }
@@ -482,7 +512,9 @@ PeerRSA.verify_ = function(orig,signature) {
 
 
 PeerRSA.createKeyPair_ = function(cb) {
-  console.log(cb);
+  if (PeerRSA.debug) {
+    console.log(cb);
+  }
   window.crypto.subtle.generateKey(
   {
     name: "RSASSA-PKCS1-v1_5",
@@ -495,28 +527,38 @@ PeerRSA.createKeyPair_ = function(cb) {
   )
   .then(function(key){
     //returns a keypair object
-    console.log(key);
-    console.log(key.publicKey);
-    console.log(key.privateKey);
+    if (PeerRSA.debug) {
+      console.log(key);
+      console.log(key.publicKey);
+      console.log(key.privateKey);
+    }
     window.crypto.subtle.exportKey(
     "jwk", //can be "jwk" (public or private), "spki" (public only), or "pkcs8" (private only)
     key.publicKey //can be a publicKey or privateKey, as long as extractable was true
     )
     .then(function(keydata){
       //returns the exported key data
-      console.log(keydata);
+      if (PeerRSA.debug) {
+        console.log(keydata);
+      }
       var keyObj = KEYUTIL.getKey(keydata);
-      console.log(keyObj);
+      if (PeerRSA.debug) {
+        console.log(keyObj);
+      }
       var pem = KEYUTIL.getPEM(keyObj);
-      console.log(pem);
+      if (PeerRSA.debug) {
+        console.log(pem);
+      }
       localStorage.setItem('rtc.PeerRSA.A.key.public',pem);
-      console.log( typeof cb);
+      if (PeerRSA.debug) {
+        console.log( typeof cb);
+      }
       if (typeof cb == 'function') {
         cb('success');
       }
     })
     .catch(function(err){
-    console.error(err);
+      console.error(err);
     });
     window.crypto.subtle.exportKey(
     "jwk", //can be "jwk" (public or private), "spki" (public only), or "pkcs8" (private only)
@@ -524,11 +566,17 @@ PeerRSA.createKeyPair_ = function(cb) {
     )
     .then(function(keydata){
         //returns the exported key data
-      console.log(keydata);
+      if (PeerRSA.debug) {
+        console.log(keydata);
+      }
       var keyObj = KEYUTIL.getKey(keydata);
-      console.log(keyObj);
+      if (PeerRSA.debug) {
+        console.log(keyObj);
+      }
       var pem = KEYUTIL.getPEM(keyObj,"PKCS8PRV");
-      console.log(pem);
+      if (PeerRSA.debug) {
+        console.log(pem);
+      }
       localStorage.setItem('rtc.PeerRSA.A.key.private',pem);
     })
     .catch(function(err){
