@@ -208,9 +208,6 @@ PeerRSA.A.prototype.connect = function (config) {
     console.log(PeerRSA.pcOptions);
     this.catch_.pc = new RTCPeerConnection(PeerRSA.config,PeerRSA.pcOptions);
     this.catch_.pc.onicecandidate = function(evt){
-      if (PeerRSA.debug) {
-        console.log(evt);
-      }
       if(evt.candidate) {
         var rtc = {cmd:"catch.a.ice",candidate:evt.candidate};
         if (PeerRSA.debug) {
