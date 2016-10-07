@@ -24,6 +24,7 @@
     <script src="//www.watorvapor.com/js/clipboard.min.js" type="text/javascript"></script>
     <script src="//www.watorvapor.com/rtc/js/app.js" type="text/javascript"></script>
     <script src="//www.watorvapor.com/account/js/jsrsasign-all-min.js" type="text/javascript"></script>
+    <script src="//www.watorvapor.com/rtc/js/peer.rsa.stub.js" type="text/javascript"></script>
     <script src="//www.watorvapor.com/rtc/js/peer.rsa.js" type="text/javascript"></script>
   </head>
   <body>
