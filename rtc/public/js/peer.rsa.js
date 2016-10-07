@@ -213,6 +213,9 @@ PeerRSA.A.prototype.connect = function (config) {
       }
       if(evt.candidate) {
         var rtc = {cmd:"catch.a.ice",candidate:evt.candidate};
+        if (PeerRSA.debug) {
+          console.log(JSON.stringify(rtc));
+        }
         this.sendSignal_(rtc);
       } else {
         console.log("end of onicecandidate");
@@ -460,9 +463,11 @@ PeerRSA.B.prototype.gotMediaSuccess_ = function (stream) {
   console.log(PeerRSA.pcOptions);
   this.cast_.pc = new RTCPeerConnection(PeerRSA.config,PeerRSA.pcOptions);
   this.cast_.pc.onicecandidate = function(evt){
-    console.log(evt);
     if(evt.candidate) {
-      var rtc = {cmd:"cast.b.ice",candidate:event.candidate};
+      var rtc = {cmd:"cast.b.ice",candidate:evt.candidate};
+      if (PeerRSA.debug) {
+        console.log(JSON.stringify(rtc));
+      }
       this.sendSignal_(rtc);
     } else {
       console.log("end of onicecandidate");
