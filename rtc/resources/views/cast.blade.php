@@ -14,7 +14,7 @@ $(document).ready(function() {
   var peer;
   $('#btn-standby').click(function() {
     peer = new PeerRSA.B();
-    peer.standby();
+    peer.standby({video:true,audio:true);
   });
 });
 </script>
