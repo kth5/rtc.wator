@@ -34,6 +34,7 @@
 </script>
 <script type="text/javascript">
   $(document).ready(function() {
+    PeerRSA.debug = true;
     PeerRSA.Key.A.onLoadCheckSuccess = function() {
       updatePublicKey();
     }
