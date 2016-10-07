@@ -197,11 +197,15 @@ PeerRSA.A.prototype.connect = function (config) {
   this.sendSignal_(msg);
   if(config.A) {
     this.cast_ = this.cast_ || {};
+    console.log(PeerRSA.config);
+    console.log(PeerRSA.pcOptions);
     this.cast_.pc = new RTCPeerConnection(PeerRSA.config,PeerRSA.pcOptions);
     navigator.getUserMedia(config.A,this.gotMediaSuccess_.bind(this),this.gotMediaFailure_.bind(this));
   }
   if(config.B) {
     this.catch_ = this.catch_ || {};
+    console.log(PeerRSA.config);
+    console.log(PeerRSA.pcOptions);
     this.catch_.pc = new RTCPeerConnection(PeerRSA.config,PeerRSA.pcOptions);
     var self = this;
     this.catch_.pc.onaddstream = function (evt) {
@@ -416,11 +420,14 @@ PeerRSA.B.prototype.onRTCSignal_ = function(rtc) {
   if(rtc.cmd == 'start') {
     if(rtc.config.A) {
       this.catch_ = this.catch_ || {};
+      console.log(PeerRSA.config);
+      console.log(PeerRSA.pcOptions);
       this.catch_.pc = new RTCPeerConnection(PeerRSA.config,PeerRSA.pcOptions);
     }
     if(rtc.config.B) {
-      navigator.getUserMedia(rtc.config.B,this.gotMediaSuccess_.bind(this),this.gotMediaFailure_.bind(this));
       this.cast_ = this.cast_ || {};
+      console.log(PeerRSA.config);
+      console.log(PeerRSA.pcOptions);
       this.cast_.pc = new RTCPeerConnection(PeerRSA.config,PeerRSA.pcOptions);
       this.cast_.pc.onicecandidate = function(evt){
         console.log(evt);
@@ -431,6 +438,7 @@ PeerRSA.B.prototype.onRTCSignal_ = function(rtc) {
           console.log("end of onicecandidate");
         }
       }.bind(this);
+      navigator.getUserMedia(rtc.config.B,this.gotMediaSuccess_.bind(this),this.gotMediaFailure_.bind(this));
     }
   }
   if(rtc.cmd == 'answer') {
