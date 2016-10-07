@@ -29,6 +29,18 @@ PeerRSA.Key.B.getRemoteDevices = function (cb) {
 }
 
 
+/*
+  PeerRSA.A is Peer create RSA key.
+*/
+PeerRSA.A = function (token) {
+}
+PeerRSA.A.prototype.signalOpened = function (evt) {
+}
+PeerRSA.A.prototype.signalClosed = function (evt) {
+}
+PeerRSA.A.prototype.onaddstream = function (src) {
+}
+
 
 navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 var URL = window.URL || window.webkitURL;
@@ -82,14 +94,14 @@ PeerRSA.A = function (token) {
   }
 }
 
-PeerRSA.A.prototype.signalOpened = function (event) {
+PeerRSA.A.prototype.signalOpened = function (evt) {
   if (PeerRSA.debug) {
-    console.log(event);
+    console.log(evt);
   }
 }
-PeerRSA.A.prototype.signalClosed = function (event) {
+PeerRSA.A.prototype.signalClosed = function (evt) {
   if (PeerRSA.debug) {
-    console.log(event);
+    console.log(evt);
   }
 }
 PeerRSA.A.prototype.onaddstream = function (src) {
@@ -108,105 +120,6 @@ PeerRSA.A.prototype.onOpenInternal_ = function () {
 }
 
 
-
-PeerRSA.Key.A.createKey = function (cb) {
-  if (PeerRSA.debug) {
-    console.log(cb);
-  }
-  PeerRSA.createKeyPair_(cb);
-}
-PeerRSA.Key.A.readKeyStr = function () {
-  return localStorage.getItem('rtc.PeerRSA.A.key.public');
-}
-
-PeerRSA.Key.A.onLoadCheckSuccess = function() {
-  
-}
-
-PeerRSA.Key.B = PeerRSA.Key.B || {};
-
-PeerRSA.Key.B.addKey = function (rawPubKey) {
-  //
-  try {
-    //console.log(rawPubKey);
-    var pubKey = rawPubKey.replace(/(?:\n)+/g, '\r\n') + '\r\n';
-    var aKeyStr = PeerRSA.Key.A.readKeyStr();
-    //console.log(pubKey);
-    //console.log(pubKey.length);
-    //console.log(aKeyStr);
-    //console.log(aKeyStr.length);
-    //console.log(aKeyStr + pubKey);
-    //console.log(pubKey + aKeyStr);
-    // token@a throw signal sha(A.pub + B.pub)
-    var hashStrARaw = aKeyStr + pubKey;
-    var hashStrA = hashStrARaw.replace(/[\n]/g, '').replace(/[\r]/g, '').replace(/\s+/g, '');
-    if (PeerRSA.debug) {
-      console.log('hashStrARaw=<'+hashStrARaw + '>');
-      console.log('hashStrA=<' + hashStrA +'>');
-    }
-    var token_a = KJUR.crypto.Util.sha256(hashStrA);
-    //console.log(token_a);
-
-    var aOldTokens = JSON.parse(localStorage.getItem('rtc.PeerRSA.A.token'));
-    //console.log(aOldTokens);
-    aOldTokens = aOldTokens || {};
-    //console.log(aOldTokens);
-    aOldTokens['t_' + token_a] = pubKey;
-    localStorage.setItem('rtc.PeerRSA.A.token',JSON.stringify(aOldTokens));
-
-    // token@b wait signal sha(B.pub + A.pub)
-    var hashStrBRaw = pubKey + aKeyStr;
-    var hashStrB = hashStrBRaw.replace(/[\r]/g, '').replace(/[\n]/g, '').replace(/\s+/g, '');
-    if (PeerRSA.debug) {
-      console.log('hashStrBRaw=<'+hashStrBRaw + '>');
-      console.log('hashStrB=<' + hashStrB +'>');
-    }
-    var token_b = KJUR.crypto.Util.sha256(hashStrB);
-    //console.log(token_b);
-
-    var bOldTokens = JSON.parse(localStorage.getItem('rtc.PeerRSA.B.token'));
-    //console.log(bOldTokens);
-    bOldTokens = bOldTokens || {};
-    //console.log(bOldTokens);
-    bOldTokens['t_' + token_b] = pubKey;
-    localStorage.setItem('rtc.PeerRSA.B.token',JSON.stringify(bOldTokens));
-    
-
-    var aOldPairs = JSON.parse(localStorage.getItem('rtc.PeerRSA.A.pair'));
-    //console.log(aOldPairs);
-    aOldPairs = aOldPairs || {};
-    //console.log(aOldPairs);
-    aOldPairs['t_' + token_a] = 't_' + token_b;
-    localStorage.setItem('rtc.PeerRSA.A.pair',JSON.stringify(aOldPairs));
-
-    var bOldPairs = JSON.parse(localStorage.getItem('rtc.PeerRSA.B.pair'));
-    //console.log(bOldPairs);
-    bOldPairs = bOldPairs || {};
-    //console.log(bOldPairs);
-    bOldPairs['t_' + token_b] = 't_' + token_a;
-    localStorage.setItem('rtc.PeerRSA.B.pair',JSON.stringify(bOldPairs));
-    
-  } catch(e) {
-  console.error(e);
-  }
-}
-
-PeerRSA.Key.B.getRemoteDevices = function (cb) {
-  //
-  try {
-    var bTokens = JSON.parse(localStorage.getItem('rtc.PeerRSA.B.token'));
-    //console.log(bTokens);
-    bTokens = bTokens || {};
-    if (typeof cb == 'function') {
-      cb(bTokens);
-    }
-    //console.log(bTokens);
-    return bTokens;
-  } catch(e) {
-    console.error(e);
-    return {};
-  }
-}
 
 
 /*
@@ -519,6 +432,107 @@ PeerRSA.B.prototype.onSetRemoteDescriptionSuccess_ = function () {
 }
 PeerRSA.B.prototype.onSetRemoteDescriptionFailure_ = function (e) {
   console.error(e);
+}
+
+
+
+PeerRSA.Key.A.createKey = function (cb) {
+  if (PeerRSA.debug) {
+    console.log(cb);
+  }
+  PeerRSA.createKeyPair_(cb);
+}
+PeerRSA.Key.A.readKeyStr = function () {
+  return localStorage.getItem('rtc.PeerRSA.A.key.public');
+}
+
+PeerRSA.Key.A.onLoadCheckSuccess = function() {
+  
+}
+
+PeerRSA.Key.B = PeerRSA.Key.B || {};
+
+PeerRSA.Key.B.addKey = function (rawPubKey) {
+  //
+  try {
+    //console.log(rawPubKey);
+    var pubKey = rawPubKey.replace(/(?:\n)+/g, '\r\n') + '\r\n';
+    var aKeyStr = PeerRSA.Key.A.readKeyStr();
+    //console.log(pubKey);
+    //console.log(pubKey.length);
+    //console.log(aKeyStr);
+    //console.log(aKeyStr.length);
+    //console.log(aKeyStr + pubKey);
+    //console.log(pubKey + aKeyStr);
+    // token@a throw signal sha(A.pub + B.pub)
+    var hashStrARaw = aKeyStr + pubKey;
+    var hashStrA = hashStrARaw.replace(/[\n]/g, '').replace(/[\r]/g, '').replace(/\s+/g, '');
+    if (PeerRSA.debug) {
+      console.log('hashStrARaw=<'+hashStrARaw + '>');
+      console.log('hashStrA=<' + hashStrA +'>');
+    }
+    var token_a = KJUR.crypto.Util.sha256(hashStrA);
+    //console.log(token_a);
+
+    var aOldTokens = JSON.parse(localStorage.getItem('rtc.PeerRSA.A.token'));
+    //console.log(aOldTokens);
+    aOldTokens = aOldTokens || {};
+    //console.log(aOldTokens);
+    aOldTokens['t_' + token_a] = pubKey;
+    localStorage.setItem('rtc.PeerRSA.A.token',JSON.stringify(aOldTokens));
+
+    // token@b wait signal sha(B.pub + A.pub)
+    var hashStrBRaw = pubKey + aKeyStr;
+    var hashStrB = hashStrBRaw.replace(/[\r]/g, '').replace(/[\n]/g, '').replace(/\s+/g, '');
+    if (PeerRSA.debug) {
+      console.log('hashStrBRaw=<'+hashStrBRaw + '>');
+      console.log('hashStrB=<' + hashStrB +'>');
+    }
+    var token_b = KJUR.crypto.Util.sha256(hashStrB);
+    //console.log(token_b);
+
+    var bOldTokens = JSON.parse(localStorage.getItem('rtc.PeerRSA.B.token'));
+    //console.log(bOldTokens);
+    bOldTokens = bOldTokens || {};
+    //console.log(bOldTokens);
+    bOldTokens['t_' + token_b] = pubKey;
+    localStorage.setItem('rtc.PeerRSA.B.token',JSON.stringify(bOldTokens));
+    
+
+    var aOldPairs = JSON.parse(localStorage.getItem('rtc.PeerRSA.A.pair'));
+    //console.log(aOldPairs);
+    aOldPairs = aOldPairs || {};
+    //console.log(aOldPairs);
+    aOldPairs['t_' + token_a] = 't_' + token_b;
+    localStorage.setItem('rtc.PeerRSA.A.pair',JSON.stringify(aOldPairs));
+
+    var bOldPairs = JSON.parse(localStorage.getItem('rtc.PeerRSA.B.pair'));
+    //console.log(bOldPairs);
+    bOldPairs = bOldPairs || {};
+    //console.log(bOldPairs);
+    bOldPairs['t_' + token_b] = 't_' + token_a;
+    localStorage.setItem('rtc.PeerRSA.B.pair',JSON.stringify(bOldPairs));
+    
+  } catch(e) {
+  console.error(e);
+  }
+}
+
+PeerRSA.Key.B.getRemoteDevices = function (cb) {
+  //
+  try {
+    var bTokens = JSON.parse(localStorage.getItem('rtc.PeerRSA.B.token'));
+    //console.log(bTokens);
+    bTokens = bTokens || {};
+    if (typeof cb == 'function') {
+      cb(bTokens);
+    }
+    //console.log(bTokens);
+    return bTokens;
+  } catch(e) {
+    console.error(e);
+    return {};
+  }
 }
 
 
