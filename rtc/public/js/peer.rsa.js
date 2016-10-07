@@ -197,6 +197,9 @@ PeerRSA.A.prototype.sendSignal_ = function (msg) {
 PeerRSA.A.prototype.onRTCSignal_ = function(rtc) {
   //console.log(this);
   //console.log(rtc);
+  if(rtc.cmd == 'mediaType') {
+    this.onMediaType_(rtc.config);
+  }
   if(rtc.cmd == 'offer') {
     console.log(rtc.offer);
     var sdp = new RTCSessionDescription(rtc.offer); 
