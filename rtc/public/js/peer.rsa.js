@@ -1,5 +1,5 @@
 var PeerRSA = PeerRSA || {};
-PeerRSA.debug = PeerRSA.uri || false;
+PeerRSA.debug = PeerRSA.debug || false;
 PeerRSA.uri = PeerRSA.uri || {};
 PeerRSA.uri.a = PeerRSA.uri.a || 'wss://' + location.host + '/rtc/wss/a';
 PeerRSA.uri.b = PeerRSA.uri.b || 'wss://' + location.host + '/rtc/wss/b';
@@ -45,7 +45,11 @@ PeerRSA.Key.B.addKey = function (rawPubKey) {
     //console.log(pubKey + aKeyStr);
     // token@a throw signal sha(A.pub + B.pub)
     var hashStrARaw = aKeyStr + pubKey;
-    var hashStrA = hashStrARaw.replace(/[\n\r]/g, '').replace(/\s+/g, '');
+    var hashStrA = hashStrARaw.replace(/[\n]/g, '').replace(/[\r]/g, '').replace(/\s+/g, '');
+    if (PeerRSA.debug) {
+      console.log('hashStrARaw=<'+hashStrARaw + '>');
+      console.log('hashStrA=<' + hashStrA +'>');
+    }
     var token_a = KJUR.crypto.Util.sha256(hashStrA);
     //console.log(token_a);
 
@@ -58,7 +62,11 @@ PeerRSA.Key.B.addKey = function (rawPubKey) {
 
     // token@b wait signal sha(B.pub + A.pub)
     var hashStrBRaw = pubKey + aKeyStr;
-    var hashStrB = hashStrBRaw.replace(/[\n\r]/g, '').replace(/\s+/g, '');
+    var hashStrB = hashStrBRaw.replace(/[\r]/g, '').replace(/[\n]/g, '').replace(/\s+/g, '');
+    if (PeerRSA.debug) {
+      console.log('hashStrBRaw=<'+hashStrBRaw + '>');
+      console.log('hashStrB=<' + hashStrB +'>');
+    }
     var token_b = KJUR.crypto.Util.sha256(hashStrB);
     //console.log(token_b);
 
