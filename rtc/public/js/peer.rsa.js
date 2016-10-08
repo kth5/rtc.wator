@@ -139,12 +139,13 @@ PeerRSA.A.prototype.gotMediaFailure_ = function (e) {
 PeerRSA.A.prototype.offerSuccess_ = function (offer) {
   this.cast_.pc.setLocalDescription(offer,
     function () {
-      var rtc = {cmd:"offer",offer:offer};
-      this.sendSignal_(rtc);
+      console.log('setLocalDescription success')
     }.bind(this),
     function (e) {
       console.error(e);
-    });
+  });
+  var rtc = {cmd:"offer",offer:offer};
+  this.sendSignal_(rtc);
 }
 
 PeerRSA.A.prototype.gotMediaFailure_ = function (e) {
@@ -228,9 +229,10 @@ PeerRSA.A.prototype.onSetRemoteDescriptionSuccess_ = function() {
 }
 PeerRSA.A.prototype.onCreateAnswerSuccess_ = function(answer) {
   this.catch_.pc.setLocalDescription(answer,function(){
-    var rtc = {cmd:"answer",answer:answer};
-    this.sendSignal_(rtc);
-  }.bind(this));
+    console.log('setLocalDescription success');
+  });
+  var rtc = {cmd:"answer",answer:answer};
+  this.sendSignal_(rtc);
 }
 PeerRSA.A.prototype.onCreateAnswerError_ = function(error) {
   console.error(error);
@@ -411,13 +413,14 @@ PeerRSA.B.prototype.gotMediaFailure_ = function (e) {
 
 PeerRSA.B.prototype.offerSuccess_ = function (offer) {
   this.cast_.pc.setLocalDescription(offer,
-    function () {
-      var rtc = {cmd:"offer",offer:offer};
-      this.sendSignal_(rtc);
-    }.bind(this),
-    function (e) {
-      console.error(e);
-    });
+  function () {
+    console.log('setLocalDescription success');
+  },
+  function (e) {
+    console.error(e);
+  });
+  var rtc = {cmd:"offer",offer:offer};
+  this.sendSignal_(rtc);
 }
 
 PeerRSA.B.prototype.offerFailure_ = function (e) {
