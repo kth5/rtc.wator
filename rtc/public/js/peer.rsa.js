@@ -224,7 +224,6 @@ PeerRSA.A.prototype.onAddIceCandidateFailure_ = function(e) {
 
 PeerRSA.A.prototype.onSetRemoteDescriptionSuccess_ = function() {
   console.log('onSetRemoteDescriptionSuccess_');
-  this.mediaConst = {'mandatory': {'OfferToReceiveVideo': true}};
   console.log(this.mediaConst);
   this.catch_.pc.createAnswer(this.onCreateAnswerSuccess_.bind(this),this.onCreateAnswerError_.bind(this),this.mediaConst); 
 }
