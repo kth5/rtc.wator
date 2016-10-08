@@ -106,6 +106,7 @@ PeerRSA.A.prototype.connect = function (config) {
       if (PeerRSA.debug) {
         console.log(evt);
       }
+      console.log(evt);
       var src = URL.createObjectURL(evt.stream);
       console.log(src);
       this.onaddstream(src);
