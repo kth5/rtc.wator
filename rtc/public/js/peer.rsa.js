@@ -111,15 +111,17 @@ PeerRSA.A.prototype.connect = function (config) {
     }.bind(this);
   }
 }
-PeerRSA.A.prototype.onMediaType_ = function (configB) {
-  if(configB) {  
+PeerRSA.A.prototype.onMediaType_ = function (config) {
+  if(config) {  
     this.mediaConst = { mandatory: { OfferToReceiveAudio: false, OfferToReceiveVideo: false } };
-    if(configB.video) {
+    if(config.video) {
       this.mediaConst.mandatory.OfferToReceiveVideo = true;
     }
-    if(configB.audio) {
+    if(config.audio) {
       this.mediaConst.mandatory.OfferToReceiveAudio = true;
     }
+    console.log(this.mediaConst);
+    this.catch_.pc.createAnswer(this.onCreateAnswerSuccess_.bind(this),this.onCreateAnswerError_.bind(this),this.mediaConst); 
   }
 }
 
@@ -222,8 +224,7 @@ PeerRSA.A.prototype.onAddIceCandidateFailure_ = function(e) {
 }
 
 PeerRSA.A.prototype.onSetRemoteDescriptionSuccess_ = function() {
-  console.log(this.mediaConst);
-  this.catch_.pc.createAnswer(this.onCreateAnswerSuccess_.bind(this),this.onCreateAnswerError_.bind(this),this.mediaConst); 
+  console.log('onSetRemoteDescriptionSuccess_');
 }
 PeerRSA.A.prototype.onCreateAnswerSuccess_ = function(answer) {
   this.catch_.pc.setLocalDescription(answer,function(){
