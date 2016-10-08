@@ -90,6 +90,18 @@ PeerRSA.A.prototype.connect = function (config) {
     console.log(PeerRSA.config);
     console.log(PeerRSA.pcOptions);
     this.catch_.pc = new RTCPeerConnection(PeerRSA.config,PeerRSA.pcOptions);
+    this.catch_.pc.onicecandidate = function(evt){
+      if(evt.candidate) {
+        console.log(evt.candidate);
+        var rtc = {cmd:"catch.a.ice",candidate:evt.candidate};
+        if (PeerRSA.debug) {
+          console.log(JSON.stringify(rtc));
+        }
+        this.sendSignal_(rtc);
+      } else {
+        console.log("end of onicecandidate");
+      }
+    }.bind(this);
     this.catch_.pc.onaddstream = function (evt) {
       if (PeerRSA.debug) {
         console.log(evt);
@@ -218,18 +230,6 @@ PeerRSA.A.prototype.onCreateAnswerSuccess_ = function(answer) {
     var rtc = {cmd:"answer",answer:answer};
     this.sendSignal_(rtc);
   }.bind(this));
-  this.catch_.pc.onicecandidate = function(evt){
-    if(evt.candidate) {
-      console.log(evt.candidate);
-      var rtc = {cmd:"catch.a.ice",candidate:evt.candidate};
-      if (PeerRSA.debug) {
-        console.log(JSON.stringify(rtc));
-      }
-      this.sendSignal_(rtc);
-    } else {
-      console.log("end of onicecandidate");
-    }
-  }.bind(this);
 }
 PeerRSA.A.prototype.onCreateAnswerError_ = function(error) {
   console.error(error);
