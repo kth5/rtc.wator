@@ -212,6 +212,12 @@ PeerRSA.A.prototype.onAddIceCandidateFailure_ = function(e) {
 PeerRSA.A.prototype.onSetRemoteDescriptionSuccess_ = function() {
   console.log(this.mediaConst);
   this.catch_.pc.createAnswer(this.onCreateAnswerSuccess_.bind(this),this.onCreateAnswerError_.bind(this),this.mediaConst); 
+}
+PeerRSA.A.prototype.onCreateAnswerSuccess_ = function(answer) {
+  this.catch_.pc.setLocalDescription(answer,function(){
+    var rtc = {cmd:"answer",answer:answer};
+    this.sendSignal_(rtc);
+  }.bind(this));
   this.catch_.pc.onicecandidate = function(evt){
     if(evt.candidate) {
       console.log(evt.candidate);
@@ -224,12 +230,6 @@ PeerRSA.A.prototype.onSetRemoteDescriptionSuccess_ = function() {
       console.log("end of onicecandidate");
     }
   }.bind(this);
-}
-PeerRSA.A.prototype.onCreateAnswerSuccess_ = function(answer) {
-  this.catch_.pc.setLocalDescription(answer,function(){
-    var rtc = {cmd:"answer",answer:answer};
-    this.sendSignal_(rtc);
-  }.bind(this));
 }
 PeerRSA.A.prototype.onCreateAnswerError_ = function(error) {
   console.error(error);
