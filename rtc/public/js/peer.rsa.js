@@ -415,12 +415,12 @@ PeerRSA.B.prototype.offerSuccess_ = function (offer) {
   this.cast_.pc.setLocalDescription(offer,
   function () {
     console.log('setLocalDescription success');
-  },
+    var rtc = {cmd:"offer",offer:offer};
+    this.sendSignal_(rtc);
+  }.bind(this),
   function (e) {
     console.error(e);
   });
-  var rtc = {cmd:"offer",offer:offer};
-  this.sendSignal_(rtc);
 }
 
 PeerRSA.B.prototype.offerFailure_ = function (e) {
