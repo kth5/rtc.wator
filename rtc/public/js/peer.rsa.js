@@ -317,6 +317,8 @@ PeerRSA.B.prototype.onSignalMsg_ = function (event) {
       this.src = dataJson.dst;
     }
     this.onRTCSignal_(dataJson.rtc);
+  } else {
+    console.warn('!!!attach!!!');
   }
 }
 PeerRSA.B.prototype.sendSignal_ = function (msg) {
