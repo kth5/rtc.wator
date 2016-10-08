@@ -2,7 +2,7 @@
 @section('content')
 <div class="container bg-warning container-connection">
 <div class="row">
-<button type="button" class="btn btn-info btn-lg btn-block" id="btn-standby">Standby for remote devices.</button>
+<button type="button" class="btn btn-success btn-lg btn-block" id="btn-standby">Standby for remote devices.</button>
 </div>
 </div>
 <div class="container bg-warning container-info">
