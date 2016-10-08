@@ -362,7 +362,7 @@ PeerRSA.B.prototype.onRTCSignal_ = function(rtc) {
       }
       var rtc = {cmd:"mediaType",config:media};
       this.sendSignal_(rtc);
-      
+      this.cast_ = this.cast_ || {};
       this.cast_.pc = new RTCPeerConnection(PeerRSA.config,PeerRSA.pcOptions);
       this.cast_.pc.onicecandidate = function(evt){
         if(evt.candidate) {
@@ -401,7 +401,6 @@ PeerRSA.B.prototype.gotMediaSuccess_ = function (stream) {
   if (PeerRSA.debug) {
     console.log(stream);
   }
-  this.cast_ = this.cast_ || {};
   console.log(PeerRSA.config);
   console.log(PeerRSA.pcOptions);
   this.cast_.pc.addStream(stream);
