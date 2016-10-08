@@ -224,8 +224,9 @@ PeerRSA.A.prototype.onAddIceCandidateFailure_ = function(e) {
 
 PeerRSA.A.prototype.onSetRemoteDescriptionSuccess_ = function() {
   console.log('onSetRemoteDescriptionSuccess_');
+  this.mediaConst = {'mandatory': {'OfferToReceiveVideo': true, 'OfferToReceiveAudio':true}};
   console.log(this.mediaConst);
-  this.catch_.pc.createAnswer(this.onCreateAnswerSuccess_.bind(this),this.onCreateAnswerError_.bind(this)/*,this.mediaConst*/); 
+  this.catch_.pc.createAnswer(this.onCreateAnswerSuccess_.bind(this),this.onCreateAnswerError_.bind(this),this.mediaConst); 
 }
 PeerRSA.A.prototype.onCreateAnswerSuccess_ = function(answer) {
   this.catch_.pc.setLocalDescription(answer,function(){
