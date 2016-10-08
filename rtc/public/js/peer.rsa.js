@@ -210,8 +210,8 @@ PeerRSA.A.prototype.onRTCSignal_ = function(rtc) {
   }
   if(rtc.cmd == 'cast.b.ice') {
     console.log(rtc.candidate);
-    var rtcICE = new RTCIceCandidate(rtc.candidate);
-    this.catch_.pc.addIceCandidate(rtcICE,this.onAddIceCandidateSuccess_.bind(this),this.onAddIceCandidateFailure_.bind(this));
+    //var rtcICE = new RTCIceCandidate(rtc.candidate);
+    //this.catch_.pc.addIceCandidate(rtcICE,this.onAddIceCandidateSuccess_.bind(this),this.onAddIceCandidateFailure_.bind(this));
   }
 }
 PeerRSA.A.prototype.onAddIceCandidateSuccess_ = function() {
