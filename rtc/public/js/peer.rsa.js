@@ -102,12 +102,12 @@ PeerRSA.A.prototype.connect = function (config) {
         console.log("end of onicecandidate");
       }
     }.bind(this);
-    this.catch_.pc.ontrack = function (evt) {
+    this.catch_.pc.onaddstream = function (evt) {
       if (PeerRSA.debug) {
         console.log(evt);
       }
       console.log(evt);
-      var src = URL.createObjectURL(evt.streams[0]);
+      var src = URL.createObjectURL(evt.streams);
       console.log(src);
       this.onaddstream(src);
     }.bind(this);
