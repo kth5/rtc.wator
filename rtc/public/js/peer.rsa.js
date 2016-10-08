@@ -1,9 +1,9 @@
 
 navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-var URL = window.URL || window.webkitURL;
-var RTCPeerConnection = window.RTCPeerConnection || window.webkitRTCPeerConnection || window.mozRTCPeerConnection;
-var RTCSessionDescription = window.RTCSessionDescription || window.webkitRTCSessionDescription || window.mozRTCSessionDescription;
-var RTCIceCandidate = window.RTCIceCandidate || window.webkitRTCIceCandidate || window.mozRTCIceCandidate;
+var RTCPeerConnection = window.webkitRTCPeerConnection || window.RTCPeerConnection || window.mozRTCPeerConnection;
+var RTCSessionDescription = window.webkitRTCSessionDescription || window.RTCSessionDescription || window.mozRTCSessionDescription;
+var RTCIceCandidate = window.webkitRTCIceCandidate || window.RTCIceCandidate || window.mozRTCIceCandidate;
+var URL = window.webkitURL || window.URL;
 
 
 /*
@@ -102,12 +102,12 @@ PeerRSA.A.prototype.connect = function (config) {
         console.log("end of onicecandidate");
       }
     }.bind(this);
-    this.catch_.pc.onaddstream = function (evt) {
+    this.catch_.pc.ontrack = function (evt) {
       if (PeerRSA.debug) {
         console.log(evt);
       }
       console.log(evt);
-      var src = URL.createObjectURL(evt.stream);
+      var src = URL.createObjectURL(evt.streams[0]);
       console.log(src);
       this.onaddstream(src);
     }.bind(this);
