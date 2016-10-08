@@ -179,6 +179,8 @@ PeerRSA.A.prototype.onSignalMsg_ = function (event) {
       this.src = dataJson.dst;
     }
     this.onRTCSignal_(dataJson.rtc);
+  } else {
+    console.warn('!!!attach!!!')
   }
 }
 PeerRSA.A.prototype.sendSignal_ = function (msg) {
