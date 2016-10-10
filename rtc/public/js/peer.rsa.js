@@ -84,6 +84,7 @@ PeerRSA.A.prototype.connect = function (config) {
     console.log(PeerRSA.pcOptions);
     this.catch_.pc = new RTCPeerConnection(PeerRSA.config,PeerRSA.pcOptions);
     this.catch_.pc.onicecandidate = this.onCatchIce_.bind(this);
+    this.catch_.iceGo = false;
     this.catch_.pc.onaddstream = function (evt) {
       if (PeerRSA.debug) {
         console.log(evt);
@@ -226,6 +227,7 @@ PeerRSA.A.prototype.onSetRemoteDescriptionSuccess_ = function() {
   console.log('onSetRemoteDescriptionSuccess_');
   console.log(this.mediaConst);
   this.catch_.pc.createAnswer(this.onCreateAnswerSuccess_.bind(this),this.onCreateAnswerError_.bind(this),this.mediaConst); 
+  this.catch_.iceGo = true;
 }
 PeerRSA.A.prototype.onCreateAnswerSuccess_ = function(answer) {
   this.catch_.pc.setLocalDescription(answer,function(){
@@ -379,6 +381,7 @@ PeerRSA.B.prototype.onRTCSignal_ = function(rtc) {
     console.log(rtc.candidate);
     var rtcICE = new RTCIceCandidate(rtc.candidate);
     this.cast_.pc.addIceCandidate(rtcICE,this.onAddIceCandidateSuccess_.bind(this),this.onAddIceCandidateFailure_.bind(this));
+    this.cast_.iceGo = false;
   }
 }
 PeerRSA.B.prototype.onAddIceCandidateSuccess_ = function() {
@@ -440,6 +443,7 @@ PeerRSA.B.prototype.onSetRemoteDescriptionSuccess_ = function () {
   if (PeerRSA.debug) {
     console.log(this);
   }
+  this.cast_.iceGo = true;
 }
 PeerRSA.B.prototype.onSetRemoteDescriptionFailure_ = function (e) {
   console.error(e);
