@@ -209,9 +209,7 @@ PeerRSA.A.prototype.onRTCSignal_ = function(rtc) {
     this.catch_.pc.setRemoteDescription(sdp,this.onSetRemoteDescriptionSuccess_.bind(this));
   }
   if(rtc.cmd == 'cast.b.ice') {
-    console.log(rtc.candidate);
-    var rtcICE = new RTCIceCandidate(rtc.candidate);
-    this.catch_.pc.addIceCandidate(rtcICE,this.onAddIceCandidateSuccess_.bind(this),this.onAddIceCandidateFailure_.bind(this));
+    this.addIceCatch_(rtc.candidate);
   }
 }
 PeerRSA.A.prototype.onAddIceCandidateSuccess_ = function() {
@@ -222,6 +220,12 @@ PeerRSA.A.prototype.onAddIceCandidateFailure_ = function(e) {
   console.error(e);
   console.trace();
 }
+PeerRSA.A.prototype.addIceCatch_ = function(candidate) {
+  console.log(candidate);
+  var rtcICE = new RTCIceCandidate(candidate);
+  this.catch_.pc.addIceCandidate(rtcICE,this.onAddIceCandidateSuccess_.bind(this),this.onAddIceCandidateFailure_.bind(this));
+}
+
 
 PeerRSA.A.prototype.onSetRemoteDescriptionSuccess_ = function() {
   console.log('onSetRemoteDescriptionSuccess_');
@@ -378,10 +382,7 @@ PeerRSA.B.prototype.onRTCSignal_ = function(rtc) {
     this.cast_.pc.setRemoteDescription(sdp,this.onSetRemoteDescriptionSuccess_.bind(this),this.onSetRemoteDescriptionFailure_.bind(this));
   }
   if(rtc.cmd == 'catch.a.ice') {
-    console.log(rtc.candidate);
-    var rtcICE = new RTCIceCandidate(rtc.candidate);
-    this.cast_.pc.addIceCandidate(rtcICE,this.onAddIceCandidateSuccess_.bind(this),this.onAddIceCandidateFailure_.bind(this));
-    this.cast_.iceGo = false;
+    this.onIceCast_(rtc.candidate);
   }
 }
 PeerRSA.B.prototype.onAddIceCandidateSuccess_ = function() {
@@ -391,6 +392,11 @@ PeerRSA.B.prototype.onAddIceCandidateFailure_ = function(e) {
   console.error('onAddIceCandidateFailure_');
   console.error(e);
   console.trace();
+}
+PeerRSA.B.prototype.onIceCast_ = function(candidate) {
+  console.log(candidate);
+  var rtcICE = new RTCIceCandidate(candidate);
+  this.cast_.pc.addIceCandidate(rtcICE,this.onAddIceCandidateSuccess_.bind(this),this.onAddIceCandidateFailure_.bind(this));
 }
 
 PeerRSA.B.prototype.onCastIce_ = function(evt){
