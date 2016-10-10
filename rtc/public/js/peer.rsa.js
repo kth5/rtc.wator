@@ -222,8 +222,28 @@ PeerRSA.A.prototype.onAddIceCandidateFailure_ = function(e) {
 }
 PeerRSA.A.prototype.addIceCatch_ = function(candidate) {
   console.log(candidate);
-  var rtcICE = new RTCIceCandidate(candidate);
-  this.catch_.pc.addIceCandidate(rtcICE,this.onAddIceCandidateSuccess_.bind(this),this.onAddIceCandidateFailure_.bind(this));
+  if(this.catch_.iceGo) {
+    var rtcICE = new RTCIceCandidate(candidate);
+    this.catch_.pc.addIceCandidate(rtcICE,this.onAddIceCandidateSuccess_.bind(this),this.onAddIceCandidateFailure_.bind(this));
+  } else {
+    // cache up ice before ready
+    this.catch_.iceCache = this.catch_.iceCache || [];
+    this.catch_.iceCache.push(candidate);
+    this.catch_.iceTimer = this.catch_.iceTimer || setInterval(this->onIceCatchCacheCheck_.bind(this),100);
+  }
+}
+PeerRSA.A.prototype.onIceCatchCacheCheck_ = function() {
+  if(this.catch_.iceGo) {
+    if(this.catch_.iceCache.length >0) {
+      var candidate = this.catch_.iceCache[0];
+      this.catch_.iceCache.shift() ;
+      var rtcICE = new RTCIceCandidate(candidate);
+      this.catch_.pc.addIceCandidate(rtcICE,this.onAddIceCandidateSuccess_.bind(this),this.onAddIceCandidateFailure_.bind(this));
+    } else {
+      clearInterval(this.catch_.iceTimer);
+      this.catch_.iceTimer = null;
+    }
+  }
 }
 
 
@@ -373,7 +393,8 @@ PeerRSA.B.prototype.onRTCSignal_ = function(rtc) {
       this.cast_ = this.cast_ || {};
       this.cast_.pc = new RTCPeerConnection(PeerRSA.config,PeerRSA.pcOptions);
       this.cast_.pc.onicecandidate = this.onCastIce_.bind(this);
-     navigator.getUserMedia(media,this.gotMediaSuccess_.bind(this),this.gotMediaFailure_.bind(this));
+      this.cast_.iceGo = false;
+      navigator.getUserMedia(media,this.gotMediaSuccess_.bind(this),this.gotMediaFailure_.bind(this));
     }
   }
   if(rtc.cmd == 'answer') {
@@ -382,7 +403,7 @@ PeerRSA.B.prototype.onRTCSignal_ = function(rtc) {
     this.cast_.pc.setRemoteDescription(sdp,this.onSetRemoteDescriptionSuccess_.bind(this),this.onSetRemoteDescriptionFailure_.bind(this));
   }
   if(rtc.cmd == 'catch.a.ice') {
-    this.onIceCast_(rtc.candidate);
+    this.addIceCast_(rtc.candidate);
   }
 }
 PeerRSA.B.prototype.onAddIceCandidateSuccess_ = function() {
@@ -393,10 +414,30 @@ PeerRSA.B.prototype.onAddIceCandidateFailure_ = function(e) {
   console.error(e);
   console.trace();
 }
-PeerRSA.B.prototype.onIceCast_ = function(candidate) {
+PeerRSA.B.prototype.addIceCast_ = function(candidate) {
   console.log(candidate);
-  var rtcICE = new RTCIceCandidate(candidate);
-  this.cast_.pc.addIceCandidate(rtcICE,this.onAddIceCandidateSuccess_.bind(this),this.onAddIceCandidateFailure_.bind(this));
+  if(this.cast_.iceGo) {
+    var rtcICE = new RTCIceCandidate(candidate);
+    this.cast_.pc.addIceCandidate(rtcICE,this.onAddIceCandidateSuccess_.bind(this),this.onAddIceCandidateFailure_.bind(this));
+  } else {
+    // cache up ice before ready
+    this.cast_.iceCache = this.cast_.iceCache || [];
+    this.cast_.iceCache.push(candidate);
+    this.cast_.iceTimer = this.cast_.iceTimer || setInterval(this->onIceCastCacheCheck_.bind(this),100);
+  }
+}
+PeerRSA.B.prototype.onIceCastCacheCheck_ = function() {
+  if(this.cast_.iceGo) {
+    if(this.cast_.iceCache.length >0) {
+      var candidate = this.cast_.iceCache[0];
+      this.cast_.iceCache.shift() ;
+      var rtcICE = new RTCIceCandidate(candidate);
+      this.cast_.pc.addIceCandidate(rtcICE,this.onAddIceCandidateSuccess_.bind(this),this.onAddIceCandidateFailure_.bind(this));
+    } else {
+      clearInterval(this.cast_.iceTimer);
+      this.cast_.iceTimer = null;
+    }
+  }
 }
 
 PeerRSA.B.prototype.onCastIce_ = function(evt){
