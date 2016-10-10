@@ -213,7 +213,8 @@ PeerRSA.A.prototype.onAddIceCandidateSuccess_ = function() {
   console.log('onAddIceCandidateSuccess_ success');
 }
 PeerRSA.A.prototype.onAddIceCandidateFailure_ = function(e) {
-  console.error('onAddIceCandidateSuccess_',e);
+  console.error('onAddIceCandidateFailure_');
+  console.error(e);
 }
 
 PeerRSA.A.prototype.onSetRemoteDescriptionSuccess_ = function() {
@@ -388,7 +389,8 @@ PeerRSA.B.prototype.onAddIceCandidateSuccess_ = function() {
   console.log('onAddIceCandidateSuccess_ success');
 }
 PeerRSA.B.prototype.onAddIceCandidateFailure_ = function(e) {
-  console.error('onAddIceCandidateSuccess_',e);
+  console.error('onAddIceCandidateFailure_');
+  console.error(e);
 }
 
 PeerRSA.B.prototype.gotMediaSuccess_ = function (stream) {
