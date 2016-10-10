@@ -18,6 +18,7 @@ PeerRSA.A = function (token) {
   }
   this.wss.onerror = function (err) {
     console.error(err);
+    console.trace();
   }
   this.wss.onmessage = function (event) {
     self.onSignalMsg_(event);
@@ -128,6 +129,7 @@ PeerRSA.A.prototype.gotMediaSuccess_ = function (stream) {
 
 PeerRSA.A.prototype.gotMediaFailure_ = function (e) {
   console.error(e);
+  console.trace();
 }
 
 PeerRSA.A.prototype.offerSuccess_ = function (offer) {
@@ -137,6 +139,7 @@ PeerRSA.A.prototype.offerSuccess_ = function (offer) {
     }.bind(this),
     function (e) {
       console.error(e);
+      console.trace();
   });
   var rtc = {cmd:"offer",offer:offer};
   this.sendSignal_(rtc);
@@ -144,6 +147,7 @@ PeerRSA.A.prototype.offerSuccess_ = function (offer) {
 
 PeerRSA.A.prototype.gotMediaFailure_ = function (e) {
   console.error(e);
+  console.trace();
 }
 
 /*
@@ -215,6 +219,7 @@ PeerRSA.A.prototype.onAddIceCandidateSuccess_ = function() {
 PeerRSA.A.prototype.onAddIceCandidateFailure_ = function(e) {
   console.error('onAddIceCandidateFailure_');
   console.error(e);
+  console.trace();
 }
 
 PeerRSA.A.prototype.onSetRemoteDescriptionSuccess_ = function() {
@@ -231,6 +236,7 @@ PeerRSA.A.prototype.onCreateAnswerSuccess_ = function(answer) {
 }
 PeerRSA.A.prototype.onCreateAnswerError_ = function(error) {
   console.error(error);
+  console.trace();
 }
 
 
@@ -250,6 +256,7 @@ PeerRSA.B = function (token) {
   }
   this.wss.onerror = function (err) {
     console.error(err);
+    console.trace();
   }
   this.wss.onmessage = function (event) {
     self.onSignalMsg_(event);
@@ -391,6 +398,7 @@ PeerRSA.B.prototype.onAddIceCandidateSuccess_ = function() {
 PeerRSA.B.prototype.onAddIceCandidateFailure_ = function(e) {
   console.error('onAddIceCandidateFailure_');
   console.error(e);
+  console.trace();
 }
 
 PeerRSA.B.prototype.gotMediaSuccess_ = function (stream) {
@@ -406,6 +414,7 @@ PeerRSA.B.prototype.gotMediaSuccess_ = function (stream) {
 
 PeerRSA.B.prototype.gotMediaFailure_ = function (e) {
   console.error(e);
+  console.trace();
 }
 
 PeerRSA.B.prototype.offerSuccess_ = function (offer) {
@@ -417,11 +426,13 @@ PeerRSA.B.prototype.offerSuccess_ = function (offer) {
   }.bind(this),
   function (e) {
     console.error(e);
+    console.trace();
   });
 }
 
 PeerRSA.B.prototype.offerFailure_ = function (e) {
   console.error(e);
+  console.trace();
 }
 PeerRSA.B.prototype.onSetRemoteDescriptionSuccess_ = function () {
   if (PeerRSA.debug) {
@@ -430,6 +441,7 @@ PeerRSA.B.prototype.onSetRemoteDescriptionSuccess_ = function () {
 }
 PeerRSA.B.prototype.onSetRemoteDescriptionFailure_ = function (e) {
   console.error(e);
+  console.trace();
 }
 
 
@@ -512,7 +524,8 @@ PeerRSA.Key.B.addKey = function (rawPubKey) {
     localStorage.setItem('rtc.PeerRSA.B.pair',JSON.stringify(bOldPairs));
     
   } catch(e) {
-  console.error(e);
+    console.error(e);
+    console.trace();
   }
 }
 
@@ -529,6 +542,7 @@ PeerRSA.Key.B.getRemoteDevices = function (cb) {
     return bTokens;
   } catch(e) {
     console.error(e);
+    console.trace();
     return {};
   }
 }
@@ -543,6 +557,7 @@ PeerRSA.signature_ = function(orig) {
     return signature;
   } catch(e) {
     console.error(e);
+    console.trace();
     return nul;
   }
 }
@@ -565,6 +580,7 @@ PeerRSA.verify_ = function(orig,signature) {
     return false;
   } catch(e) {
     console.error(e);
+    console.trace();
     return false;
   }
 }
@@ -623,6 +639,7 @@ PeerRSA.createKeyPair_ = function(cb) {
     })
     .catch(function(err){
       console.error(err);
+      console.trace();
     });
     window.crypto.subtle.exportKey(
     "jwk", //can be "jwk" (public or private), "spki" (public only), or "pkcs8" (private only)
@@ -645,10 +662,12 @@ PeerRSA.createKeyPair_ = function(cb) {
     })
     .catch(function(err){
       console.error(err);
+      console.trace();
     });
   })
   .catch(function(err){
     console.error(err);
+    console.trace();
   });
 }
 
