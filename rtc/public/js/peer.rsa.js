@@ -229,7 +229,7 @@ PeerRSA.A.prototype.addIceCatch_ = function(candidate) {
     // cache up ice before ready
     this.catch_.iceCache = this.catch_.iceCache || [];
     this.catch_.iceCache.push(candidate);
-    this.catch_.iceTimer = this.catch_.iceTimer || setInterval(this->onIceCatchCacheCheck_.bind(this),100);
+    this.catch_.iceTimer = this.catch_.iceTimer || setInterval(this.onIceCatchCacheCheck_.bind(this),100);
   }
 }
 PeerRSA.A.prototype.onIceCatchCacheCheck_ = function() {
@@ -423,7 +423,7 @@ PeerRSA.B.prototype.addIceCast_ = function(candidate) {
     // cache up ice before ready
     this.cast_.iceCache = this.cast_.iceCache || [];
     this.cast_.iceCache.push(candidate);
-    this.cast_.iceTimer = this.cast_.iceTimer || setInterval(this->onIceCastCacheCheck_.bind(this),100);
+    this.cast_.iceTimer = this.cast_.iceTimer || setInterval(this.onIceCastCacheCheck_.bind(this),100);
   }
 }
 PeerRSA.B.prototype.onIceCastCacheCheck_ = function() {
