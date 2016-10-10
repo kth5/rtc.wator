@@ -107,7 +107,7 @@ PeerRSA.A.prototype.onMediaType_ = function (config) {
     }
   }
 }
-PeerRSA.A.prototype.onCatchIce = function (evt) {
+PeerRSA.A.prototype.onCatchIce_ = function (evt) {
   if(evt.candidate) {
     console.log(evt.candidate);
     var rtc = {cmd:"catch.a.ice",candidate:evt.candidate};
