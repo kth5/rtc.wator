@@ -83,18 +83,7 @@ PeerRSA.A.prototype.connect = function (config) {
     console.log(PeerRSA.config);
     console.log(PeerRSA.pcOptions);
     this.catch_.pc = new RTCPeerConnection(PeerRSA.config,PeerRSA.pcOptions);
-    this.catch_.pc.onicecandidate = function(evt){
-      if(evt.candidate) {
-        console.log(evt.candidate);
-        var rtc = {cmd:"catch.a.ice",candidate:evt.candidate};
-        if (PeerRSA.debug) {
-          console.log(JSON.stringify(rtc));
-        }
-        this.sendSignal_(rtc);
-      } else {
-        console.log("end of onicecandidate");
-      }
-    }.bind(this);
+    this.catch_.pc.onicecandidate = this.onCatchIce_.bind(this);
     this.catch_.pc.onaddstream = function (evt) {
       if (PeerRSA.debug) {
         console.log(evt);
@@ -117,7 +106,18 @@ PeerRSA.A.prototype.onMediaType_ = function (config) {
     }
   }
 }
-
+PeerRSA.A.prototype.onCatchIce = function (evt) {
+  if(evt.candidate) {
+    console.log(evt.candidate);
+    var rtc = {cmd:"catch.a.ice",candidate:evt.candidate};
+    if (PeerRSA.debug) {
+      console.log(JSON.stringify(rtc));
+    }
+    this.sendSignal_(rtc);
+  } else {
+    console.log("end of onicecandidate");
+  }
+}
 
 PeerRSA.A.prototype.gotMediaSuccess_ = function (stream) {
   if (PeerRSA.debug) {
@@ -366,18 +366,7 @@ PeerRSA.B.prototype.onRTCSignal_ = function(rtc) {
       this.sendSignal_(rtc);
       this.cast_ = this.cast_ || {};
       this.cast_.pc = new RTCPeerConnection(PeerRSA.config,PeerRSA.pcOptions);
-      this.cast_.pc.onicecandidate = function(evt){
-        if(evt.candidate) {
-          console.log(evt.candidate);
-          var rtc = {cmd:"cast.b.ice",candidate:evt.candidate};
-          if (PeerRSA.debug) {
-            console.log(JSON.stringify(rtc));
-          }
-          this.sendSignal_(rtc);
-        } else {
-          console.log("end of onicecandidate");
-        }
-      }.bind(this);
+      this.cast_.pc.onicecandidate = this.onCastIce_.bind(this);
      navigator.getUserMedia(media,this.gotMediaSuccess_.bind(this),this.gotMediaFailure_.bind(this));
     }
   }
@@ -399,6 +388,19 @@ PeerRSA.B.prototype.onAddIceCandidateFailure_ = function(e) {
   console.error('onAddIceCandidateFailure_');
   console.error(e);
   console.trace();
+}
+
+PeerRSA.B.prototype.onCastIce_ = function(evt){
+  if(evt.candidate) {
+    console.log(evt.candidate);
+    var rtc = {cmd:"cast.b.ice",candidate:evt.candidate};
+    if (PeerRSA.debug) {
+    console.log(JSON.stringify(rtc));
+    }
+    this.sendSignal_(rtc);
+  } else {
+    console.log("end of onicecandidate");
+  }
 }
 
 PeerRSA.B.prototype.gotMediaSuccess_ = function (stream) {
