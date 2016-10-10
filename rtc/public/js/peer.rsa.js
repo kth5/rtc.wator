@@ -233,6 +233,7 @@ PeerRSA.A.prototype.addIceCatch_ = function(candidate) {
   }
 }
 PeerRSA.A.prototype.onIceCatchCacheCheck_ = function() {
+  console.warn('!!!onIceCatchCacheCheck_!!!');
   if(this.catch_.iceGo) {
     if(this.catch_.iceCache.length >0) {
       var candidate = this.catch_.iceCache[0];
@@ -427,6 +428,7 @@ PeerRSA.B.prototype.addIceCast_ = function(candidate) {
   }
 }
 PeerRSA.B.prototype.onIceCastCacheCheck_ = function() {
+  console.warn('!!!onIceCatchCacheCheck_!!!');
   if(this.cast_.iceGo) {
     if(this.cast_.iceCache.length >0) {
       var candidate = this.cast_.iceCache[0];
