@@ -1,10 +1,12 @@
 @extends('app')
 @section('content')
 <style type="text/css">
+<!--
   .col-md-6 {
   padding-right: 15px;
   padding-left: 15px;
   }
+-->
 </style>
 <div class="container bg-warning container-mime-key">
   <div class="row">
