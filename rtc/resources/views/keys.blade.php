@@ -95,7 +95,7 @@ $(document).ready(function(){
     }
   }
   
-  $('.remove-key-btn').on('click',function(){
+  $('#key-table-body').on('click','.remove-key-btn',function(){
     console.log(this);
   });
   updateKeysView();
