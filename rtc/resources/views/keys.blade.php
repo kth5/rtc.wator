@@ -1,7 +1,7 @@
 @extends('app')
 @section('content')
 <style type="text/css">
-  .col-md-4 {
+  .col-md-6 {
   padding-right: 15px;
   padding-left: 15px;
   }
