@@ -18,9 +18,13 @@
   margin-top:20px;
 }
 
+#btn-create-key {
+  margin-left:5px;
+}
+
 #btn-copy-key {
-  margin-right:20px;
+  margin-right:5px;
 }
 #btn-add-key {
-  margin-left:20px;
+  margin-left:5px;
 }
