@@ -16,9 +16,9 @@
       <div class="row">
         <h3>Add RSA Public Key from remote device</h3>
         <div class="form-group">
-          <button type="button" class="btn btn-success btn-sm" id="btn-add-key">+</button>
           <label for="inputlg">Paste public key of remote device.</label>
-          <textarea class="form-control" id="text-remote-device-key" rows="6"></textarea>
+          <button type="button" class="btn btn-success btn-sm" id="btn-add-key">+</button>
+          <textarea class="form-control small" id="text-remote-device-key" rows="20"></textarea>
         </div>
       </div>
     </div>
