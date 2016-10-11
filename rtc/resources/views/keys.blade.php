@@ -23,7 +23,7 @@
       <label for="inputlg">Paste public key of remote device.</label>
       <textarea class="form-control" id="text-remote-device-key" rows="6"></textarea>
     </div>
-    <table class="table table-striped">
+    <table class="table table-striped table-bordered">
       <tr></tr>
     </table>
   </div>
