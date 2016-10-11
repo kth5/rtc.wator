@@ -14,16 +14,18 @@
     </div>
     <div class="col-md-6">
       <div class="row">
-        <button type="button" class="btn btn-danger btn-sm" id="btn-create-key">recreate</button>
-        <button type="button" class="btn btn-info btn-sm  pull-right btn-clipboard" data-clipboard-target="#text-this-device-key">Copy</button>
-        <pre id="text-this-device-key" class="text-danger small" rows="20"></pre>
-        <h5 class="text-info">Please send this public key to your another device,by e-mail,sns or etc.</h5>
+        <h3>Add RSA Public Key from remote device</h3>
+        <div class="form-group">
+          <button type="button" class="btn btn-success btn-sm" id="btn-add-key">+</button>
+          <label for="inputlg">Paste public key of remote device.</label>
+          <textarea class="form-control" id="text-remote-device-key" rows="6"></textarea>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="container bg-info container-your-key">
+<!--div class="container bg-info container-your-key">
   <div class="row">
     <h3>Add RSA Public Key from remote device</h3>
     <div class="form-group">
@@ -32,7 +34,7 @@
       <textarea class="form-control" id="text-remote-device-key" rows="6"></textarea>
     </div>
   </div>
-</div>
+</div-->
 
 <div class="container bg-success container-pair-keys">
   <div class="row">
