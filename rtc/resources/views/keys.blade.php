@@ -74,7 +74,11 @@ $(document).ready(function(){
   var pairs = PeerRSA.Key.B.getPairDevices();
   for(var i = 0 ;i < pairs.length;i++) {
     console.log(pairs[i]);
-    $('#key-table-body').append('<tr><td>' + pairs[i] + '</td><td>-</td></tr>')
+    var row = '<tr><td>' + pairs[i] + '</td>';
+    row += '<td>';
+    row += '<button type="button" class="btn btn-danger btn-sm">-</button>';
+    row += '</td></tr>';
+    $('#key-table-body').append(row);
   }
 });
 </script>
