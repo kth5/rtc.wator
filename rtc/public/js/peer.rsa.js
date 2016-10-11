@@ -611,6 +611,42 @@ PeerRSA.Key.B.getRemoteDevices = function (cb) {
   }
 }
 
+PeerRSA.Key.B.getPairDevices = function () {
+  //
+  try {
+    var bTokens = JSON.parse(localStorage.getItem('rtc.PeerRSA.B.pair')) || {};
+    return Object.keys(bTokens);
+  } catch(e) {
+    console.error(e);
+    console.trace();
+    return null;
+  }
+}
+PeerRSA.Key.B.removeDevices = function (token) {
+  //
+  try {
+    var bPairs = JSON.parse(localStorage.getItem('rtc.PeerRSA.B.pair')) || {};
+    var rToken = bPairs[token];
+    delete bPairs[token];
+    localStorage.setItem('rtc.PeerRSA.B.pair',JSON.stringify(bPairs));
+
+    var aPairs = JSON.parse(localStorage.getItem('rtc.PeerRSA.A.pair')) || {};
+    delete aPairs[rToken];
+    localStorage.setItem('rtc.PeerRSA.A.pair',JSON.stringify(aPairs));
+
+    var bTokens = JSON.parse(localStorage.getItem('rtc.PeerRSA.B.token')) || {};
+    delete bTokens[token];
+    localStorage.setItem('rtc.PeerRSA.B.token',JSON.stringify(bTokens));
+
+    var aTokens = JSON.parse(localStorage.getItem('rtc.PeerRSA.A.token')) || {};
+    delete aTokens[rToken];
+    localStorage.setItem('rtc.PeerRSA.A.token',JSON.stringify(aTokens));
+  } catch(e) {
+    console.error(e);
+    console.trace();
+  }
+}
+
 
 
 PeerRSA.signature_ = function(orig) {
