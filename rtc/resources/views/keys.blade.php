@@ -3,22 +3,22 @@
 
 <div class="container bg-warning container-mime-key">
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-5">
       <div class="row">
-        <h3>Public RSA Key belong to this device</h3>
+        <h4>Public RSA Key belong to this device</h4>
         <button type="button" class="btn btn-danger btn-sm" id="btn-create-key">recreate</button>
         <button type="button" class="btn btn-info btn-sm  pull-right btn-clipboard" data-clipboard-target="#text-this-device-key">Copy</button>
         <pre id="text-this-device-key" class="text-danger small" rows="20"></pre>
         <h5 class="text-info">Please send this public key to your another device,by e-mail,sns or etc.</h5>
       </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-5">
       <div class="row">
-        <h3>Add RSA Public Key from remote device</h3>
+        <h4>Add RSA Public Key from remote device</h4>
         <div class="form-group">
           <label for="inputlg">Paste public key of remote device.</label>
           <button type="button" class="btn btn-success btn-sm" id="btn-add-key">+</button>
-          <textarea class="form-control input-sm" id="text-remote-device-key" rows="13"></textarea>
+          <textarea class="form-control input-sm" id="text-remote-device-key" rows="14"></textarea>
         </div>
       </div>
     </div>
