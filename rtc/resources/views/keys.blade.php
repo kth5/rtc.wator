@@ -85,6 +85,7 @@ $(document).ready(function(){
       row += '</td>';
       row += '<td>' + pairs[i] + '</td>';
       row += '</tr>';
+      console.log(row);
       $('#key-table-body').append(row);
     }
   }
