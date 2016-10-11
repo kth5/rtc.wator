@@ -10,7 +10,7 @@
 </style>
 <div class="container bg-warning container-mime-key">
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-6" style="padding-right:15px">
       <div class="row">
         <h4>Public RSA Key belong to this device</h4>
         <button type="button" class="btn btn-danger btn-sm" id="btn-create-key">recreate</button>
@@ -19,7 +19,7 @@
         <h5 class="text-info">Please send this public key to your another device,by e-mail,sns or etc.</h5>
       </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6" style="padding-left:15px">
       <div class="row">
         <h4>Add RSA Public Key from remote device</h4>
         <div class="form-group">
