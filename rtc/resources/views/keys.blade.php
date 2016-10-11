@@ -80,7 +80,7 @@ $(document).ready(function(){
       row += '<button type="button" class="btn btn-danger btn-sm" ';
       row += 'value="';
       row += pairs[i];
-      row += '"';
+      row += '" ';
       row += 'onClick="removeKey(this)"';
       row += '>-</button>';
       row += '</td>';
