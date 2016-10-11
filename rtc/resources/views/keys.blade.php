@@ -18,16 +18,22 @@
 <div class="container bg-info container-your-key">
   <div class="row">
     <h2>Add Key of remote device</h2>
-      <div class="form-group">
+    <div class="form-group">
       <button type="button" class="btn btn-success btn-sm" id="btn-add-key">+</button>
       <label for="inputlg">Paste public key of remote device.</label>
       <textarea class="form-control" id="text-remote-device-key" rows="6"></textarea>
     </div>
+  </div>
+</div>
+
+<div class="container bg-succuss container-remote-list">
+  <div class="row">
     <table class="table table-striped table-bordered">
       <tr></tr>
     </table>
   </div>
 </div>
+
 
 <script type="text/javascript">
   new Clipboard('.btn-clipboard');
