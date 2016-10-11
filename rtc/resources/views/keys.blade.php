@@ -1,6 +1,6 @@
 @extends('app')
 @section('content')
-<div class="container bg-warning container-mime-key">
+<div class="container-fluid bg-warning container-mime-key">
   <div class="row">
     <div class="col-md-6"">
       <div class="row">
@@ -25,7 +25,7 @@
 </div>
 
 
-<div class="container bg-success container-pair-keys">
+<div class="container-fluid bg-success container-pair-keys">
   <div class="row">
     <h4>Remote devices:</h4>
     <table class="table table-striped table-bordered">
