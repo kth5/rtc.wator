@@ -33,7 +33,6 @@
         <tr>
           <th>#</th>
           <th></th>
-          <th></th>
         </tr>
       </thead>
       <tbody id="key-table-body"></tbody>
@@ -81,6 +80,7 @@ $(document).ready(function(){
   var pairs = PeerRSA.Key.B.getPairDevices();
   for(var i = 0 ;i < pairs.length;i++) {
     console.log(pairs[i]);
+    $('#key-table-body> tr:last').after('<tr><td>' + pairs[i] + '</td><td>-</td></tr>')
   }
 });
 </script>
