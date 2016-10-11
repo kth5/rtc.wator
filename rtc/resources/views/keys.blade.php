@@ -61,46 +61,40 @@
 </script>
 <script type="text/javascript">
   $(document).ready(function(){
-  $('#btn-add-key').click(function(){
-    var key = $('#text-remote-device-key').val();
-    //console.log(key);
-    PeerRSA.Key.B.addKey(key);
-  });
-});
-</script>
-
-<script type="text/javascript">
-$(document).ready(function(){
-  function updateKeysView() {
-    var pairs = PeerRSA.Key.B.getPairDevices();
-    $('#key-table-body').empty();
-    for(var i = 0 ;i < pairs.length;i++) {
-      console.log(pairs[i]);
-      var row = '<tr>';
-      row += '<td>';
-      row += '<button type="button" class="btn btn-danger btn-sm remove-key-btn" ';
-      row += 'value="';
-      row += pairs[i];
-      row += '" ';
-      row += '>-</button>';
-      row += '</td>';
-      row += '<td>' + pairs[i] + '</td>';
-      row += '</tr>';
-      console.log(row);
-      $('#key-table-body').append(row);
+    function updateKeysView() {
+      var pairs = PeerRSA.Key.B.getPairDevices();
+      $('#key-table-body').empty();
+      for(var i = 0 ;i < pairs.length;i++) {
+        console.log(pairs[i]);
+        var row = '<tr>';
+        row += '<td>';
+        row += '<button type="button" class="btn btn-danger btn-sm remove-key-btn" ';
+        row += 'value="';
+        row += pairs[i];
+        row += '" ';
+        row += '>-</button>';
+        row += '</td>';
+        row += '<td>' + pairs[i] + '</td>';
+        row += '</tr>';
+        console.log(row);
+        $('#key-table-body').append(row);
+      }
     }
-  }
-  
-  $('#key-table-body').on('click','.remove-key-btn',function(){
-    var token = $(this).val();
-    console.log(token);
-    PeerRSA.Key.B.removeDevice(token);
+    $('#key-table-body').on('click','.remove-key-btn',function(){
+      var token = $(this).val();
+      console.log(token);
+      PeerRSA.Key.B.removeDevice(token);
+      updateKeysView();
+    });
+    $('#btn-add-key').click(function(){
+      var key = $('#text-remote-device-key').val();
+      //console.log(key);
+      PeerRSA.Key.B.addKey(key);
+      updateKeysView();
+    });
     updateKeysView();
   });
-  updateKeysView();
-});
 </script>
-
 
 @endsection
 
