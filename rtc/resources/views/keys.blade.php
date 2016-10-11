@@ -81,11 +81,11 @@ $(document).ready(function(){
       console.log(pairs[i]);
       var row = '<tr>';
       row += '<td>';
-      row += '<button type="button" class="btn btn-danger btn-sm" ';
+      row += '<button type="button" class="btn btn-danger btn-sm remove-key-btn" ';
       row += 'value="';
       row += pairs[i];
       row += '" ';
-      row += 'onClick="removeKey(this)"';
+//      row += 'onClick="removeKey(this)"';
       row += '>-</button>';
       row += '</td>';
       row += '<td>' + pairs[i] + '</td>';
@@ -94,6 +94,9 @@ $(document).ready(function(){
       $('#key-table-body').append(row);
     }
   }
+  $('.remove-key-btn').click(function(){
+    console.log(this);
+  });
   updateKeysView();
 });
 </script>
