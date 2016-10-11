@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Wator Vapor</title>
+    <meta name="viewport" content="width=device-width,initial-scale=0.4, maximum-scale=0.4,minimum-scale=0.4, user-scalable=no">
     <link href="//fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
     <link href="//www.watorvapor.com/rtc/css/app.css" rel="stylesheet" type="text/css">
     <link href="//www.watorvapor.com/rtc/css/navbar.css" rel="stylesheet" type="text/css">
