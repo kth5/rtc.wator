@@ -29,6 +29,9 @@ PeerRSA.Key.B.addKey = function (rawPubKey) {
 PeerRSA.Key.B.getRemoteDevices = function (cb) {
 }
 PeerRSA.Key.B.getPairDevices = function () {
+  return [];
+}
+PeerRSA.Key.B.removeDevices = function (token) {
 }
 
 
