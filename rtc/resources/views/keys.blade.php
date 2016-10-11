@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col-md-6"">
       <div class="row">
-        <h4>Public RSA Key belong to this device</h4>
+        <h4>Public Key belong to this device</h4>
         <button type="button" class="btn btn-danger btn-sm" id="btn-create-key">recreate</button>
         <label for="inputsm">Send public key to another device by e-mail,sns or etc.</label>
         <button type="button" class="btn btn-info btn-sm  pull-right btn-clipboard" id="btn-copy-key" data-clipboard-target="#text-this-device-key">Copy</button>
@@ -13,7 +13,7 @@
     </div>
     <div class="col-md-6">
       <div class="row">
-        <h4>Add RSA Public Key from remote device</h4>
+        <h4>Public Key from remote device</h4>
         <div class="form-group">
           <button type="button" class="btn btn-success btn-sm" id="btn-add-key">+</button>
           <label for="inputsm">Paste public key of remote device.</label>
