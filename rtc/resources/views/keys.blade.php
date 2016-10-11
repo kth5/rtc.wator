@@ -12,7 +12,7 @@
         <h5 class="text-info">Please send this public key to your another device,by e-mail,sns or etc.</h5>
       </div>
     </div>
-    <div class="col-md-5 col-md-offset-1">
+    <div class="col-md-6">
       <div class="row">
         <h3>Add RSA Public Key from remote device</h3>
         <div class="form-group">
