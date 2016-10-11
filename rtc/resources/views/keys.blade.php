@@ -71,17 +71,28 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
-  var pairs = PeerRSA.Key.B.getPairDevices();
-  for(var i = 0 ;i < pairs.length;i++) {
-    console.log(pairs[i]);
-    var row = '<tr>';
-    row += '<td>';
-    row += '<button type="button" class="btn btn-danger btn-sm">-</button>';
-    row += '</td>';
-    row += '<td>' + pairs[i] + '</td>';
-    row += '</tr>';
-    $('#key-table-body').append(row);
+  function updateKeysView() {
+    var pairs = PeerRSA.Key.B.getPairDevices();
+    for(var i = 0 ;i < pairs.length;i++) {
+      console.log(pairs[i]);
+      var row = '<tr>';
+      row += '<td>';
+      row += '<button type="button" class="btn btn-danger btn-sm"';
+      row += 'onClick="removeKey(';
+      row += pairs[i];
+      row += ')';
+      row += '>-</button>';
+      row += '</td>';
+      row += '<td>' + pairs[i] + '</td>';
+      row += '</tr>';
+      $('#key-table-body').append(row);
+    }
   }
+  function removeKey(key){
+    console.log(key);
+    updateKeysView();
+  }
+  updateKeysView();
 });
 </script>
 
