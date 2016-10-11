@@ -4,7 +4,7 @@
 <div class="container bg-warning container-mime-key">
   <div class="row">
     <h3>Public RSA Key belong to this device</h3>
-    <div class="col-sm-9">
+    <div class="col-md-6">
       <div class="row">
         <button type="button" class="btn btn-danger btn-sm" id="btn-create-key">recreate</button>
         <button type="button" class="btn btn-info btn-sm  pull-right btn-clipboard" data-clipboard-target="#text-this-device-key">Copy</button>
@@ -12,7 +12,7 @@
         <h5 class="text-info">Please send this public key to your another device,by e-mail,sns or etc.</h5>
       </div>
     </div>
-    <div class="col-sm-9">
+    <div class="col-md-6">
       <div class="row">
         <button type="button" class="btn btn-danger btn-sm" id="btn-create-key">recreate</button>
         <button type="button" class="btn btn-info btn-sm  pull-right btn-clipboard" data-clipboard-target="#text-this-device-key">Copy</button>
