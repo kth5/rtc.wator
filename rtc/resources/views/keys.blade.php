@@ -18,23 +18,13 @@
         <div class="form-group">
           <label for="inputlg">Paste public key of remote device.</label>
           <button type="button" class="btn btn-success btn-sm" id="btn-add-key">+</button>
-          <textarea class="form-control small" id="text-remote-device-key" rows="20"></textarea>
+          <textarea class="form-control input-sm" id="text-remote-device-key" rows="20"></textarea>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!--div class="container bg-info container-your-key">
-  <div class="row">
-    <h3>Add RSA Public Key from remote device</h3>
-    <div class="form-group">
-      <button type="button" class="btn btn-success btn-sm" id="btn-add-key">+</button>
-      <label for="inputlg">Paste public key of remote device.</label>
-      <textarea class="form-control" id="text-remote-device-key" rows="6"></textarea>
-    </div>
-  </div>
-</div-->
 
 <div class="container bg-success container-pair-keys">
   <div class="row">
