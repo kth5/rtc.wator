@@ -31,7 +31,7 @@
     <table class="table table-striped table-bordered">
       <thead>
         <tr>
-          <th>Token</th>
+          <th>#</th>
           <th></th>
           <th></th>
         </tr>
