@@ -17,3 +17,10 @@
 .container-video {
   margin-top:20px;
 }
+
+#btn-copy-key {
+  margin-right:20px;
+}
+#btn-add-key {
+  margin-left:20px;
+}
