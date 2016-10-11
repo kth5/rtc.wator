@@ -12,6 +12,14 @@
         <h5 class="text-info">Please send this public key to your another device,by e-mail,sns or etc.</h5>
       </div>
     </div>
+    <div class="col-sm-9">
+      <div class="row">
+        <button type="button" class="btn btn-danger btn-sm" id="btn-create-key">recreate</button>
+        <button type="button" class="btn btn-info btn-sm  pull-right btn-clipboard" data-clipboard-target="#text-this-device-key">Copy</button>
+        <pre id="text-this-device-key" class="text-danger small" rows="20"></pre>
+        <h5 class="text-info">Please send this public key to your another device,by e-mail,sns or etc.</h5>
+      </div>
+    </div>
   </div>
 </div>
 
