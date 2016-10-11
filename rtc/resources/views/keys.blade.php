@@ -6,8 +6,8 @@
       <div class="row">
         <h4>Public Key belong to this device</h4>
         <button type="button" class="btn btn-danger btn-sm" id="btn-create-key">recreate</button>
-        <span class="label label-primary">Send public key to another device by e-mail,sns or etc.</span>
-        <button type="button" class="btn btn-info btn-sm  pull-right btn-clipboard" id="btn-copy-key" data-clipboard-target="#text-this-device-key">Copy</button>
+        <span class="label label-info">Send public key to another device by e-mail,sns or etc.</span>
+        <button type="button" class="btn btn-primary btn-sm  pull-right btn-clipboard" id="btn-copy-key" data-clipboard-target="#text-this-device-key">Copy</button>
         <pre id="text-this-device-key" class="text-danger small" rows="20"></pre>
       </div>
     </div>
@@ -16,7 +16,7 @@
         <h4>Public Key from remote device</h4>
         <div class="form-group">
           <button type="button" class="btn btn-success btn-sm" id="btn-add-key">+</button>
-          <span class="label label-primary">Paste public key of remote device.</span>
+          <span class="label label-info">Paste public key of remote device.</span>
           <textarea class="form-control input-sm" id="text-remote-device-key" rows="14"></textarea>
         </div>
       </div>
