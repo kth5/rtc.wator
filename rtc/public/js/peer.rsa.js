@@ -228,7 +228,7 @@ PeerRSA.A.prototype.addIceCatch_ = function(candidate) {
   console.log(candidate);
   if(this.catch_.iceGo) {
     var rtcICE = new RTCIceCandidate(candidate);
-//    this.catch_.pc.addIceCandidate(rtcICE,this.onAddIceCandidateSuccess_.bind(this),this.onAddIceCandidateFailure_.bind(this));
+    this.catch_.pc.addIceCandidate(rtcICE,this.onAddIceCandidateSuccess_.bind(this),this.onAddIceCandidateFailure_.bind(this));
   } else {
     // cache up ice before ready
     this.catch_.iceCache = this.catch_.iceCache || [];
@@ -243,7 +243,7 @@ PeerRSA.A.prototype.onIceCatchCacheCheck_ = function() {
       var candidate = this.catch_.iceCache[0];
       this.catch_.iceCache.shift() ;
       var rtcICE = new RTCIceCandidate(candidate);
-//      this.catch_.pc.addIceCandidate(rtcICE,this.onAddIceCandidateSuccess_.bind(this),this.onAddIceCandidateFailure_.bind(this));
+      this.catch_.pc.addIceCandidate(rtcICE,this.onAddIceCandidateSuccess_.bind(this),this.onAddIceCandidateFailure_.bind(this));
     } else {
       clearInterval(this.catch_.iceTimer);
       this.catch_.iceTimer = null;
@@ -430,7 +430,7 @@ PeerRSA.B.prototype.addIceCast_ = function(candidate) {
   console.log(candidate);
   if(this.cast_.iceGo) {
     var rtcICE = new RTCIceCandidate(candidate);
-//    this.cast_.pc.addIceCandidate(rtcICE,this.onAddIceCandidateSuccess_.bind(this),this.onAddIceCandidateFailure_.bind(this));
+    this.cast_.pc.addIceCandidate(rtcICE,this.onAddIceCandidateSuccess_.bind(this),this.onAddIceCandidateFailure_.bind(this));
   } else {
     // cache up ice before ready
     this.cast_.iceCache = this.cast_.iceCache || [];
@@ -445,7 +445,7 @@ PeerRSA.B.prototype.onIceCastCacheCheck_ = function() {
       var candidate = this.cast_.iceCache[0];
       this.cast_.iceCache.shift() ;
       var rtcICE = new RTCIceCandidate(candidate);
-//      this.cast_.pc.addIceCandidate(rtcICE,this.onAddIceCandidateSuccess_.bind(this),this.onAddIceCandidateFailure_.bind(this));
+      this.cast_.pc.addIceCandidate(rtcICE,this.onAddIceCandidateSuccess_.bind(this),this.onAddIceCandidateFailure_.bind(this));
     } else {
       clearInterval(this.cast_.iceTimer);
       this.cast_.iceTimer = null;
