@@ -17,7 +17,7 @@
         <div class="form-group">
           <button type="button" class="btn btn-success btn-sm" id="btn-add-key">+</button>
           <label for="inputlg">Paste public key of remote device.</label>
-          <textarea class="form-control input-sm" id="text-remote-device-key" rows="14"></textarea>
+          <textarea class="form-control input-sm" id="text-remote-device-key" rows="13"></textarea>
         </div>
       </div>
     </div>
