@@ -71,12 +71,9 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
-  function removeKey(btn){
-    console.log(btn);
-    updateKeysView();
-  }
   function updateKeysView() {
     var pairs = PeerRSA.Key.B.getPairDevices();
+    $('#key-table-body').empty();
     for(var i = 0 ;i < pairs.length;i++) {
       console.log(pairs[i]);
       var row = '<tr>';
@@ -85,7 +82,6 @@ $(document).ready(function(){
       row += 'value="';
       row += pairs[i];
       row += '" ';
-//      row += 'onClick="removeKey(this)"';
       row += '>-</button>';
       row += '</td>';
       row += '<td>' + pairs[i] + '</td>';
