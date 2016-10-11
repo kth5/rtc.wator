@@ -622,7 +622,7 @@ PeerRSA.Key.B.getPairDevices = function () {
     return null;
   }
 }
-PeerRSA.Key.B.removeDevices = function (token) {
+PeerRSA.Key.B.removeDevice = function (token) {
   //
   try {
     var bPairs = JSON.parse(localStorage.getItem('rtc.PeerRSA.B.pair')) || {};
