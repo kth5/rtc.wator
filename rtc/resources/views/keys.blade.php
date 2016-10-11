@@ -96,7 +96,10 @@ $(document).ready(function(){
   }
   
   $('#key-table-body').on('click','.remove-key-btn',function(){
-    console.log($(this).val());
+    var token = $(this).val();
+    console.log(token);
+    PeerRSA.Key.B.removeDevice(token);
+    updateKeysView();
   });
   updateKeysView();
 });
