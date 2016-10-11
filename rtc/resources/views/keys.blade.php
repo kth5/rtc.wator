@@ -6,6 +6,7 @@
       <div class="row">
         <h4>Public RSA Key belong to this device</h4>
         <button type="button" class="btn btn-danger btn-sm" id="btn-create-key">recreate</button>
+        <label for="inputlg">Send the public key to your another device,by e-mail,sns or etc.</label>
         <button type="button" class="btn btn-info btn-sm  pull-right btn-clipboard" id="btn-copy-key" data-clipboard-target="#text-this-device-key">Copy</button>
         <pre id="text-this-device-key" class="text-danger small" rows="20"></pre>
         <h5 class="text-info">Send the public key to your another device,by e-mail,sns or etc.</h5>
