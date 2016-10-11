@@ -29,7 +29,13 @@
 <div class="container bg-succuss container-remote-list">
   <div class="row">
     <table class="table table-striped table-bordered">
-      <tr></tr>
+      <thead>
+        <tr>
+          <th>Token</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
     </table>
   </div>
 </div>
