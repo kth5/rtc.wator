@@ -28,6 +28,7 @@
 
 <div class="container bg-succuss container-pair-keys">
   <div class="row">
+    <h2>Remote devices:</h2>
     <table class="table table-striped table-bordered">
       <tbody id="key-table-body"></tbody>
     </table>
