@@ -78,9 +78,10 @@ $(document).ready(function(){
       var row = '<tr>';
       row += '<td>';
       row += '<button type="button" class="btn btn-danger btn-sm" ';
-      row += 'onClick="removeKey(';
+      row += 'value="';
       row += pairs[i];
-      row += ')"';
+      row += '"';
+      row += 'onClick="removeKey(this)"';
       row += '>-</button>';
       row += '</td>';
       row += '<td>' + pairs[i] + '</td>';
@@ -89,8 +90,8 @@ $(document).ready(function(){
       $('#key-table-body').append(row);
     }
   }
-  function removeKey(key){
-    console.log(key);
+  function removeKey(btn){
+    console.log(btn);
     updateKeysView();
   }
   updateKeysView();
