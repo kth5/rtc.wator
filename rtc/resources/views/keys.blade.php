@@ -3,8 +3,8 @@
 <style type="text/css">
 <!--
   .col-md-6 {
-  padding-right: 15px;
-  padding-left: 15px;
+    padding-right: 15px !important;
+    padding-left: 15px !important;
   }
 -->
 </style>
