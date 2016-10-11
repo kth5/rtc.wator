@@ -3,7 +3,7 @@
 
 <div class="container bg-warning container-mime-key">
   <div class="row">
-    <h1>Key of this device</h1>
+    <h3>Public RSA Key belong to this device</h3>
     <div class="col-sm-9">
       <div class="row">
         <button type="button" class="btn btn-danger btn-sm" id="btn-create-key">recreate</button>
@@ -17,7 +17,7 @@
 
 <div class="container bg-info container-your-key">
   <div class="row">
-    <h2>Add Key of remote device</h2>
+    <h3>Add RSA Public Key from remote device</h3>
     <div class="form-group">
       <button type="button" class="btn btn-success btn-sm" id="btn-add-key">+</button>
       <label for="inputlg">Paste public key of remote device.</label>
@@ -28,7 +28,7 @@
 
 <div class="container bg-success container-pair-keys">
   <div class="row">
-    <h2>Remote devices:</h2>
+    <h3>Remote devices:</h3>
     <table class="table table-striped table-bordered">
       <tbody id="key-table-body"></tbody>
     </table>
