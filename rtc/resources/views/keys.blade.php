@@ -80,7 +80,7 @@ $(document).ready(function(){
   var pairs = PeerRSA.Key.B.getPairDevices();
   for(var i = 0 ;i < pairs.length;i++) {
     console.log(pairs[i]);
-    $('#key-table-body> tr:last').after('<tr><td>' + pairs[i] + '</td><td>-</td></tr>')
+    $('#key-table-body').append('<tr><td>' + pairs[i] + '</td><td>-</td></tr>')
   }
 });
 </script>
