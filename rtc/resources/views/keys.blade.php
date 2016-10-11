@@ -1,9 +1,14 @@
 @extends('app')
 @section('content')
-
+<style type="text/css">
+  .col-md-4 {
+  padding-right: 15px;
+  padding-left: 15px;
+  }
+</style>
 <div class="container bg-warning container-mime-key">
   <div class="row">
-    <div class="col-md-5">
+    <div class="col-md-6">
       <div class="row">
         <h4>Public RSA Key belong to this device</h4>
         <button type="button" class="btn btn-danger btn-sm" id="btn-create-key">recreate</button>
@@ -12,12 +17,12 @@
         <h5 class="text-info">Please send this public key to your another device,by e-mail,sns or etc.</h5>
       </div>
     </div>
-    <div class="col-md-5 col-md-offset-2">
+    <div class="col-md-6">
       <div class="row">
         <h4>Add RSA Public Key from remote device</h4>
         <div class="form-group">
-          <label for="inputlg">Paste public key of remote device.</label>
           <button type="button" class="btn btn-success btn-sm" id="btn-add-key">+</button>
+          <label for="inputlg">Paste public key of remote device.</label>
           <textarea class="form-control input-sm" id="text-remote-device-key" rows="14"></textarea>
         </div>
       </div>
@@ -28,7 +33,7 @@
 
 <div class="container bg-success container-pair-keys">
   <div class="row">
-    <h3>Remote devices:</h3>
+    <h4>Remote devices:</h4>
     <table class="table table-striped table-bordered">
       <tbody id="key-table-body"></tbody>
     </table>
