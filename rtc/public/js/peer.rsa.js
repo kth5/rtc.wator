@@ -99,12 +99,12 @@ PeerRSA.A.prototype.connect = function (config) {
 }
 PeerRSA.A.prototype.onMediaType_ = function (config) {
   if(config) {  
-    this.mediaConst = { mandatory: { OfferToReceiveAudio: false, OfferToReceiveVideo: false } };
+    this.mediaConst = { 'mandatory': { 'OfferToReceiveAudio': false, 'OfferToReceiveVideo': false } };
     if(config.video) {
-      this.mediaConst.mandatory.OfferToReceiveVideo = true;
+      this.mediaConst['mandatory']['OfferToReceiveVideo'] = true;
     }
     if(config.audio) {
-      this.mediaConst.mandatory.OfferToReceiveAudio = true;
+      this.mediaConst['mandatory']['OfferToReceiveAudio'] = true;
     }
   }
 }
