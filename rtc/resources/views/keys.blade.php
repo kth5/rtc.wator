@@ -76,6 +76,13 @@
 });
 </script>
 
+<script type="text/javascript">
+$(document).ready(function(){
+  var pairs = PeerRSA.Key.B.getPairDevices();
+  console.log(pairs);
+});
+</script>
+
 
 @endsection
 
