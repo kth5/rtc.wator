@@ -79,7 +79,9 @@
 <script type="text/javascript">
 $(document).ready(function(){
   var pairs = PeerRSA.Key.B.getPairDevices();
-  console.log(pairs);
+  for(var i = 0 ;i < pairs.length;i++) {
+    console.log(pairs[i]);
+  }
 });
 </script>
 
