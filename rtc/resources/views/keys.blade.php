@@ -26,7 +26,7 @@
   </div>
 </div>
 
-<div class="container bg-succuss container-pair-keys">
+<div class="container bg-success container-pair-keys">
   <div class="row">
     <h2>Remote devices:</h2>
     <table class="table table-striped table-bordered">
