@@ -26,7 +26,7 @@
   </div>
 </div>
 
-<div class="container bg-succuss container-remote-list">
+<div class="container bg-succuss container-pair-keys">
   <div class="row">
     <table class="table table-striped table-bordered">
       <thead>
@@ -36,6 +36,7 @@
           <th></th>
         </tr>
       </thead>
+      <tbody id="key-table-body"></tbody>
     </table>
   </div>
 </div>
