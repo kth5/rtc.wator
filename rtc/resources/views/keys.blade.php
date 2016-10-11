@@ -96,7 +96,7 @@ $(document).ready(function(){
   }
   
   $('#key-table-body').on('click','.remove-key-btn',function(){
-    console.log(this);
+    console.log(this.val());
   });
   updateKeysView();
 });
