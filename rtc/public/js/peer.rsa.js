@@ -83,6 +83,7 @@ PeerRSA.A.prototype.connect = function (config) {
     console.log(PeerRSA.config);
     console.log(PeerRSA.pcOptions);
     this.catch_.pc = new RTCPeerConnection(PeerRSA.config,PeerRSA.pcOptions);
+    this.catch_.pc.onnegotiationneeded = this.onCatchNegotiationNeeded_.bind(this);
     this.catch_.pc.onicecandidate = this.onCatchIce_.bind(this);
     this.catch_.iceGo = false;
     this.catch_.pc.onaddstream = function (evt) {
@@ -107,6 +108,10 @@ PeerRSA.A.prototype.onMediaType_ = function (config) {
     }
   }
 }
+
+PeerRSA.A.prototype.onCatchNegotiationNeeded_ = function () {
+  this.cast_.pc.createOffer(this.offerSuccess_.bind(this),this.offerFailure_.bind(this));
+}
 PeerRSA.A.prototype.onCatchIce_ = function (evt) {
   if(evt.candidate) {
     console.log(evt.candidate);
@@ -125,7 +130,6 @@ PeerRSA.A.prototype.gotMediaSuccess_ = function (stream) {
     console.log(stream);
   }
   this.cast_.pc.addStream(stream);
-  this.cast_.pc.createOffer(this.offerSuccess_.bind(this),this.offerFailure_.bind(this));
 }
 
 PeerRSA.A.prototype.gotMediaFailure_ = function (e) {
@@ -393,6 +397,7 @@ PeerRSA.B.prototype.onRTCSignal_ = function(rtc) {
       this.sendSignal_(rtc);
       this.cast_ = this.cast_ || {};
       this.cast_.pc = new RTCPeerConnection(PeerRSA.config,PeerRSA.pcOptions);
+      this.cast_.pc.onnegotiationneeded = this.onCastNegotiationNeeded_.bind(this);
       this.cast_.pc.onicecandidate = this.onCastIce_.bind(this);
       this.cast_.iceGo = false;
       navigator.getUserMedia(media,this.gotMediaSuccess_.bind(this),this.gotMediaFailure_.bind(this));
@@ -407,6 +412,12 @@ PeerRSA.B.prototype.onRTCSignal_ = function(rtc) {
     this.addIceCast_(rtc.candidate);
   }
 }
+PeerRSA.B.prototype.onCastNegotiationNeeded_ = function() {
+  var castOptions = {mandatory: {OfferToReceiveVideo:false, OfferToReceiveAudio:false}};
+  this.cast_.pc.createOffer(this.offerSuccess_.bind(this),this.offerFailure_.bind(this),castOptions);
+}
+
+
 PeerRSA.B.prototype.onAddIceCandidateSuccess_ = function() {
   console.log('onAddIceCandidateSuccess_ success');
 }
@@ -462,8 +473,6 @@ PeerRSA.B.prototype.gotMediaSuccess_ = function (stream) {
   console.log(PeerRSA.config);
   console.log(PeerRSA.pcOptions);
   this.cast_.pc.addStream(stream);
-  var castOptions = {mandatory: {OfferToReceiveVideo:false, OfferToReceiveAudio:false}};
-  this.cast_.pc.createOffer(this.offerSuccess_.bind(this),this.offerFailure_.bind(this),castOptions);
 }
 
 PeerRSA.B.prototype.gotMediaFailure_ = function (e) {
