@@ -71,6 +71,10 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
+  function removeKey(btn){
+    console.log(btn);
+    updateKeysView();
+  }
   function updateKeysView() {
     var pairs = PeerRSA.Key.B.getPairDevices();
     for(var i = 0 ;i < pairs.length;i++) {
@@ -89,10 +93,6 @@ $(document).ready(function(){
       console.log(row);
       $('#key-table-body').append(row);
     }
-  }
-  function removeKey(btn){
-    console.log(btn);
-    updateKeysView();
   }
   updateKeysView();
 });
