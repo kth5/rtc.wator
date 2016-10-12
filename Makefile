@@ -20,5 +20,6 @@ service:
 	mkdir -p /opt/wator.auto.run/
 	cp -f /opt/watorvapor/rtc.wator/rtc.wator.service /opt/wator.auto.run/
 	cp -f /opt/watorvapor/rtc.wator/rtc.wator.server /opt/wator.auto.run/
-	cd  /opt/wator.auto.run && systemctl enable rtc.wator.service
+	#cd  /opt/wator.auto.run && systemctl enable rtc.wator.service
+	systemctl enable /opt/wator.auto.run/rtc.wator.service
 	systemctl start rtc.wator
