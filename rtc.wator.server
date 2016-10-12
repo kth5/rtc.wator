@@ -1,0 +1,2 @@
+#!/bin/bash
+cd /opt/watorvapor/rtc.wator/signal && ./peer.rsa.server.js
