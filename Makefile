@@ -17,7 +17,6 @@ laravel:
 	-chmod 777 -R $(APP)/bootstrap/cache
 
 service:
-	all:
 	mkdir -p /opt/wator.auto.run/
 	cp -f /opt/watorvapor/rtc.wator/rtc.wator.service /opt/wator.auto.run/
 	cp -f /opt/watorvapor/rtc.wator/rtc.wator.server /opt/wator.auto.run/
