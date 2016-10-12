@@ -1,2 +1,2 @@
 #!/bin/bash
-cd /opt/watorvapor/rtc.wator/signal && ./peer.rsa.server.js
+cd /opt/watorvapor/rtc.wator/rtc && php artisan serve --host 127.0.0.1 --port 10083
