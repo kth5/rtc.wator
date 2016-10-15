@@ -36,7 +36,8 @@ $(document).ready(function() {
     inner += device.deviceId;
     inner += '">';
     inner += device.label;
-    inner += '</label>';
+    inner += '</label><br>';
+    
     if(device.kind === 'videoinput') {
       $("#device-camera").append(inner);
       firstCamera = false;
