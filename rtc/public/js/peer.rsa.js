@@ -11,7 +11,7 @@ PeerRSA.gatherDevice = function (cb) {
   navigator.mediaDevices.enumerateDevices()
   .then(function(devices){
     for(let i = 0 ;i < devices.length;i++ ){
-      if(devices[i].deviceId !== 'default') {
+      if(devices[i].deviceId !== 'default' && devices[i].kind !== 'audiooutput') {
         console.log(devices[i]);
         if(typeof cb === 'function') {
           cb(devices[i]);
