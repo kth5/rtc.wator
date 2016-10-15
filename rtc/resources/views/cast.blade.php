@@ -15,9 +15,17 @@
 </div>
 <script type="text/javascript">
 $(document).ready(function() {
+  var firstCamera = true;
+  var firstMic = true;
   PeerRSA.gatherDevice(function(device){
     console.log(device);
     var inner = '<label class="radio-inline"><input type="radio" '
+    if(firstCamera) {
+      inner += 'checked="true"';
+    }
+    if(firstMic) {
+      inner += 'checked="true"';
+    }
     if(device.kind === 'videoinput') {
       inner += 'name="device-camera"';
     }
@@ -31,9 +39,11 @@ $(document).ready(function() {
     inner += '</label>';
     if(device.kind === 'videoinput') {
       $("#device-camera").append(inner);
+      firstCamera = false;
     }
     if(device.kind === 'audioinput') {
       $("#device-mic").append(inner);
+      firstMic = false;
     }
   })
   var peer;
