@@ -8,13 +8,13 @@ var RTCSessionDescription = window.webkitRTCSessionDescription || window.RTCSess
 var RTCIceCandidate = window.webkitRTCIceCandidate || window.RTCIceCandidate || window.mozRTCIceCandidate;
 var URL = window.URL || window.webkitURL;
 
-navigator.mediaDevices.enumerateDevices
+navigator.mediaDevices.enumerateDevices()
   .then(function(devices){
     console.log(devices);
-  })
+  }
   .catch(function(err){
     console.error(err);
-});
+  };
 
 
 /*
