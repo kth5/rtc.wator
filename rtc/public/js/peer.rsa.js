@@ -1,23 +1,33 @@
 console.log(adapter.browserDetails);
 
+console.log(navigator.getUserMedia);
+console.log(RTCPeerConnection);
+console.log(RTCSessionDescription);
+console.log(RTCIceCandidate);
+
 navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 var RTCPeerConnection = window.webkitRTCPeerConnection || window.RTCPeerConnection || window.mozRTCPeerConnection;
 var RTCSessionDescription = window.webkitRTCSessionDescription || window.RTCSessionDescription || window.mozRTCSessionDescription;
 var RTCIceCandidate = window.webkitRTCIceCandidate || window.RTCIceCandidate || window.mozRTCIceCandidate;
 var URL = window.URL || window.webkitURL;
 
-navigator.mediaDevices.enumerateDevices()
+PeerRSA.gatherDevice(cb) = function () {
+  navigator.mediaDevices.enumerateDevices()
   .then(function(devices){
     for(let i = 0 ;i < devices.length;i++ ){
       if(devices[i].deviceId !== 'default') {
         console.log(devices[i]);
+        if(typeof cb === 'function') {
+          cb(devices[i]);
+        }
       }
     }
   })
   .catch(function(err){
     console.error(err);
+    cb([]);
   });
-
+}
 
 /*
   PeerRSA.A is Peer create RSA key.
