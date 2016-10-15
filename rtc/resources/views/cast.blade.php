@@ -2,8 +2,8 @@
 @section('content')
 <div class="container bg-warning container-connection">
   <div class="row">
-    <div id="device-camera" class="col-md-6"></div>
-    <div id="device-mic" class="col-md-6"></div>
+    <div id="device-camera" class="col-md-6 bg-success"></div>
+    <div id="device-mic" class="col-md-6 bg-info"></div>
   </div>
   <div class="row">
     <button type="button" class="btn btn-success btn-lg btn-block" id="btn-standby">Standby for remote devices.</button>
