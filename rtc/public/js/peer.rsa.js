@@ -8,11 +8,8 @@ var URL = window.URL || window.webkitURL;
 
 navigator.mediaDevices.enumerateDevices()
   .then(function(devices){
-    console.log(devices);
     for(let i = 0 ;i < devices.length;i++ ){
-      if(devices[i].deviceId === 'default') {
-        console.warn(devices[i]);
-      } else {
+      if(devices[i].deviceId !== 'default') {
         console.log(devices[i]);
       }
     }
