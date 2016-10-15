@@ -11,10 +11,10 @@ var URL = window.URL || window.webkitURL;
 navigator.mediaDevices.enumerateDevices()
   .then(function(devices){
     console.log(devices);
-  }
+  })
   .catch(function(err){
     console.error(err);
-  };
+  });
 
 
 /*
