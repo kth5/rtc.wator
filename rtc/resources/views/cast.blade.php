@@ -11,6 +11,9 @@
 </div>
 <script type="text/javascript">
 $(document).ready(function() {
+  PeerRSA.gatherDevice(function(device){
+    console.log(device);
+  })
   var peer;
   $('#btn-standby').click(function() {
     peer = new PeerRSA.B();
