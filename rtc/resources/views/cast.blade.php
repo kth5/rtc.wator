@@ -52,6 +52,8 @@ $(document).ready(function() {
     peer = new PeerRSA.B();
     var video = $('input[name=device-camera]:checked').val();
     console.log(video);
+    var audio = $('input[name=device-mic]:checked').val();
+    console.log(audio);
     peer.standby({video:true,audio:true});
   });
 });
