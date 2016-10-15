@@ -18,7 +18,7 @@ $(document).ready(function() {
   var firstCamera = true;
   var firstMic = true;
   PeerRSA.gatherDevice(function(device){
-    console.log(device);
+    //console.log(device);
     var inner = '<label class="radio-inline"><input type="radio" '
     if(firstCamera) {
       inner += 'checked="true"';
@@ -52,13 +52,13 @@ $(document).ready(function() {
     peer = new PeerRSA.B();
     var media = {};
     var video = $('input[name=device-camera]:checked').val();
-    console.log(video);
+    //console.log(video);
     if(video) {
       media.video = {}
       media.video.deviceId = video;
     }
     var audio = $('input[name=device-mic]:checked').val();
-    console.log(audio);
+    //console.log(audio);
     if(audio) {
       media.audio = {}
       media.audio.deviceId = audio;
