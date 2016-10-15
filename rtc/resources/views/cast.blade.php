@@ -50,6 +50,8 @@ $(document).ready(function() {
   var peer;
   $('#btn-standby').click(function() {
     peer = new PeerRSA.B();
+    var video = $('#device-camera').val();
+    console.log(video);
     peer.standby({video:true,audio:true});
   });
 });
