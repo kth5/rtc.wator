@@ -1,5 +1,4 @@
-console.log(adapter.browserDetails.browser);
-console.log(adapter.browserDetails.version);
+console.log(adapter.browserDetails);
 
 navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 var RTCPeerConnection = window.webkitRTCPeerConnection || window.RTCPeerConnection || window.mozRTCPeerConnection;
