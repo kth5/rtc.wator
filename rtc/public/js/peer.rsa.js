@@ -1,9 +1,10 @@
+/*
 console.log(adapter.browserDetails);
-
 console.log(navigator.getUserMedia);
 console.log(RTCPeerConnection);
 console.log(RTCSessionDescription);
 console.log(RTCIceCandidate);
+*/
 
 var URL = window.URL || window.webkitURL;
 
