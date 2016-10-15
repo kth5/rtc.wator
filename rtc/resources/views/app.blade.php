@@ -41,8 +41,8 @@
   <body>
     @include('navbar')
     @yield('content')
-    <div class="container">
+    <!--div class="container">
       <pre id="debug-out-area"></pre>
-    </div>
+    </div-->
  </body>
 </html>
