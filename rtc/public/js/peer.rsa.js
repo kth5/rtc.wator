@@ -18,7 +18,6 @@ PeerRSA.gatherDevice = function (cb) {
         }
         if(typeof cb === 'function') {
           cb(devices[i]);
-          cb(devices[i]);
         }
       }
     }
