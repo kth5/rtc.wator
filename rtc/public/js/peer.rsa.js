@@ -10,7 +10,13 @@ var URL = window.URL || window.webkitURL;
 
 navigator.mediaDevices.enumerateDevices()
   .then(function(devices){
-    console.log(devices);
+    for(let i = 0 ;i < devices.lenght;i++ ){
+      if(devices[i].deviceId === 'default') {
+        console.warn(devices[i]);
+      } else {
+        console.log(devices[i]);
+      }
+    }
   })
   .catch(function(err){
     console.error(err);
