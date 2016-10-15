@@ -1,6 +1,4 @@
 console.log(adapter.browserDetails);
-console.log(navigator);
-console.log(window);
 
 navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 var RTCPeerConnection = window.webkitRTCPeerConnection || window.RTCPeerConnection || window.mozRTCPeerConnection;
@@ -10,7 +8,8 @@ var URL = window.URL || window.webkitURL;
 
 navigator.mediaDevices.enumerateDevices()
   .then(function(devices){
-    for(let i = 0 ;i < devices.lenght;i++ ){
+    console.log(devices);
+    for(let i = 0 ;i < devices.length;i++ ){
       if(devices[i].deviceId === 'default') {
         console.warn(devices[i]);
       } else {
