@@ -24,8 +24,10 @@ $(document).ready(function() {
     inner += '</label>';
     if(device.kind === 'videoinput') {
       $("#device-camera").append(inner);
+      $("#device-audio").append(inner);
     }
     if(device.kind === 'audioinput') {
+      $("#device-camera").append(inner);
       $("#device-audio").append(inner);
     }
   })
