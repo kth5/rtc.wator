@@ -1,13 +1,17 @@
 @extends('app')
 @section('content')
 <div class="container bg-warning container-connection">
-<div class="row">
-<button type="button" class="btn btn-success btn-lg btn-block" id="btn-standby">Standby for remote devices.</button>
-</div>
+  <div class="row">
+    <div class="col-md-6"></div>
+    <div class="col-md-6"></div>
+  </div>
+  <div class="row">
+    <button type="button" class="btn btn-success btn-lg btn-block" id="btn-standby">Standby for remote devices.</button>
+  </div>
 </div>
 <div class="container bg-warning container-info">
-<div class="row">
-</div>
+  <div class="row">
+  </div>
 </div>
 <script type="text/javascript">
 $(document).ready(function() {
