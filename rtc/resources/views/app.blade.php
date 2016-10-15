@@ -22,6 +22,7 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
 
+    <script src="/bower_components/webrtc-adapter/release/adapter.js"></script>
     <script src="//www.watorvapor.com/js/clipboard.min.js" type="text/javascript"></script>
     <script src="//www.watorvapor.com/rtc/js/app.js" type="text/javascript"></script>
     <script src="//www.watorvapor.com/account/js/jsrsasign-all-min.js" type="text/javascript"></script>
