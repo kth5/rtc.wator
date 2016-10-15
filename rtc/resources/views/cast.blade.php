@@ -50,11 +50,20 @@ $(document).ready(function() {
   var peer;
   $('#btn-standby').click(function() {
     peer = new PeerRSA.B();
+    var media = {};
     var video = $('input[name=device-camera]:checked').val();
     console.log(video);
+    if(video) {
+      media.video = {}
+      media.video.deviceId = video;
+    }
     var audio = $('input[name=device-mic]:checked').val();
     console.log(audio);
-    peer.standby({video:true,audio:true});
+    if(audio) {
+      media.audio = {}
+      media.audio.deviceId = audio;
+    }
+    peer.standby(media);
   });
 });
 </script>
