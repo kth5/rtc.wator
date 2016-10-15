@@ -50,7 +50,7 @@ $(document).ready(function() {
   var peer;
   $('#btn-standby').click(function() {
     peer = new PeerRSA.B();
-    var video = $('#device-camera').val();
+    var video = $('input[name=device-camera]:checked').val();
     console.log(video);
     peer.standby({video:true,audio:true});
   });
