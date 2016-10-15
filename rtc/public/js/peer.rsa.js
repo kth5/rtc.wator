@@ -7,6 +7,16 @@ var RTCPeerConnection = window.webkitRTCPeerConnection || window.RTCPeerConnecti
 var RTCSessionDescription = window.webkitRTCSessionDescription || window.RTCSessionDescription || window.mozRTCSessionDescription;
 var RTCIceCandidate = window.webkitRTCIceCandidate || window.RTCIceCandidate || window.mozRTCIceCandidate;
 var URL = window.URL || window.webkitURL;
+
+navigator.mediaDevices.enumerateDevices
+  .then(function(devices){
+    console.log(devices);
+  })
+  .catch(function(err){
+    console.error(err);
+});
+
+
 /*
   PeerRSA.A is Peer create RSA key.
 */
@@ -68,6 +78,8 @@ PeerRSA.A.prototype.onaddstream = function (src) {
     console.log(src);
   }
 }
+
+
 
 /*
  PeerRSA.A.connect config {A:{video:{},audio:{}},B:{video:{},audio:{}}}
