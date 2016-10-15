@@ -12,7 +12,9 @@ PeerRSA.gatherDevice = function (cb) {
   .then(function(devices){
     for(let i = 0 ;i < devices.length;i++ ){
       if(devices[i].deviceId !== 'default' && devices[i].kind !== 'audiooutput') {
-        console.log(devices[i]);
+        if (PeerRSA.debug) {
+          console.log(devices[i]);
+        }
         if(typeof cb === 'function') {
           cb(devices[i]);
         }
@@ -21,7 +23,6 @@ PeerRSA.gatherDevice = function (cb) {
   })
   .catch(function(err){
     console.error(err);
-    cb([]);
   });
 }
 
