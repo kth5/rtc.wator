@@ -1,4 +1,4 @@
-.PHONY : setup laravel
+.PHONY : setup laravel service
 NAME := $(basename $(notdir $(shell pwd)))
 setup:
 	docker build -t wator/$(NAME)  ./docker
