@@ -300,10 +300,31 @@ PeerRSA.A.prototype.onCreateAnswerError_ = function(error) {
 }
 
 PeerRSA.A.prototype.onCatchConnectionStateChange_ = function() {
+  console.log(this.catch_.pc.connectionState);
+  if(this.catch_.pc.connectionState) {
+    if(typeof this.onNotice === 'function') {
+      this.onNotice({connectionState:this.catch_.pc.connectionState});
+    }
+  }
 }
 PeerRSA.A.prototype.onCatchICEConnectionStateChange = function() {
+  console.log(this.catch_.pc.iceConnectionState);
+  if(this.catch_.pc.iceConnectionState) {
+    if(typeof this.onNotice === 'function') {
+      this.onNotice({iceConnectionState:this.catch_.pc.iceConnectionState});
+    }
+    if(typeof this.onConnected === 'function' && this.catch_.pc.iceConnectionState === 'connected') {
+      this.onConnected({iceConnectionState:this.catch_.pc.iceConnectionState});
+    }
+  }
 }
 PeerRSA.A.prototype.onCatchICEGatheringStateChange = function() {
+  console.log(this.catch_.pc.iceGatheringState);
+  if(this.catch_.pc.iceConnectionState) {
+    if(typeof this.onNotice === 'function') {
+      this.onNotice({iceGatheringState:this.catch_.pc.iceGatheringState});
+    }
+  }
 }
 
 
