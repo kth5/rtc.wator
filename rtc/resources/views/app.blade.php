@@ -21,9 +21,9 @@
     <script src="/bower_components/promiz/promiz.js"></script>
     <script src="/bower_components/webcrypto-shim/webcrypto-shim.js"></script>
     <script src="/bower_components/webrtc-adapter/release/adapter.js"></script>
+    <script src="/bower_components/kjur-jsrsasign/jsrsasign-latest-all-min.js"></script>
     <script src="//www.watorvapor.com/js/clipboard.min.js" type="text/javascript"></script>
     <script src="//www.watorvapor.com/rtc/js/app.js" type="text/javascript"></script>
-    <script src="//www.watorvapor.com/account/js/jsrsasign-all-min.js" type="text/javascript"></script>
     <script src="//www.watorvapor.com/rtc/js/peer.rsa.stub.js" type="text/javascript"></script>
     <script src="//www.watorvapor.com/rtc/js/peer.rsa.js" type="text/javascript"></script>
     
