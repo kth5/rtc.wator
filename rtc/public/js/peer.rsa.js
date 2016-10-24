@@ -550,12 +550,30 @@ PeerRSA.B.prototype.onSetRemoteDescriptionFailure_ = function (e) {
 
 PeerRSA.B.prototype.onCastConnectionStateChange_ = function(evt) {
   console.log(this.cast_.pc.connectionState);
+  if(this.cast_.pc.connectionState) {
+    if(typeof this.onNotice === 'function') {
+      this.onNotice({connectionState:this.cast_.pc.connectionState});
+    }
+  }
 }
 PeerRSA.B.prototype.onCastICEConnectionStateChange = function(evt) {
   console.log(this.cast_.pc.iceConnectionState);
+  if(this.cast_.pc.iceConnectionState) {
+    if(typeof this.onNotice === 'function') {
+      this.onNotice({iceConnectionState:this.cast_.pc.iceConnectionState});
+    }
+    if(typeof this.onConnected === 'function' && this.cast_.pc.iceConnectionState === 'connected') {
+      this.onConnected({iceConnectionState:this.cast_.pc.iceConnectionState});
+    }
+  }
 }
 PeerRSA.B.prototype.onCastICEGatheringStateChange = function(evt) {
   console.log(this.cast_.pc.iceGatheringState);
+  if(this.cast_.pc.iceConnectionState) {
+    if(typeof this.onNotice === 'function') {
+      this.onNotice({iceGatheringState:this.cast_.pc.iceGatheringState});
+    }
+  }
 }
 
 
