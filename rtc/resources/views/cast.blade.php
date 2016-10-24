@@ -11,6 +11,7 @@
 </div>
 <div class="container bg-warning container-info">
   <div class="row">
+    <pre id="diagnis" class="bg-success"></pre>
   </div>
 </div>
 <script type="text/javascript">
@@ -64,6 +65,10 @@ $(document).ready(function() {
       media.audio.deviceId = audio;
     }
     peer.standby(media);
+    peer.onNotice = function(msg) {
+      var msg = JSON.stringify(msg);
+      $('#diagnis').append(msg).show();
+    }
   });
 });
 </script>
