@@ -52,6 +52,17 @@ PeerRSA.A.prototype.signalClosed = function (evt) {
 }
 PeerRSA.A.prototype.onaddstream = function (src) {
 }
+PeerRSA.A.prototype.onremovestream = function () {
+}
+
+PeerRSA.A.prototype.onConnected = function() {
+}
+PeerRSA.A.prototype.onDisconnected = function() {
+}
+PeerRSA.A.prototype.onError = function() {
+}
+PeerRSA.A.prototype.onNotice = function() {
+}
 
 /*
   PeerRSA.B is Peer import RSA key.
@@ -69,5 +80,17 @@ PeerRSA.B.prototype.signalClosed = function (evt) {
 }
 PeerRSA.B.prototype.onaddstream = function (src) {
 }
+PeerRSA.B.prototype.onremovestream = function () {
+}
+
+PeerRSA.A.prototype.onConnected = function() {
+}
+PeerRSA.A.prototype.onDisconnected = function() {
+}
+PeerRSA.A.prototype.onError = function() {
+}
+PeerRSA.A.prototype.onNotice = function() {
+}
+
 
 
