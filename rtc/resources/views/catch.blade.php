@@ -10,17 +10,26 @@
     <video id="remoteVideo" width="640" height="480" autoplay></video>
   </div>
 </div>
+<div class="container bg-warning container-info">
+  <div class="row">
+    <pre id="diagnis" class="bg-success"></pre>
+  </div>
+</div>
 
 <script type="text/javascript">
 $(document).ready(function() {
-  var peerA = new PeerRSA.A();
+  var peer = new PeerRSA.A();
     $('#btn-connect').click(function(){
-      peerA.connect({B:{video:true,audio:true}});
+      peer.connect({B:{video:true,audio:true}});
     });
-    peerA.onaddstream = function(src) {
+    peer.onaddstream = function(src) {
       console.log(src);
       $('#remoteVideo').attr('src', src);
     };
+    peer.onNotice = function(msg) {
+      var msg = JSON.stringify(msg) + '\r\n';
+      $('#diagnis').append(msg).show();
+    }
 });
 </script>
 @endsection
