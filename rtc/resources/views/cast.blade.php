@@ -66,7 +66,7 @@ $(document).ready(function() {
     }
     peer.standby(media);
     peer.onNotice = function(msg) {
-      var msg = JSON.stringify(msg);
+      var msg = JSON.stringify(msg) + '\r\n';
       $('#diagnis').append(msg).show();
     }
   });
