@@ -111,6 +111,9 @@ PeerRSA.A.prototype.connect = function (config) {
     this.catch_.pc = new RTCPeerConnection(PeerRSA.config,PeerRSA.pcOptions);
     this.catch_.pc.onnegotiationneeded = this.onCatchNegotiationNeeded_.bind(this);
     this.catch_.pc.onicecandidate = this.onCatchIce_.bind(this);
+    this.catch_.pc.onconnectionstatechange = this.onCatchConnectionStateChange_.bind(this);
+    this.catch_.pc.oniceconnectionstatechange = this.onCatchICEConnectionStateChange.bind(this);
+    this.catch_.pc.onicegatheringstatechange = this.onCatchICEGatheringStateChange.bind(this);
     this.catch_.iceGo = false;
     this.catch_.pc.onaddstream = function (evt) {
       if (PeerRSA.debug) {
@@ -296,6 +299,13 @@ PeerRSA.A.prototype.onCreateAnswerError_ = function(error) {
   console.trace();
 }
 
+PeerRSA.A.prototype.onCatchConnectionStateChange_ = function() {
+}
+PeerRSA.A.prototype.onCatchICEConnectionStateChange = function() {
+}
+PeerRSA.A.prototype.onCatchICEGatheringStateChange = function() {
+}
+
 
 
 /*
@@ -425,6 +435,9 @@ PeerRSA.B.prototype.onRTCSignal_ = function(rtc) {
       this.cast_.pc = new RTCPeerConnection(PeerRSA.config,PeerRSA.pcOptions);
       this.cast_.pc.onnegotiationneeded = this.onCastNegotiationNeeded_.bind(this);
       this.cast_.pc.onicecandidate = this.onCastIce_.bind(this);
+      this.cast_.pc.onconnectionstatechange = this.onCastConnectionStateChange_.bind(this);
+      this.cast_.pc.oniceconnectionstatechange = this.onCastICEConnectionStateChange.bind(this);
+      this.cast_.pc.onicegatheringstatechange = this.onCastICEGatheringStateChange.bind(this);
       this.cast_.iceGo = false;
       navigator.getUserMedia(media,this.gotMediaSuccess_.bind(this),this.gotMediaFailure_.bind(this));
     }
@@ -533,6 +546,15 @@ PeerRSA.B.prototype.onSetRemoteDescriptionFailure_ = function (e) {
   console.error(e);
   console.trace();
 }
+
+
+PeerRSA.B.prototype.onCastConnectionStateChange_ = function() {
+}
+PeerRSA.B.prototype.onCastICEConnectionStateChange = function() {
+}
+PeerRSA.B.prototype.onCastICEGatheringStateChange = function() {
+}
+
 
 
 
