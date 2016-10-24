@@ -548,11 +548,14 @@ PeerRSA.B.prototype.onSetRemoteDescriptionFailure_ = function (e) {
 }
 
 
-PeerRSA.B.prototype.onCastConnectionStateChange_ = function() {
+PeerRSA.B.prototype.onCastConnectionStateChange_ = function(evt) {
+  console.log(evt);
 }
-PeerRSA.B.prototype.onCastICEConnectionStateChange = function() {
+PeerRSA.B.prototype.onCastICEConnectionStateChange = function(evt) {
+  console.log(evt);
 }
-PeerRSA.B.prototype.onCastICEGatheringStateChange = function() {
+PeerRSA.B.prototype.onCastICEGatheringStateChange = function(evt) {
+  console.log(evt);
 }
 
 
