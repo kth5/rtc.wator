@@ -83,13 +83,13 @@ PeerRSA.B.prototype.onaddstream = function (src) {
 PeerRSA.B.prototype.onremovestream = function () {
 }
 
-PeerRSA.A.prototype.onConnected = function() {
+PeerRSA.B.prototype.onConnected = function() {
 }
-PeerRSA.A.prototype.onDisconnected = function() {
+PeerRSA.B.prototype.onDisconnected = function() {
 }
-PeerRSA.A.prototype.onError = function() {
+PeerRSA.B.prototype.onError = function() {
 }
-PeerRSA.A.prototype.onNotice = function() {
+PeerRSA.B.prototype.onNotice = function() {
 }
 
 
