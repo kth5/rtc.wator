@@ -552,7 +552,7 @@ PeerRSA.B.prototype.onCastConnectionStateChange_ = function(evt) {
   console.log(this.cast_.pc.connectionState);
 }
 PeerRSA.B.prototype.onCastICEConnectionStateChange = function(evt) {
-  console.log(this.cast_.pc.iceconnectionstate);
+  console.log(this.cast_.pc.iceConnectionState);
 }
 PeerRSA.B.prototype.onCastICEGatheringStateChange = function(evt) {
   console.log(this.cast_.pc.iceGatheringState);
