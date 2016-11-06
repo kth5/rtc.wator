@@ -18,16 +18,15 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 
+    <script src="/js/ga.js" type="text/javascript"></script>
+    <script src="/clipboard.min.js" type="text/javascript"></script>
     <script src="/bower_components/promiz/promiz.js"></script>
     <script src="/bower_components/webcrypto-shim/webcrypto-shim.js"></script>
     <script src="/bower_components/webrtc-adapter/release/adapter.js"></script>
     <script src="/bower_components/kjur-jsrsasign/jsrsasign-latest-all-min.js"></script>
-    <script src="//www.watorvapor.com/js/clipboard.min.js" type="text/javascript"></script>
-    <script src="//www.watorvapor.com/rtc/js/app.js" type="text/javascript"></script>
-    <script src="//www.watorvapor.com/rtc/js/peer.rsa.stub.js" type="text/javascript"></script>
-    <script src="//www.watorvapor.com/rtc/js/peer.rsa.js" type="text/javascript"></script>
-    
-   <script src="/js/ga.js" type="text/javascript"></script>
+    <script src="/rtc/js/app.js" type="text/javascript"></script>
+    <script src="/rtc/js/peer.rsa.stub.js" type="text/javascript"></script>
+    <script src="/rtc/js/peer.rsa.js" type="text/javascript"></script>
   </head>
   <body>
     @include('navbar')
