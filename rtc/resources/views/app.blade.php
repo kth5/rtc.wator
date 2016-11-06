@@ -19,7 +19,7 @@
 
 
     <script src="/js/ga.js" type="text/javascript"></script>
-    <script src="/clipboard.min.js" type="text/javascript"></script>
+    <script src="/js/clipboard.min.js" type="text/javascript"></script>
     <script src="/bower_components/promiz/promiz.js"></script>
     <script src="/bower_components/webcrypto-shim/webcrypto-shim.js"></script>
     <script src="/bower_components/webrtc-adapter/release/adapter.js"></script>
